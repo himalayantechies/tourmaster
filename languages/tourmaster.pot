@@ -1,0 +1,5369 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Tour Master\n"
+"POT-Creation-Date: 2017-09-26 01:52+0700\n"
+"PO-Revision-Date: 2016-06-25 00:04+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: framework/function/file-system.php:46
+msgid "Cannot Generate Custom File"
+msgstr ""
+
+#: framework/function/file-system.php:47
+msgid ""
+"Please try changing the style-custom.css file permission to 775 or 777 for "
+"this."
+msgstr ""
+
+#: framework/function/file-system.php:63 framework/function/file-system.php:72
+#: framework/function/file-system.php:92 framework/function/file-system.php:102
+#: framework/function/html-option.php:35
+#: framework/function/plugin-option.php:76
+msgid "An error occurs"
+msgstr ""
+
+#: framework/function/file-system.php:64 framework/function/file-system.php:93
+msgid ""
+"Cannot obtain WP_Filesystem credentials, please contact the administrator."
+msgstr ""
+
+#: framework/function/file-system.php:73
+msgid "Cannot write file, please contact the administrator."
+msgstr ""
+
+#: framework/function/file-system.php:103
+msgid "Cannot read file, please contact the administrator."
+msgstr ""
+
+#: framework/function/html-option.php:36
+#: framework/function/plugin-option.php:77
+msgid ""
+"Please refresh the page to try again. If the problem still persists, please "
+"contact administrator for this."
+msgstr ""
+
+#: framework/function/html-option.php:38
+msgid "Select or Upload Media"
+msgstr ""
+
+#: framework/function/html-option.php:39
+msgid "Use this media"
+msgstr ""
+
+#: framework/function/html-option.php:42
+msgid "Item's Title"
+msgstr ""
+
+#: framework/function/html-option.php:43 framework/function/html-option.php:358
+msgid "On"
+msgstr ""
+
+#: framework/function/html-option.php:44 framework/function/html-option.php:360
+msgid "Off"
+msgstr ""
+
+#: framework/function/html-option.php:167
+msgid "Create Skin"
+msgstr ""
+
+#: framework/function/html-option.php:231
+msgid "HH"
+msgstr ""
+
+#: framework/function/html-option.php:237
+msgid "MM"
+msgstr ""
+
+#: framework/function/html-option.php:510
+msgid ""
+"There're no review available for this tour. If you just added the review, "
+"please refresh the page to see the results."
+msgstr ""
+
+#: framework/function/html-option.php:557
+msgid "Import"
+msgstr ""
+
+#: framework/function/html-option.php:579
+msgid "Export"
+msgstr ""
+
+#: framework/function/html-option.php:645
+msgid "Cannot update review data, please refresh the page and try this again."
+msgstr ""
+
+#: framework/function/html-option.php:651
+#: framework/function/html-option.php:805 include/payment-util.php:628
+#: include/tour-util.php:1217 include/user-util.php:295
+#: single/user/user-update.php:13
+msgid "Please fill all required fields."
+msgstr ""
+
+#: framework/function/html-option.php:658
+#: framework/function/html-option.php:697
+msgid "An error occurs, please refresh the page and try this again."
+msgstr ""
+
+#: framework/function/html-option.php:688
+msgid "Edit Review"
+msgstr ""
+
+#: framework/function/html-option.php:731 include/authorize/authorize.php:124
+#: include/paymill/paymill.php:144 include/stripe/stripe.php:144
+#: include/tour-util.php:139
+msgid "An error occurs, please refresh the page to try again."
+msgstr ""
+
+#: framework/function/html-option.php:759
+msgid "No result found, please refresh the page to try again."
+msgstr ""
+
+#: framework/function/html-option.php:794
+msgid "A review is successfully added."
+msgstr ""
+
+#: framework/function/html-option.php:799
+msgid "Invalid Email, please try again."
+msgstr ""
+
+#: framework/function/page-option.php:22
+msgid "Plugin Options"
+msgstr ""
+
+#: framework/function/plugin-option.php:33
+#: framework/function/plugin-option.php:34
+msgid "Goodlayers Option"
+msgstr ""
+
+#: framework/function/plugin-option.php:124 include/order.php:57
+#: include/pb/pb-element-tour-search.php:333 include/shortcodes.php:22
+msgid "Search"
+msgstr ""
+
+#: framework/function/plugin-option.php:168
+#: framework/function/plugin-option.php:233
+#: framework/function/plugin-option.php:454
+msgid "Save Options"
+msgstr ""
+
+#: framework/function/plugin-option.php:182
+msgid "Search Options"
+msgstr ""
+
+#: framework/function/plugin-option.php:183
+msgid "Please fill keywords to search"
+msgstr ""
+
+#: framework/function/plugin-option.php:363
+#: framework/function/plugin-option.php:393
+#: framework/function/plugin-option.php:465
+#: framework/function/plugin-option.php:519
+msgid "Invalid Nonce"
+msgstr ""
+
+#: framework/function/plugin-option.php:364
+#: framework/function/plugin-option.php:394
+#: framework/function/plugin-option.php:466
+#: framework/function/plugin-option.php:520
+msgid "Please refresh the page and try again."
+msgstr ""
+
+#: framework/function/plugin-option.php:371
+#: framework/function/plugin-option.php:402
+#: framework/function/plugin-option.php:473
+msgid "An Error Occurs"
+msgstr ""
+
+#: framework/function/plugin-option.php:372
+msgid "No variable for saving process, please refresh the page to try again."
+msgstr ""
+
+#: framework/function/plugin-option.php:380
+msgid "Options Saved!"
+msgstr ""
+
+#: framework/function/plugin-option.php:403
+#: framework/function/plugin-option.php:474
+msgid ""
+"Unable to obtain the tab variable, please refresh the page to try again."
+msgstr ""
+
+#: framework/function/plugin-option.php:446
+msgid "No results match the keyword"
+msgstr ""
+
+#: framework/function/plugin-option.php:447
+msgid "Please try again."
+msgstr ""
+
+#: framework/function/utility.php:25
+msgid "Just to confirm"
+msgstr ""
+
+#: framework/function/utility.php:26
+msgid "Are you sure to do this ?"
+msgstr ""
+
+#: framework/function/utility.php:27
+msgid "* Please noted that this could not be undone."
+msgstr ""
+
+#: framework/function/utility.php:28 include/tour-filter.php:137
+#: single/user/my-booking.php:82
+msgid "Yes"
+msgstr ""
+
+#: framework/function/utility.php:29 include/tour-filter.php:137
+#: single/user/my-booking.php:83
+msgid "No"
+msgstr ""
+
+#: framework/function/utility.php:280 framework/function/utility.php:321
+#: include/pb/pb-element-tour.php:112 include/pb/pb-element-tour.php:132
+#: include/pb/pb-element-tour.php:152 include/pb/pb-element-tour.php:170
+#: include/pb/pb-element-tour.php:258 include/pb/pb-element-tour.php:343
+#: include/plugin-option.php:472 include/plugin-option.php:980
+#: include/user-util.php:209
+msgid "None"
+msgstr ""
+
+#: framework/function/utility.php:299
+msgid "full size"
+msgstr ""
+
+#: framework/function/utility.php:324 include/pb/pb-element-tour.php:180
+msgid "Default"
+msgstr ""
+
+#: framework/function/utility.php:453 include/pb/pb-element-tour.php:172
+msgid "Load More"
+msgstr ""
+
+#: framework/function/utility.php:488 framework/function/utility.php:501
+#: include/order.php:41 include/order.php:175 include/order.php:299
+#: include/pb/pb-element-tour.php:98 include/utility.php:254
+#: single/user/dashboard.php:56 single/user/invoices.php:7
+#: single/user/my-booking-single.php:33 single/user/my-booking.php:7
+msgid "All"
+msgstr ""
+
+#: include/authorize/authorize.php:12 include/authorize/authorize.php:24
+msgid "Authorize"
+msgstr ""
+
+#: include/authorize/authorize.php:27
+msgid "Live Mode "
+msgstr ""
+
+#: include/authorize/authorize.php:30
+msgid "Please turn this option off when you're on test mode."
+msgstr ""
+
+#: include/authorize/authorize.php:33
+msgid "Authorize API Login ID"
+msgstr ""
+
+#: include/authorize/authorize.php:37
+msgid "Authorize Transaction Key"
+msgstr ""
+
+#: include/authorize/authorize.php:75 include/paymill/paymill.php:93
+#: include/stripe/stripe.php:93
+msgid "Card Number"
+msgstr ""
+
+#: include/authorize/authorize.php:81 include/paymill/paymill.php:99
+#: include/stripe/stripe.php:99
+msgid "Expiration (MM/YY)"
+msgstr ""
+
+#: include/authorize/authorize.php:89 include/paymill/paymill.php:107
+#: include/stripe/stripe.php:107
+msgid "CVC"
+msgstr ""
+
+#: include/authorize/authorize.php:95 include/payment-util.php:955
+#: include/paymill/paymill.php:113 include/stripe/stripe.php:113
+msgid "Please fill all required fields"
+msgstr ""
+
+#: include/authorize/authorize.php:97 include/paymill/paymill.php:115
+#: include/stripe/stripe.php:115
+msgid "Submit Payment"
+msgstr ""
+
+#: include/authorize/authorize.php:191 include/paymill/paymill.php:207
+#: include/stripe/stripe.php:200
+msgid "Cannot retrieve pricing data, please try again."
+msgstr ""
+
+#: include/authorize/authorize.php:240
+msgid "Cannot charge credit card, please check your card credentials again."
+msgstr ""
+
+#: include/authorize/authorize.php:249
+msgid "No response returned, please try again."
+msgstr ""
+
+#: include/mail-util.php:140
+msgid "Payment Method :"
+msgstr ""
+
+#: include/mail-util.php:143 include/paypal.php:8 include/plugin-option.php:952
+msgid "Paypal"
+msgstr ""
+
+#: include/mail-util.php:145
+msgid "Receipt"
+msgstr ""
+
+#: include/mail-util.php:147 include/plugin-option.php:953
+msgid "Credit Card"
+msgstr ""
+
+#: include/mail-util.php:165
+msgid "Transaction ID :"
+msgstr ""
+
+#: include/mail-util.php:175
+msgid "Payment Date :"
+msgstr ""
+
+#: include/mail-util.php:185
+msgid "Total Price :"
+msgstr ""
+
+#: include/mail-util.php:195
+msgid "Order Number :"
+msgstr ""
+
+#: include/mail-util.php:202
+msgid "Travel Date :"
+msgstr ""
+
+#: include/mail-util.php:282
+msgid "Please select the date which you want to retrieve the data."
+msgstr ""
+
+#: include/mail-util.php:285
+msgid "Please fill in the email title."
+msgstr ""
+
+#: include/mail-util.php:288
+msgid "Please fill in the email message."
+msgstr ""
+
+#: include/mail-util.php:325
+#, php-format
+msgid "The E-mail has been sent successfully to %d customers."
+msgstr ""
+
+#: include/mail-util.php:329
+msgid ""
+"Sorry, we couldn't find any customer on the selected date, please try again "
+"with different dates."
+msgstr ""
+
+#: include/order.php:11 include/order.php:12 include/order.php:87
+msgid "Transaction Order"
+msgstr ""
+
+#: include/order.php:42 include/order.php:176 include/order.php:300
+#: single/user/dashboard.php:57 single/user/dashboard.php:145
+#: single/user/invoices.php:8 single/user/my-booking-single.php:34
+#: single/user/my-booking.php:8 single/user/reviews.php:29
+msgid "Pending"
+msgstr ""
+
+#: include/order.php:43 include/order.php:177 include/order.php:301
+#: single/user/dashboard.php:58 single/user/invoices.php:9
+#: single/user/my-booking-single.php:35 single/user/my-booking.php:9
+msgid "Approved"
+msgstr ""
+
+#: include/order.php:44 include/order.php:178 include/order.php:302
+#: single/user/dashboard.php:59 single/user/invoices.php:10
+#: single/user/my-booking-single.php:36 single/user/my-booking.php:10
+msgid "Receipt Submitted"
+msgstr ""
+
+#: include/order.php:45 include/order.php:179 include/order.php:303
+#: single/user/dashboard.php:60 single/user/invoices.php:11
+#: single/user/my-booking-single.php:37 single/user/my-booking.php:11
+msgid "Online Paid"
+msgstr ""
+
+#: include/order.php:46 include/order.php:180 include/order.php:304
+#: single/user/dashboard.php:61 single/user/invoices.php:12
+#: single/user/my-booking-single.php:38 single/user/my-booking.php:12
+msgid "Deposit Paid"
+msgstr ""
+
+#: include/order.php:47 include/order.php:181 include/order.php:305
+#: single/user/dashboard.php:62 single/user/invoices.php:13
+#: single/user/my-booking-single.php:39 single/user/my-booking.php:13
+msgid "Departed"
+msgstr ""
+
+#: include/order.php:48 include/order.php:182 include/order.php:306
+#: single/user/dashboard.php:63 single/user/invoices.php:14
+#: single/user/my-booking-single.php:40 single/user/my-booking.php:14
+msgid "Rejected"
+msgstr ""
+
+#: include/order.php:49 include/order.php:183 include/order.php:307
+#: single/user/my-booking.php:80
+msgid "Cancel"
+msgstr ""
+
+#: include/order.php:54
+msgid "Search by order id :"
+msgstr ""
+
+#: include/order.php:60
+msgid "Date Filter :"
+msgstr ""
+
+#: include/order.php:61 include/pb/tour-style.php:178
+#: include/pb/tour-style.php:472
+msgid "From"
+msgstr ""
+
+#: include/order.php:63
+msgid "To"
+msgstr ""
+
+#: include/order.php:66 include/tour-filter.php:111
+msgid "Filter"
+msgstr ""
+
+#: include/order.php:166 include/pb/pb-element-tour-category.php:87
+#: include/pb/pb-element-tour.php:87
+msgid "Order"
+msgstr ""
+
+#: include/order.php:167 include/order.php:473
+#: single/user/my-booking-single.php:180
+msgid "Contact Detail"
+msgstr ""
+
+#: include/order.php:168 include/order.php:466
+#: single/user/my-booking-single.php:173
+msgid "Customer's Note"
+msgstr ""
+
+#: include/order.php:169 include/order.php:453 include/payment-util.php:105
+#: single/user/dashboard.php:75 single/user/invoices.php:36
+#: single/user/my-booking-single.php:160 single/user/my-booking.php:36
+msgid "Travel Date"
+msgstr ""
+
+#: include/order.php:170 include/order.php:536 single/user/dashboard.php:76
+#: single/user/invoices-single.php:59 single/user/invoices-single.php:65
+#: single/user/invoices.php:37 single/user/my-booking-single.php:243
+#: single/user/my-booking.php:37
+msgid "Total"
+msgstr ""
+
+#: include/order.php:171 single/user/dashboard.php:77
+#: single/user/invoices.php:38 single/user/my-booking.php:38
+msgid "Payment Status"
+msgstr ""
+
+#: include/order.php:172 include/tour-filter.php:120
+#: single/user/dashboard.php:138 single/user/reviews.php:22
+#: single/user/wish-list.php:11
+msgid "Action"
+msgstr ""
+
+#: include/order.php:222 include/order.php:319
+msgid "(Via E-mail)"
+msgstr ""
+
+#: include/order.php:226
+msgid "View"
+msgstr ""
+
+#: include/order.php:229
+msgid "Approve"
+msgstr ""
+
+#: include/order.php:230
+msgid ""
+"After approving the transaction, invoice and payment receipt will be sent to "
+"customer's billing email."
+msgstr ""
+
+#: include/order.php:234
+msgid "Reject"
+msgstr ""
+
+#: include/order.php:235
+msgid ""
+"After rejected the transaction, the rejection message will be sent to "
+"customer's contact email."
+msgstr ""
+
+#: include/order.php:239 include/review-util.php:107
+#: include/tour-filter.php:128 single/user/wish-list.php:44
+msgid "Remove"
+msgstr ""
+
+#: include/order.php:240 single/user/my-booking.php:85
+msgid ""
+"The transaction you selected will be permanently removed from the system."
+msgstr ""
+
+#: include/order.php:309 single/user/my-booking-single.php:42
+msgid "Order Status"
+msgstr ""
+
+#: include/order.php:325
+msgid "Update Status"
+msgstr ""
+
+#: include/order.php:351 single/user/my-booking-single.php:73
+msgid "Submission Date"
+msgstr ""
+
+#: include/order.php:356 single/user/my-booking-single.php:78
+msgid "Payment Date"
+msgstr ""
+
+#: include/order.php:363 include/plugin-option.php:948
+#: single/user/invoices-single.php:77 single/user/my-booking-single.php:85
+msgid "Payment Method"
+msgstr ""
+
+#: include/order.php:376 single/user/invoices-single.php:100
+#: single/user/my-booking-single.php:105
+msgid "Transaction ID"
+msgstr ""
+
+#: include/order.php:388 single/user/my-booking-single.php:117
+msgid "Deposit Amount"
+msgstr ""
+
+#: include/order.php:393 single/user/my-booking-single.php:122
+#, php-format
+msgid "Paypal Fee (%d%%)"
+msgstr ""
+
+#: include/order.php:398 single/user/my-booking-single.php:93
+msgid "Deposit Rate"
+msgstr ""
+
+#: include/order.php:403 single/user/my-booking-single.php:98
+msgid "Deposit Price"
+msgstr ""
+
+#: include/order.php:411 single/user/my-booking-single.php:130
+msgid "Paid Amount"
+msgstr ""
+
+#: include/order.php:418
+msgid "Error"
+msgstr ""
+
+#: include/order.php:429 single/user/my-booking-single.php:142
+msgid "Order Summary"
+msgstr ""
+
+#: include/order.php:433
+msgid ""
+"This booking has been made manually via email. Customer won't see from their "
+"dashboard. You should contact back to customer manually."
+msgstr ""
+
+#: include/order.php:438 single/user/my-booking-single.php:145
+msgid "Order Number"
+msgstr ""
+
+#: include/order.php:443 single/user/my-booking-single.php:150
+msgid "Booking Date"
+msgstr ""
+
+#: include/order.php:448 include/pb/pb-element-tour.php:24
+#: include/shortcodes-list.php:61 include/tour-option.php:19
+#: include/tour-option.php:20 include/tour-option.php:21
+#: include/tour-option.php:22 single/user/my-booking-single.php:155
+msgid "Tour"
+msgstr ""
+
+#: include/order.php:459 include/payment-util.php:117
+#: single/user/my-booking-single.php:166
+msgid "Package"
+msgstr ""
+
+#: include/order.php:485 single/user/my-booking-single.php:192
+msgid "Billing Detail"
+msgstr ""
+
+#: include/order.php:504 single/user/my-booking-single.php:211
+msgid "Traveller Info"
+msgstr ""
+
+#: include/order.php:508 include/payment-util.php:150
+#: include/payment-util.php:196 include/payment-util.php:431
+#: include/payment-util.php:506 include/tour-util.php:941
+#: include/tour-util.php:1115 single/user/my-booking-single.php:215
+msgid "Traveller"
+msgstr ""
+
+#: include/order.php:517 include/payment-util.php:515
+#: single/user/my-booking-single.php:224
+msgid "Passport ID :"
+msgstr ""
+
+#: include/order.php:531 single/user/my-booking-single.php:238
+msgid "Price Breakdown"
+msgstr ""
+
+#: include/payment-util.php:22
+msgid "An error occurred while processing your request."
+msgstr ""
+
+#: include/payment-util.php:24
+msgid "Back to Tour Page"
+msgstr ""
+
+#: include/payment-util.php:26
+msgid "Back to Home Page"
+msgstr ""
+
+#: include/payment-util.php:109
+msgid "edit"
+msgstr ""
+
+#: include/payment-util.php:127
+msgid "End Date"
+msgstr ""
+
+#: include/payment-util.php:132
+msgid "Period"
+msgstr ""
+
+#: include/payment-util.php:134
+msgid "Days"
+msgstr ""
+
+#: include/payment-util.php:134 include/tour-option.php:490
+msgid "Day"
+msgstr ""
+
+#: include/payment-util.php:159 include/payment-util.php:205
+#: include/tour-option.php:621 include/tour-util.php:306
+#: include/tour-util.php:426 include/tour-util.php:942
+#: include/tour-util.php:1116
+msgid "Adult"
+msgstr ""
+
+#: include/payment-util.php:165 include/payment-util.php:211
+msgid "Children"
+msgstr ""
+
+#: include/payment-util.php:171 include/payment-util.php:217
+#: include/tour-option.php:631 include/tour-util.php:320
+#: include/tour-util.php:440 include/tour-util.php:944
+#: include/tour-util.php:1118
+msgid "Student"
+msgstr ""
+
+#: include/payment-util.php:177 include/payment-util.php:223
+#: include/tour-option.php:636 include/tour-util.php:327
+#: include/tour-util.php:447 include/tour-util.php:945
+#: include/tour-util.php:1119
+msgid "Infant"
+msgstr ""
+
+#: include/payment-util.php:192 include/payment-util.php:359
+#: include/tour-service.php:111 include/tour-util.php:408
+#: include/tour-util.php:978
+msgid "Room"
+msgstr ""
+
+#: include/payment-util.php:236 include/tour-coupon.php:101
+msgid "Coupon Code"
+msgstr ""
+
+#: include/payment-util.php:242
+msgid "Apply"
+msgstr ""
+
+#: include/payment-util.php:249
+msgid "View Price Breakdown"
+msgstr ""
+
+#: include/payment-util.php:279
+msgid "Pay Full Amount"
+msgstr ""
+
+#: include/payment-util.php:287
+#, php-format
+msgid "Pay %d%% Deposit"
+msgstr ""
+
+#: include/payment-util.php:296
+msgid "Total Price"
+msgstr ""
+
+#: include/payment-util.php:310
+#, php-format
+msgid "%d%% deposit"
+msgstr ""
+
+#: include/payment-util.php:312
+msgid "*Pay the rest later"
+msgstr ""
+
+#: include/payment-util.php:317 include/payment-util.php:629
+msgid "Next Step"
+msgstr ""
+
+#: include/payment-util.php:336
+msgid "Please select your preferred additional services."
+msgstr ""
+
+#: include/payment-util.php:353 include/tour-service.php:109
+msgid "Person"
+msgstr ""
+
+#: include/payment-util.php:356 include/review-util.php:179
+#: include/review-util.php:262 include/tour-service.php:110 single/tour.php:596
+msgid "Group"
+msgstr ""
+
+#: include/payment-util.php:398
+msgid "Mr"
+msgstr ""
+
+#: include/payment-util.php:399
+msgid "Mrs"
+msgstr ""
+
+#: include/payment-util.php:400
+msgid "Ms"
+msgstr ""
+
+#: include/payment-util.php:401
+msgid "Miss"
+msgstr ""
+
+#: include/payment-util.php:402
+msgid "Master"
+msgstr ""
+
+#: include/payment-util.php:434 include/payment-util.php:534
+#: include/user-util.php:342
+msgid "First Name"
+msgstr ""
+
+#: include/payment-util.php:435 include/payment-util.php:539
+#: include/user-util.php:347
+msgid "Last Name"
+msgstr ""
+
+#: include/payment-util.php:437
+msgid "Passport Number"
+msgstr ""
+
+#: include/payment-util.php:461 include/payment-util.php:475
+#: include/payment-util.php:501
+msgid "Traveller Details"
+msgstr ""
+
+#: include/payment-util.php:544 include/user-util.php:365
+#: single/user/dashboard.php:19
+msgid "Email"
+msgstr ""
+
+#: include/payment-util.php:549 include/user-util.php:370
+#: single/user/dashboard.php:20
+msgid "Phone"
+msgstr ""
+
+#: include/payment-util.php:554 include/user-util.php:375
+#: single/user/dashboard.php:18
+msgid "Country"
+msgstr ""
+
+#: include/payment-util.php:561
+msgid "Address"
+msgstr ""
+
+#: include/payment-util.php:576 include/payment-util.php:646
+#: single/payment.php:79
+msgid "Contact Details"
+msgstr ""
+
+#: include/payment-util.php:591 include/payment-util.php:659
+msgid "Billing Details"
+msgstr ""
+
+#: include/payment-util.php:596
+msgid "The same as contact details"
+msgstr ""
+
+#: include/payment-util.php:618 include/payment-util.php:674
+msgid "Notes"
+msgstr ""
+
+#: include/payment-util.php:621 include/payment-util.php:677
+msgid "Additional Notes"
+msgstr ""
+
+#: include/payment-util.php:703
+msgid "Please select a payment method"
+msgstr ""
+
+#: include/payment-util.php:727
+#, php-format
+msgid "Additional %s%% is charged for PayPal payment."
+msgstr ""
+
+#: include/payment-util.php:764
+msgid "OR"
+msgstr ""
+
+#: include/payment-util.php:772 include/payment-util.php:783
+msgid "Book and pay later"
+msgstr ""
+
+#: include/payment-util.php:779
+msgid "Book now via email"
+msgstr ""
+
+#: include/payment-util.php:787
+msgid "To book and pay later requires an account"
+msgstr ""
+
+#: include/payment-util.php:796
+msgid ""
+"* If you wish to do a bank transfer, please select \"Book and pay later\" "
+"button."
+msgstr ""
+
+#: include/payment-util.php:797
+msgid ""
+"You will have an option to submit payment receipt on your dashboard page."
+msgstr ""
+
+#: include/payment-util.php:809
+#, php-format
+msgid ""
+"* To continue means you're okay with our <a href=\"%s\" target=\"_blank"
+"\">Terms of Service</a> and <a href=\"%s\" target=\"_blank\">Privacy "
+"Statement</a>."
+msgstr ""
+
+#: include/payment-util.php:824 include/payment-util.php:854
+msgid "Booking Completed!"
+msgstr ""
+
+#: include/payment-util.php:827 include/payment-util.php:857
+msgid "Thank you!"
+msgstr ""
+
+#: include/payment-util.php:829
+msgid ""
+"Your booking detail has been sent to your email. <br> You can check the "
+"payment status from your dashboard."
+msgstr ""
+
+#: include/payment-util.php:833 include/payment-util.php:863
+msgid "Go to my dashboard"
+msgstr ""
+
+#: include/payment-util.php:835 include/payment-util.php:865
+msgid "Go to homepage"
+msgstr ""
+
+#: include/payment-util.php:859
+msgid ""
+"Your booking detail will be sent to your email shortly. <br> You can check "
+"the payment status from your dashboard.<br> ( There might be some delay "
+"processing the paypal payment )"
+msgstr ""
+
+#: include/payment-util.php:889
+msgid "Select Image"
+msgstr ""
+
+#: include/payment-util.php:893
+msgid "Transaction ID ( from the receipt )"
+msgstr ""
+
+#: include/payment-util.php:921
+msgid "Select Payment Type"
+msgstr ""
+
+#: include/payment-util.php:928
+#, php-format
+msgid "Pay Full Amount : %s"
+msgstr ""
+
+#: include/payment-util.php:937
+#, php-format
+msgid "Pay %d%% Deposit : %s"
+msgstr ""
+
+#: include/payment-util.php:959
+msgid "Submit"
+msgstr ""
+
+#: include/payment-util.php:963
+msgid ""
+"* Please wait for the verification process after submitting the receipt. "
+"This could take up to couple days. You can check the status of submission "
+"from your \"Dashboard\" or \"My Booking\" page."
+msgstr ""
+
+#: include/payment-util.php:1024
+msgid "This coupon has been expired, please try again with different coupon"
+msgstr ""
+
+#: include/payment-util.php:1035
+msgid ""
+"This coupon is not available for this tour, please try again with different "
+"coupon"
+msgstr ""
+
+#: include/payment-util.php:1047
+msgid "This coupon has been used up, please try again with different coupon"
+msgstr ""
+
+#: include/payment-util.php:1061
+#, php-format
+msgid "You got %s discount"
+msgstr ""
+
+#: include/payment-util.php:1071
+msgid "Invalid coupon code, please try again with different coupon"
+msgstr ""
+
+#: include/payment-util.php:1084
+msgid "Please fill in the coupon code"
+msgstr ""
+
+#: include/paymill/paymill.php:12 include/paymill/paymill.php:23
+msgid "Paymill"
+msgstr ""
+
+#: include/paymill/paymill.php:26
+msgid "Paymill Private Key"
+msgstr ""
+
+#: include/paymill/paymill.php:30
+msgid "Paymill Public Key"
+msgstr ""
+
+#: include/paymill/paymill.php:34
+msgid "Paymill Currency Code"
+msgstr ""
+
+#: include/paymill/paymill.php:87 include/stripe/stripe.php:87
+msgid "Card Holder Name"
+msgstr ""
+
+#: include/paypal.php:11
+msgid "Paypal Live Mode"
+msgstr ""
+
+#: include/paypal.php:14
+msgid "Disable this option to test on sandbox mode."
+msgstr ""
+
+#: include/paypal.php:17
+msgid "Paypal Business Email"
+msgstr ""
+
+#: include/paypal.php:21
+msgid "Paypal Currency Code"
+msgstr ""
+
+#: include/paypal.php:26
+msgid "Paypal Service Fee (%)"
+msgstr ""
+
+#: include/paypal.php:29 include/plugin-option.php:127
+msgid "Fill only number here"
+msgstr ""
+
+#: include/paypal.php:63
+msgid "Please wait while we redirect you to paypal."
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:24
+msgid "Content Navigation"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:32
+#: include/pb/pb-element-tour-category.php:52
+#: include/pb/pb-element-tour-review.php:32
+#: include/pb/pb-element-tour-search.php:32 include/pb/pb-element-tour.php:50
+#: include/plugin-option.php:66 include/plugin-option.php:1942
+#: include/tour-coupon.php:98 include/tour-option.php:186
+#: include/tour-service.php:98
+msgid "General"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:36
+msgid "Add New Tab"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:42
+msgid "ID"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:46
+#: include/pb/pb-element-tour-category.php:148
+#: include/pb/pb-element-tour-search.php:35 include/pb/pb-element-tour.php:77
+#: include/pb/tour-item.php:283 include/widget/tour-category-widget.php:91
+#: include/widget/tour-search-widget.php:60 include/widget/tour-widget.php:83
+msgid "Title"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:52
+#: include/pb/pb-element-content-navigation.php:93
+msgid "section-1"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:53
+#: include/pb/pb-element-content-navigation.php:94
+msgid "Section 1"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:56
+#: include/pb/pb-element-content-navigation.php:97
+msgid "section-2"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:57
+#: include/pb/pb-element-content-navigation.php:98
+msgid "Section 2"
+msgstr ""
+
+#: include/pb/pb-element-content-navigation.php:68
+#: include/pb/pb-element-tour-category.php:128
+#: include/pb/pb-element-tour-review.php:45
+#: include/pb/pb-element-tour-search.php:92 include/pb/pb-element-tour.php:353
+msgid "Padding Bottom ( Item )"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:24
+#: include/pb/pb-element-tour-category.php:58 include/shortcodes-list.php:65
+#: include/tour-option.php:71 include/widget/tour-category-widget.php:97
+msgid "Tour Category"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:33
+#: include/pb/pb-element-tour-search.php:199 include/pb/pb-element-tour.php:60
+#: include/tour-filter.php:219 include/tour-filter.php:230 single/search.php:43
+msgid "Tag"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:41
+#: include/pb/pb-element-tour-category.php:67
+#: include/pb/pb-element-tour-search.php:42 include/pb/pb-element-tour.php:57
+#: include/pb/pb-element-tour.php:290 include/plugin-option.php:505
+#: include/plugin-option.php:525 include/plugin-option.php:684
+msgid ""
+"You can use Ctrl/Command button to select multiple items or remove the "
+"selected item. Leave this field blank to select all items in the list."
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:55
+msgid "Filter Type"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:59 include/tour-option.php:89
+#: include/widget/tour-category-widget.php:98
+msgid "Tour Tag"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:63
+#: include/pb/pb-element-tour-search.php:193 include/pb/pb-element-tour.php:54
+#: include/tour-filter.php:218 include/tour-filter.php:229
+#: include/widget/tour-widget.php:90
+msgid "Category"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:71 include/pb/pb-element-tour.php:66
+#: include/plugin-option.php:646
+msgid "Num Fetch"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:75 include/pb/pb-element-tour.php:70
+#: include/plugin-option.php:651
+msgid "The number of posts showing on the blog item"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:78 include/pb/pb-element-tour.php:73
+msgid "Order By"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:81 single/user/dashboard.php:15
+msgid "Name"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:82
+msgid "Slug"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:83
+msgid "Term ID"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:90 include/pb/pb-element-tour.php:90
+msgid "Descending Order"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:91 include/pb/pb-element-tour.php:91
+msgid "Ascending Order"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:101
+msgid "Tour Category Style"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:104
+msgid "Grid Style"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:105
+msgid "Grid 2 Style"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:106
+msgid "Widget Style"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:111
+#: include/pb/pb-element-tour.php:225 include/plugin-option.php:639
+#: include/widget/tour-category-widget.php:118
+msgid "Column Size"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:117
+#: include/pb/pb-element-tour.php:232 include/plugin-option.php:654
+#: include/widget/tour-category-widget.php:126
+msgid "Thumbnail Size"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:139
+msgid "Title Align"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:142
+msgid "Left"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:143
+msgid "Center"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:152
+msgid "Caption"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:156
+msgid "Read More Text"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:158
+msgid "Read More"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:162
+msgid "Read More Link"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:167
+msgid "Read More Target"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:170
+msgid "Current Screen"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:171
+msgid "New Window"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:176
+msgid "Title Size"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:181
+msgid "Caption Size"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:186
+msgid "Read More Size"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:192
+msgid "Title Color"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:196
+msgid "Caption Color"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:200
+msgid "Read More Color"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:205
+msgid "Read More Divider Color"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:345
+#, php-format
+msgid "%d tour"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:347
+#, php-format
+msgid "%d tours"
+msgstr ""
+
+#: include/pb/pb-element-tour-category.php:354
+#: include/pb/pb-element-tour-category.php:410
+msgid "View all tours"
+msgstr ""
+
+#: include/pb/pb-element-tour-review.php:24 include/shortcodes-list.php:69
+msgid "Tour Review"
+msgstr ""
+
+#: include/pb/pb-element-tour-review.php:35
+msgid "Num Display"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:24 include/shortcodes-list.php:73
+msgid "Tour Search"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:39
+#: include/widget/tour-search-widget.php:67
+msgid "Select Fields"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:45
+#: include/widget/tour-category-widget.php:137
+msgid "Style"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:48 include/plugin-option.php:531
+msgid "Column"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:49 include/plugin-option.php:532
+msgid "Half"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:50 include/pb/pb-element-tour.php:113
+#: include/plugin-option.php:420 include/plugin-option.php:533
+msgid "Full"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:54
+msgid "Enable Rating"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:60
+msgid "Select Filter"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:64 include/plugin-option.php:518
+#: include/plugin-option.php:956
+msgid ""
+"You can use Ctrl/Command button to select multiple items or remove the "
+"selected item."
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:67
+msgid "Item Frame"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:70
+msgid "Disable"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:71
+msgid "Color Background"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:72
+msgid "Image Background"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:77
+msgid "Frame Background Color"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:82
+msgid "Frame Background Image"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:154
+msgid "Search Results"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:158
+#, php-format
+msgid "%d Results Found"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:177 include/tour-filter.php:217
+#: include/tour-filter.php:228 include/widget/tour-search-widget.php:69
+msgid "Keywords"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:189
+#: include/pb/pb-element-tour-search.php:204
+#: include/pb/pb-element-tour-search.php:217
+#: include/pb/pb-element-tour-search.php:235
+msgid "Any"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:218
+msgid "1 Day Tour"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:219
+msgid "2-4 Days Tour"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:220
+msgid "5-7 Days Tour"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:221
+msgid "7+ Days Tour"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:224 include/pb/pb-element-tour.php:81
+#: include/pb/pb-element-tour.php:281 include/pb/tour-item.php:287
+#: include/plugin-option.php:367 include/plugin-option.php:438
+#: include/plugin-option.php:675 include/tour-filter.php:221
+#: include/tour-filter.php:231 include/widget/tour-search-widget.php:71
+msgid "Duration"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:232 include/tour-filter.php:222
+#: include/tour-filter.php:232 include/tour-option.php:485
+#: include/tour-option.php:708 include/utility.php:190
+#: include/widget/tour-search-widget.php:72 single/tour.php:587
+#: single/user/invoices-single.php:88
+msgid "Date"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:245 include/tour-filter.php:223
+#: include/tour-filter.php:233 include/widget/tour-search-widget.php:73
+msgid "Min Price"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:253 include/tour-filter.php:224
+#: include/tour-filter.php:234 include/widget/tour-search-widget.php:74
+msgid "Max Price"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:273 include/pb/tour-item.php:286
+#: single/tour.php:586
+msgid "Rating"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:293
+msgid "or more"
+msgstr ""
+
+#: include/pb/pb-element-tour-search.php:303
+msgid "Type Filter"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:76
+msgid "Publish Date"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:78
+msgid "Random"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:79
+msgid "Menu Order"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:80 include/pb/tour-item.php:284
+#: include/tour-service.php:101 single/tour.php:197
+msgid "Price"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:82
+msgid "Popularity ( View Count )"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:83
+msgid "Rating ( Score )"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:95
+msgid "Tour Status"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:99
+msgid "Discounted Tour ( tour with discount text filled )"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:103
+msgid "Order Filterer"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:106 include/pb/pb-element-tour.php:157
+msgid ""
+"Filter is not supported and will be automatically disabled on carousel "
+"layout."
+msgstr ""
+
+#: include/pb/pb-element-tour.php:109
+msgid "Order Filterer List Style"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:114 include/plugin-option.php:421
+msgid "Full With Frame"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:115 include/plugin-option.php:422
+msgid "Medium"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:116 include/plugin-option.php:423
+msgid "Medium With Frame"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:117 include/plugin-option.php:424
+#: include/widget/tour-category-widget.php:132
+msgid "Widget"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:123
+msgid "Order Filterer List Style Thumbnail"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:129 include/plugin-option.php:469
+msgid "Order Filterer Grid Style"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:133 include/plugin-option.php:473
+msgid "Modern"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:134 include/plugin-option.php:474
+msgid "Modern No Space"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:135 include/plugin-option.php:475
+msgid "Grid"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:136 include/plugin-option.php:476
+msgid "Grid With Frame"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:137 include/plugin-option.php:477
+msgid "Grid No Space"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:143 include/plugin-option.php:482
+msgid "Order Filterer Grid Style Thumbnail"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:149
+msgid "Category Filterer"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:153
+msgid "Filter Text Style"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:154
+msgid "Filter Button Style"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:160
+msgid "Filterer Alignment"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:167
+msgid "Pagination"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:171
+msgid "Page"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:174
+msgid ""
+"Pagination is not supported and will be automatically disabled on carousel "
+"layout."
+msgstr ""
+
+#: include/pb/pb-element-tour.php:177
+msgid "Pagination Style"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:181
+msgid "Plain"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:182
+msgid "Rectangle"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:183
+msgid "Rectangle Border"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:184
+msgid "Round"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:185
+msgid "Round Border"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:186
+msgid "Circle"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:187
+msgid "Circle Border"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:193
+msgid "Pagination Alignment"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:207 include/plugin-option.php:625
+msgid "Tour Style"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:238
+msgid "Layout"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:241
+msgid "Fit Rows"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:242
+msgid "Carousel"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:243
+msgid "Masonry"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:249
+msgid "Autoslide Carousel"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:255
+msgid "Carousel Navigation"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:259
+msgid "Only Navigation"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:260
+msgid "Only Bullet"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:261
+msgid "Both Navigation and Bullet"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:267 include/plugin-option.php:661
+msgid "Price Display Position"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:270 include/plugin-option.php:664
+msgid "Right Side Of The Title"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:271 include/plugin-option.php:665
+msgid "Bottom Of The Title"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:272 include/plugin-option.php:666
+msgid "As Bottom Bar"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:278 include/plugin-option.php:672
+msgid "Tour Info"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:282 include/plugin-option.php:368
+#: include/plugin-option.php:439 include/plugin-option.php:676
+msgid "Availability"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:283 include/plugin-option.php:369
+#: include/plugin-option.php:440 include/plugin-option.php:677
+#: include/tour-option.php:368
+msgid "Departure Location"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:284 include/plugin-option.php:370
+#: include/plugin-option.php:441 include/plugin-option.php:678
+msgid "Return Location"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:285 include/plugin-option.php:371
+#: include/plugin-option.php:442 include/plugin-option.php:679
+#: include/tour-option.php:378
+msgid "Minimum Age"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:286 include/plugin-option.php:372
+#: include/plugin-option.php:443 include/plugin-option.php:680
+#: include/tour-option.php:391 include/tour-option.php:695
+msgid "Maximum People"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:287 include/plugin-option.php:373
+#: include/plugin-option.php:444 include/plugin-option.php:681
+msgid "Custom Excerpt ( In Tour Option )"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:293 include/plugin-option.php:687
+msgid "Excerpt Type"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:296 include/plugin-option.php:381
+#: include/plugin-option.php:451 include/plugin-option.php:690
+msgid "Specify Number"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:297 include/plugin-option.php:382
+#: include/plugin-option.php:452 include/plugin-option.php:691
+msgid "Show All ( use <!--more--> tag to cut the content )"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:298 include/plugin-option.php:383
+#: include/plugin-option.php:453 include/plugin-option.php:692
+msgid "Disable Exceprt"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:304 include/plugin-option.php:698
+msgid "Excerpt Number"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:310 include/plugin-option.php:704
+msgid "Tour Rating"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:321
+msgid "Tour Title Font Size"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:326
+msgid "Tour Title Font Weight"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:328
+msgid "Eg. lighter, bold, normal, 300, 400, 600, 700, 800"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:331
+msgid "Tour Title Letter Spacing"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:336
+msgid "Tour Title Text Transform"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:340
+msgid "Uppercase"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:341
+msgid "Lowercase"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:342
+msgid "Capitalize"
+msgstr ""
+
+#: include/pb/pb-element-tour.php:359
+msgid "Tour Title Bottom Margin"
+msgstr ""
+
+#: include/pb/tour-item.php:278
+msgid "Sort by"
+msgstr ""
+
+#: include/pb/tour-item.php:282
+msgid "Release Date"
+msgstr ""
+
+#: include/pb/tour-item.php:285
+msgid "Popularity"
+msgstr ""
+
+#: include/pb/tour-item.php:302
+msgid "Ascending"
+msgstr ""
+
+#: include/pb/tour-item.php:303
+msgid "Descending"
+msgstr ""
+
+#: include/pb/tour-item.php:408 include/pb/tour-item.php:467
+msgid "Settings variable is not defined."
+msgstr ""
+
+#: include/pb/tour-style.php:146 include/pb/tour-style.php:155
+#: include/user-util.php:424 single/user/dashboard.php:129
+msgid "Reviews"
+msgstr ""
+
+#: include/pb/tour-style.php:146 include/pb/tour-style.php:155
+msgid "Review"
+msgstr ""
+
+#: include/pb/tour-style.php:191
+msgid "The initial price based on 1 adult with the lowest price in low season"
+msgstr ""
+
+#: include/pb/tour-style.php:232
+msgid "Availability :"
+msgstr ""
+
+#: include/pb/tour-style.php:260
+msgid "Min Age :"
+msgstr ""
+
+#: include/pb/tour-style.php:271
+msgid "Max People :"
+msgstr ""
+
+#: include/pb/tour-style.php:345 include/pb/tour-style.php:385
+msgid "View Details"
+msgstr ""
+
+#: include/plugin-init.php:182
+msgid "Tour Staff"
+msgstr ""
+
+#: include/plugin-init.php:192
+msgid "Tour Author"
+msgstr ""
+
+#: include/plugin-option.php:58 include/plugin-option.php:59
+msgid "Tourmaster"
+msgstr ""
+
+#: include/plugin-option.php:72
+msgid "General Settings"
+msgstr ""
+
+#: include/plugin-option.php:75
+msgid "Container Width"
+msgstr ""
+
+#: include/plugin-option.php:83
+msgid "Container Padding"
+msgstr ""
+
+#: include/plugin-option.php:91
+msgid "Item Padding"
+msgstr ""
+
+#: include/plugin-option.php:101
+msgid "Datepicker Date Format"
+msgstr ""
+
+#: include/plugin-option.php:104
+msgid ""
+"See more details about the date format here. http://api.jqueryui.com/"
+"datepicker/#utility-formatDate"
+msgstr ""
+
+#: include/plugin-option.php:107
+msgid "Enable Tour Schema / Structure data"
+msgstr ""
+
+#: include/plugin-option.php:112
+msgid "Price Currency"
+msgstr ""
+
+#: include/plugin-option.php:115
+msgid "Only use for tour schema / structure data."
+msgstr ""
+
+#: include/plugin-option.php:118
+msgid "Money Format"
+msgstr ""
+
+#: include/plugin-option.php:121
+msgid "Fill the format of your currency before or after the \"NUMBER\" string."
+msgstr ""
+
+#: include/plugin-option.php:124
+msgid "Price Breakdown Decimal Digit"
+msgstr ""
+
+#: include/plugin-option.php:130
+msgid "Tax Rate ( Percent )"
+msgstr ""
+
+#: include/plugin-option.php:133
+msgid "Fill only number ( as percent ) here"
+msgstr ""
+
+#: include/plugin-option.php:139
+msgid "Template Settings"
+msgstr ""
+
+#: include/plugin-option.php:142
+msgid "Login Page"
+msgstr ""
+
+#: include/plugin-option.php:145 include/plugin-option.php:151
+#: include/plugin-option.php:173 include/plugin-option.php:280
+#: include/plugin-option.php:305 include/plugin-option.php:409
+msgid ""
+"Choose the page to use header / footer of that page as template. Select "
+"\"None\" to use homepage settings."
+msgstr ""
+
+#: include/plugin-option.php:148
+msgid "Register Page"
+msgstr ""
+
+#: include/plugin-option.php:154
+msgid "Term Of Service ( Registration ) Page"
+msgstr ""
+
+#: include/plugin-option.php:159
+msgid "Privacy Statement ( Registration ) Page"
+msgstr ""
+
+#: include/plugin-option.php:167 include/plugin-option.php:170
+msgid "User Page"
+msgstr ""
+
+#: include/plugin-option.php:176
+msgid "User Navigation Bottom Text"
+msgstr ""
+
+#: include/plugin-option.php:180
+msgid "User Default Country"
+msgstr ""
+
+#: include/plugin-option.php:188
+msgid "Tour Manager"
+msgstr ""
+
+#: include/plugin-option.php:191
+msgid ""
+"Cancel booking if the payment is not processed within # days (After booking "
+"date)"
+msgstr ""
+
+#: include/plugin-option.php:193
+msgid ""
+"Only number is allowed here. Leave this field blank to omit this option."
+msgstr ""
+
+#: include/plugin-option.php:196
+msgid "Tour Staff Capability"
+msgstr ""
+
+#: include/plugin-option.php:199 include/plugin-option.php:241
+#: include/tour-option.php:26
+msgid "Edit Tour"
+msgstr ""
+
+#: include/plugin-option.php:200 include/plugin-option.php:242
+msgid "Read Tour"
+msgstr ""
+
+#: include/plugin-option.php:201 include/plugin-option.php:243
+msgid "Delete Tour"
+msgstr ""
+
+#: include/plugin-option.php:202 include/plugin-option.php:244
+msgid "Edit Tours"
+msgstr ""
+
+#: include/plugin-option.php:203 include/plugin-option.php:245
+msgid "Edit Others Tours"
+msgstr ""
+
+#: include/plugin-option.php:204 include/plugin-option.php:246
+msgid "Publish Tours"
+msgstr ""
+
+#: include/plugin-option.php:205 include/plugin-option.php:247
+msgid "Read Private Tours"
+msgstr ""
+
+#: include/plugin-option.php:206 include/plugin-option.php:248
+msgid "Manage Tour Category"
+msgstr ""
+
+#: include/plugin-option.php:207 include/plugin-option.php:249
+msgid "Manage Tour Tag"
+msgstr ""
+
+#: include/plugin-option.php:208 include/plugin-option.php:250
+msgid "Manage Tour Filter"
+msgstr ""
+
+#: include/plugin-option.php:209 include/plugin-option.php:251
+#: include/tour-coupon.php:25
+msgid "Edit Coupon"
+msgstr ""
+
+#: include/plugin-option.php:210 include/plugin-option.php:252
+msgid "Read Coupon"
+msgstr ""
+
+#: include/plugin-option.php:211 include/plugin-option.php:253
+msgid "Delete Coupon"
+msgstr ""
+
+#: include/plugin-option.php:212 include/plugin-option.php:254
+msgid "Edit Coupons"
+msgstr ""
+
+#: include/plugin-option.php:213 include/plugin-option.php:255
+msgid "Edit Others Coupons"
+msgstr ""
+
+#: include/plugin-option.php:214 include/plugin-option.php:256
+msgid "Publish Coupons"
+msgstr ""
+
+#: include/plugin-option.php:215 include/plugin-option.php:257
+msgid "Read Private Coupons"
+msgstr ""
+
+#: include/plugin-option.php:216 include/plugin-option.php:224
+#: include/plugin-option.php:258
+msgid "Manage Tour Order"
+msgstr ""
+
+#: include/plugin-option.php:217 include/tour-service.php:25
+msgid "Edit Service"
+msgstr ""
+
+#: include/plugin-option.php:218
+msgid "Read Service"
+msgstr ""
+
+#: include/plugin-option.php:219
+msgid "Delete Service"
+msgstr ""
+
+#: include/plugin-option.php:220
+msgid "Edit Services"
+msgstr ""
+
+#: include/plugin-option.php:221
+msgid "Edit Others Services"
+msgstr ""
+
+#: include/plugin-option.php:222
+msgid "Publish Services"
+msgstr ""
+
+#: include/plugin-option.php:223
+msgid "Read Private Services"
+msgstr ""
+
+#: include/plugin-option.php:238
+msgid "Tour Author Capability"
+msgstr ""
+
+#: include/plugin-option.php:274 include/plugin-option.php:277
+msgid "Payment Page"
+msgstr ""
+
+#: include/plugin-option.php:283
+msgid "Payment Page Sidebar"
+msgstr ""
+
+#: include/plugin-option.php:288
+msgid "Payment Complete Bottom Text"
+msgstr ""
+
+#: include/plugin-option.php:292
+msgid "Enable Booking Via Email ( Without Login )"
+msgstr ""
+
+#: include/plugin-option.php:299
+msgid "Archive Page"
+msgstr ""
+
+#: include/plugin-option.php:302
+msgid "Archive ( Category ) Page"
+msgstr ""
+
+#: include/plugin-option.php:308
+msgid "Archive Tour Sidebar"
+msgstr ""
+
+#: include/plugin-option.php:315
+msgid "Archive Tour Sidebar Left"
+msgstr ""
+
+#: include/plugin-option.php:322
+msgid "Archive Tour Sidebar Right"
+msgstr ""
+
+#: include/plugin-option.php:329
+msgid "Archive Tour Display Amount"
+msgstr ""
+
+#: include/plugin-option.php:334
+msgid "Archive Tour Style"
+msgstr ""
+
+#: include/plugin-option.php:352
+msgid "Archive Column Size"
+msgstr ""
+
+#: include/plugin-option.php:359
+msgid "Archive Thumbnail Size"
+msgstr ""
+
+#: include/plugin-option.php:364
+msgid "Archive Tour Info"
+msgstr ""
+
+#: include/plugin-option.php:378
+msgid "Archive Excerpt Type"
+msgstr ""
+
+#: include/plugin-option.php:389
+msgid "Archive Excerpt Number"
+msgstr ""
+
+#: include/plugin-option.php:395
+msgid "Archive Tour Rating"
+msgstr ""
+
+#: include/plugin-option.php:403 include/plugin-option.php:406
+msgid "Search Page"
+msgstr ""
+
+#: include/plugin-option.php:412
+msgid "Tour Search Display Amount"
+msgstr ""
+
+#: include/plugin-option.php:417
+msgid "Tour Search Item Style"
+msgstr ""
+
+#: include/plugin-option.php:429
+msgid "Tour Search Item Thumbnail"
+msgstr ""
+
+#: include/plugin-option.php:435
+msgid "Tour Search Item Info"
+msgstr ""
+
+#: include/plugin-option.php:448
+msgid "Tour Search Item Excerpt"
+msgstr ""
+
+#: include/plugin-option.php:458
+msgid "Tour Search Item Excerpt Number"
+msgstr ""
+
+#: include/plugin-option.php:464
+msgid "Tour Search Item Rating"
+msgstr ""
+
+#: include/plugin-option.php:489
+msgid "Order Filterer Grid Style Column"
+msgstr ""
+
+#: include/plugin-option.php:496
+msgid "Enable Tour Search Filter"
+msgstr ""
+
+#: include/plugin-option.php:501
+msgid "Search Filter Fields"
+msgstr ""
+
+#: include/plugin-option.php:508
+msgid "Enable Search Filter Rating"
+msgstr ""
+
+#: include/plugin-option.php:514
+msgid "Select Search Custom Filter"
+msgstr ""
+
+#: include/plugin-option.php:521
+msgid "Search Not Found Fields"
+msgstr ""
+
+#: include/plugin-option.php:528
+msgid "Search Not Found Style"
+msgstr ""
+
+#: include/plugin-option.php:541
+msgid "Invoice Settings"
+msgstr ""
+
+#: include/plugin-option.php:544
+msgid "Invoice Logo"
+msgstr ""
+
+#: include/plugin-option.php:548
+msgid "Invoice Logo Width"
+msgstr ""
+
+#: include/plugin-option.php:556
+msgid "Invoice Company Name"
+msgstr ""
+
+#: include/plugin-option.php:558
+msgid "Company Name"
+msgstr ""
+
+#: include/plugin-option.php:561
+msgid "Invoice Company Info"
+msgstr ""
+
+#: include/plugin-option.php:567
+msgid "Single Tour"
+msgstr ""
+
+#: include/plugin-option.php:570
+msgid "Tour Header Top Padding"
+msgstr ""
+
+#: include/plugin-option.php:579
+msgid "Tour Header Bottom Padding"
+msgstr ""
+
+#: include/plugin-option.php:588
+msgid "Tour Header Overlay Opacity"
+msgstr ""
+
+#: include/plugin-option.php:595
+msgid "Show Remaining Available Number"
+msgstr ""
+
+#: include/plugin-option.php:600
+msgid "Max Dropdown People Amount"
+msgstr ""
+
+#: include/plugin-option.php:605
+msgid "Max Dropdown Room Amount"
+msgstr ""
+
+#: include/plugin-option.php:610
+msgid "Single Tour Default Sidebar ( Widget )"
+msgstr ""
+
+#: include/plugin-option.php:615
+msgid "Enable Single Sidebar Widget On Mobile"
+msgstr ""
+
+#: include/plugin-option.php:620
+msgid "Enable Single Related Tour"
+msgstr ""
+
+#: include/plugin-option.php:712
+msgid "E-Mail Settings"
+msgstr ""
+
+#: include/plugin-option.php:715
+msgid "System Name ( For E-mail Sending )"
+msgstr ""
+
+#: include/plugin-option.php:720
+msgid "System E-Mail Address"
+msgstr ""
+
+#: include/plugin-option.php:724
+msgid "Admin E-Mail Address"
+msgstr ""
+
+#: include/plugin-option.php:726
+msgid ""
+"Fill the admin email here to submit the notification upon completing some "
+"neccessary process."
+msgstr ""
+
+#: include/plugin-option.php:729
+msgid "E-Mail Header Logo"
+msgstr ""
+
+#: include/plugin-option.php:733
+msgid "E-Mail Footer Left"
+msgstr ""
+
+#: include/plugin-option.php:737
+msgid "E-Mail Footer Right"
+msgstr ""
+
+#: include/plugin-option.php:743
+msgid "Admin E-Mail Content"
+msgstr ""
+
+#: include/plugin-option.php:746
+msgid "Enable Admin Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:750
+msgid "Admin Booking Made E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:755
+msgid "Admin Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:761
+msgid "Enable Admin Guest Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:765
+msgid "Admin Guest Booking Made E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:771
+msgid "Admin Guest Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:778
+msgid "Enable Payment Submitted E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:782
+msgid "Admin Payment Submitted E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:787
+msgid "Admin Payment Submitted E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:793
+msgid "Enable Online Payment Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:797
+msgid "Online Payment Made E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:802
+msgid "Online Payment Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:810
+msgid "Customer E-Mail Content"
+msgstr ""
+
+#: include/plugin-option.php:813
+msgid "Enable Registration Complete E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:817
+msgid "Registration Complete E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:822
+msgid "Registration Complete E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:828
+msgid "Enable Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:832
+msgid "Booking Made E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:837
+msgid "Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:843
+msgid "Enable Guest Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:847
+msgid "Guest Booking Made E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:853
+msgid "Guest Booking Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:860
+msgid "Enable Payment Made E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:864
+msgid "Payment Made E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:869
+msgid "Payment E-Made Mail"
+msgstr ""
+
+#: include/plugin-option.php:875
+msgid "Enable Booking Cancelled E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:879
+msgid "Booking Cancelled E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:884
+msgid "Booking Cancelled E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:890
+msgid "Enable Booking Reject E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:894
+msgid "Booking Reject E-Mail Title"
+msgstr ""
+
+#: include/plugin-option.php:899
+msgid "Booking Reject E-Mail"
+msgstr ""
+
+#: include/plugin-option.php:908
+msgid "Enquiry E-Mail Content"
+msgstr ""
+
+#: include/plugin-option.php:911
+msgid "Enquiry E-Mail Title ( Admin )"
+msgstr ""
+
+#: include/plugin-option.php:916
+msgid "Enquiry Mail Content ( Admin )"
+msgstr ""
+
+#: include/plugin-option.php:922
+msgid "Enquiry E-Mail Title ( Customer )"
+msgstr ""
+
+#: include/plugin-option.php:924
+msgid "You have submitted an enquiry"
+msgstr ""
+
+#: include/plugin-option.php:927
+msgid "Enquiry Mail Content ( Customter )"
+msgstr ""
+
+#: include/plugin-option.php:940 single/payment.php:80
+msgid "Payment"
+msgstr ""
+
+#: include/plugin-option.php:945
+msgid "Payment Settings"
+msgstr ""
+
+#: include/plugin-option.php:951
+msgid "Booking"
+msgstr ""
+
+#: include/plugin-option.php:959
+msgid "Enable Deposit Payment"
+msgstr ""
+
+#: include/plugin-option.php:964
+msgid "Deposit Payment Amount (%)"
+msgstr ""
+
+#: include/plugin-option.php:968 include/plugin-option.php:975
+msgid "Only fill number here"
+msgstr ""
+
+#: include/plugin-option.php:971
+msgid "Disable Deposit Payment # Days Before The Start Date"
+msgstr ""
+
+#: include/plugin-option.php:978
+msgid "Credit Card Payment Gateway"
+msgstr ""
+
+#: include/plugin-option.php:983
+msgid "Accepted Credit Card Type"
+msgstr ""
+
+#: include/plugin-option.php:986
+msgid "visa"
+msgstr ""
+
+#: include/plugin-option.php:987
+msgid "Master Card"
+msgstr ""
+
+#: include/plugin-option.php:988
+msgid "American Express"
+msgstr ""
+
+#: include/plugin-option.php:989
+msgid "JCB"
+msgstr ""
+
+#: include/plugin-option.php:992
+msgid "Only display images below credit card option."
+msgstr ""
+
+#: include/plugin-option.php:995
+msgid "Term Of Service Page"
+msgstr ""
+
+#: include/plugin-option.php:1000
+msgid "Privacy Statement Page"
+msgstr ""
+
+#: include/plugin-option.php:1011 include/plugin-option.php:1943
+msgid "Color"
+msgstr ""
+
+#: include/plugin-option.php:1017
+msgid "Tourmaster General"
+msgstr ""
+
+#: include/plugin-option.php:1020
+msgid "Tourmaster Theme Color"
+msgstr ""
+
+#: include/plugin-option.php:1058
+msgid "Tourmaster Theme Color Link"
+msgstr ""
+
+#: include/plugin-option.php:1079
+msgid "Tourmaster Theme Color Light"
+msgstr ""
+
+#: include/plugin-option.php:1116
+msgid "Single Price Head Background"
+msgstr ""
+
+#: include/plugin-option.php:1132
+msgid "Single Price Head Background Right Gradient"
+msgstr ""
+
+#: include/plugin-option.php:1137
+msgid "Single Price Head Featured Background"
+msgstr ""
+
+#: include/plugin-option.php:1149
+msgid "Single Price Head Discount Text"
+msgstr ""
+
+#: include/plugin-option.php:1157
+msgid "Remove/Error Color"
+msgstr ""
+
+#: include/plugin-option.php:1166
+msgid "Rating Color"
+msgstr ""
+
+#: include/plugin-option.php:1177
+msgid "Tourmaster User Template"
+msgstr ""
+
+#: include/plugin-option.php:1180
+msgid "User Login Submenu Background"
+msgstr ""
+
+#: include/plugin-option.php:1186
+msgid "User Login Submenu Border"
+msgstr ""
+
+#: include/plugin-option.php:1192
+msgid "User Login Submenu Text"
+msgstr ""
+
+#: include/plugin-option.php:1198
+msgid "User Template Background"
+msgstr ""
+
+#: include/plugin-option.php:1204
+msgid "User Template Navigation Background"
+msgstr ""
+
+#: include/plugin-option.php:1210
+msgid "User Template Navigation Title"
+msgstr ""
+
+#: include/plugin-option.php:1216
+msgid "User Template Navigation Text"
+msgstr ""
+
+#: include/plugin-option.php:1222
+msgid "User Template Navigation Border"
+msgstr ""
+
+#: include/plugin-option.php:1228
+msgid "User Template Bread Crumbs Text"
+msgstr ""
+
+#: include/plugin-option.php:1234
+msgid "User Template Content Block Background"
+msgstr ""
+
+#: include/plugin-option.php:1240
+msgid "User Template Content Block Title Link"
+msgstr ""
+
+#: include/plugin-option.php:1246
+msgid "User Template Content Block Border"
+msgstr ""
+
+#: include/plugin-option.php:1253
+msgid "User Template Content Block Text"
+msgstr ""
+
+#: include/plugin-option.php:1261 include/plugin-option.php:1267
+msgid "User Template My Booking Price Text"
+msgstr ""
+
+#: include/plugin-option.php:1275
+msgid "Tourmaster User Template 2"
+msgstr ""
+
+#: include/plugin-option.php:1278
+msgid "Booking Status Text Color"
+msgstr ""
+
+#: include/plugin-option.php:1284
+msgid "Booking Status Pending Color"
+msgstr ""
+
+#: include/plugin-option.php:1290
+msgid "Booking Status Online Paid"
+msgstr ""
+
+#: include/plugin-option.php:1296
+msgid "Booking Status Deposit Paid"
+msgstr ""
+
+#: include/plugin-option.php:1302
+msgid "Submit Receipt Button Background"
+msgstr ""
+
+#: include/plugin-option.php:1309
+msgid "Make Payment Button Background"
+msgstr ""
+
+#: include/plugin-option.php:1316
+msgid "Invoice Title Color"
+msgstr ""
+
+#: include/plugin-option.php:1322
+msgid "Invoice Price Header Background"
+msgstr ""
+
+#: include/plugin-option.php:1328
+msgid "Invoice Price Header Text"
+msgstr ""
+
+#: include/plugin-option.php:1334
+msgid "Invoice Price Text"
+msgstr ""
+
+#: include/plugin-option.php:1340
+msgid "Invoice Price Amount"
+msgstr ""
+
+#: include/plugin-option.php:1348
+msgid "Tourmaster Input"
+msgstr ""
+
+#: include/plugin-option.php:1351
+msgid "Input Form Label"
+msgstr ""
+
+#: include/plugin-option.php:1361
+msgid "Input Box Text"
+msgstr ""
+
+#: include/plugin-option.php:1371
+msgid "Input Box Background"
+msgstr ""
+
+#: include/plugin-option.php:1380
+msgid "Input Box Background Validate Error"
+msgstr ""
+
+#: include/plugin-option.php:1395
+msgid "Input Box Border"
+msgstr ""
+
+#: include/plugin-option.php:1404
+msgid "Upload Box Background"
+msgstr ""
+
+#: include/plugin-option.php:1410
+msgid "Upload Box Text Color"
+msgstr ""
+
+#: include/plugin-option.php:1416
+msgid "Datepicker Background"
+msgstr ""
+
+#: include/plugin-option.php:1422
+msgid "Datepicker Border"
+msgstr ""
+
+#: include/plugin-option.php:1428
+msgid "Datepicker Head"
+msgstr ""
+
+#: include/plugin-option.php:1434
+msgid "Datepicker Enable Background"
+msgstr ""
+
+#: include/plugin-option.php:1440
+msgid "Datepicker Enable Text"
+msgstr ""
+
+#: include/plugin-option.php:1446
+msgid "Datepicker Disable Text"
+msgstr ""
+
+#: include/plugin-option.php:1457
+msgid "Tourmaster Booking Bar"
+msgstr ""
+
+#: include/plugin-option.php:1460
+msgid "Booking Bar Background"
+msgstr ""
+
+#: include/plugin-option.php:1466
+msgid "Booking Bar Text"
+msgstr ""
+
+#: include/plugin-option.php:1475
+msgid "Single Booking Bar Wishlist Background"
+msgstr ""
+
+#: include/plugin-option.php:1481
+msgid "Single Booking Bar Wishlist Border"
+msgstr ""
+
+#: include/plugin-option.php:1488
+msgid "Booking Bar Summary Title"
+msgstr ""
+
+#: include/plugin-option.php:1494
+msgid "Booking Bar Summary Text"
+msgstr ""
+
+#: include/plugin-option.php:1501
+msgid "Booking Bar Price Breakdown Color"
+msgstr ""
+
+#: include/plugin-option.php:1507
+msgid "Booking Bar Price Breakdown Total Color"
+msgstr ""
+
+#: include/plugin-option.php:1513
+msgid "Booking Bar Price Breakdown Total Color ( Deposit )"
+msgstr ""
+
+#: include/plugin-option.php:1524
+msgid "Tourmaster Payment"
+msgstr ""
+
+#: include/plugin-option.php:1527
+msgid "Service Form Background ( Payment )"
+msgstr ""
+
+#: include/plugin-option.php:1533
+msgid "Service Form Title ( Payment )"
+msgstr ""
+
+#: include/plugin-option.php:1539
+msgid "Service Form Title Border ( Payment )"
+msgstr ""
+
+#: include/plugin-option.php:1545
+msgid "Service Form Label ( Payment )"
+msgstr ""
+
+#: include/plugin-option.php:1553
+msgid "Tourmaster Single"
+msgstr ""
+
+#: include/plugin-option.php:1556
+msgid "Search/Archive Page Background"
+msgstr ""
+
+#: include/plugin-option.php:1562
+msgid "Search Not Found Background"
+msgstr ""
+
+#: include/plugin-option.php:1568
+msgid "Search Not Found Title"
+msgstr ""
+
+#: include/plugin-option.php:1574
+msgid "Search Not Found Caption"
+msgstr ""
+
+#: include/plugin-option.php:1580
+msgid "Single Tour Info Background"
+msgstr ""
+
+#: include/plugin-option.php:1586
+msgid "Single Tour Info Text"
+msgstr ""
+
+#: include/plugin-option.php:1592
+msgid "Single Review Title Color"
+msgstr ""
+
+#: include/plugin-option.php:1601
+msgid "Single Review Date Color"
+msgstr ""
+
+#: include/plugin-option.php:1607
+msgid "Payment Complete Background"
+msgstr ""
+
+#: include/plugin-option.php:1613
+msgid "Payment Complete Title Color"
+msgstr ""
+
+#: include/plugin-option.php:1621
+msgid "Payment Complete Border Color"
+msgstr ""
+
+#: include/plugin-option.php:1629
+msgid "Pagination Text Color ( Review )"
+msgstr ""
+
+#: include/plugin-option.php:1635
+msgid "Pagination Background Color ( Review )"
+msgstr ""
+
+#: include/plugin-option.php:1642
+msgid "Payment Step Icon Background"
+msgstr ""
+
+#: include/plugin-option.php:1650
+msgid "Tourmaster Single 2"
+msgstr ""
+
+#: include/plugin-option.php:1653
+msgid "Booking Bar Tab Title Background"
+msgstr ""
+
+#: include/plugin-option.php:1659
+msgid "Booking Bar Tab Title Text"
+msgstr ""
+
+#: include/plugin-option.php:1665
+msgid "Booking Bar Tab Active Title Text"
+msgstr ""
+
+#: include/plugin-option.php:1671
+msgid "Enquery Form Success Message Background"
+msgstr ""
+
+#: include/plugin-option.php:1677
+msgid "Enquery Form Success Message Border"
+msgstr ""
+
+#: include/plugin-option.php:1683
+msgid "Enquery Form Success Message Text"
+msgstr ""
+
+#: include/plugin-option.php:1689
+msgid "Enquery Form Failed Message Background"
+msgstr ""
+
+#: include/plugin-option.php:1695
+msgid "Enquery Form Failed Message Border"
+msgstr ""
+
+#: include/plugin-option.php:1701
+msgid "Enquery Form Failed Message Text"
+msgstr ""
+
+#: include/plugin-option.php:1707
+msgid "Urgency Message Background"
+msgstr ""
+
+#: include/plugin-option.php:1713
+msgid "Urgency Message Text"
+msgstr ""
+
+#: include/plugin-option.php:1721
+msgid "Tour Item"
+msgstr ""
+
+#: include/plugin-option.php:1724
+msgid "Tour Item Title Color"
+msgstr ""
+
+#: include/plugin-option.php:1730
+msgid "Tour Item Order Filterer Background"
+msgstr ""
+
+#: include/plugin-option.php:1736
+msgid "Tour Item Order Filterer Combobox Background"
+msgstr ""
+
+#: include/plugin-option.php:1742
+msgid "Tour Item Order Filterer Icon"
+msgstr ""
+
+#: include/plugin-option.php:1748
+msgid "Tour Item Frame Background"
+msgstr ""
+
+#: include/plugin-option.php:1755
+msgid "Tour Price"
+msgstr ""
+
+#: include/plugin-option.php:1761
+msgid "Tour Discount Price"
+msgstr ""
+
+#: include/plugin-option.php:1768
+msgid "Tour Grid Bottom Price Background"
+msgstr ""
+
+#: include/plugin-option.php:1774
+msgid "Tour Grid Bottom Price Head"
+msgstr ""
+
+#: include/plugin-option.php:1780
+msgid "Tour Grid Bottom Discount Price"
+msgstr ""
+
+#: include/plugin-option.php:1788
+msgid "Lightbox Background"
+msgstr ""
+
+#: include/plugin-option.php:1794
+msgid "Lightbox Title"
+msgstr ""
+
+#: include/plugin-option.php:1802
+msgid "Lightbox Form Label"
+msgstr ""
+
+#: include/plugin-option.php:1812
+msgid "Tour Review Item Title"
+msgstr ""
+
+#: include/plugin-option.php:1818
+msgid "Tour Review Item User Name"
+msgstr ""
+
+#: include/plugin-option.php:1825
+msgid "Content Navigation Item Background"
+msgstr ""
+
+#: include/plugin-option.php:1831
+msgid "Content Navigation Item Text"
+msgstr ""
+
+#: include/plugin-option.php:1837
+msgid "Content Navigation Item Active Text"
+msgstr ""
+
+#: include/plugin-option.php:1846
+msgid "Tour Search Item"
+msgstr ""
+
+#: include/plugin-option.php:1849
+msgid "Search Input Background"
+msgstr ""
+
+#: include/plugin-option.php:1855
+msgid "Search Input Border"
+msgstr ""
+
+#: include/plugin-option.php:1861
+msgid "Search Input Title"
+msgstr ""
+
+#: include/plugin-option.php:1867
+msgid "Search Input Label"
+msgstr ""
+
+#: include/plugin-option.php:1873
+msgid "Search Input Text"
+msgstr ""
+
+#: include/plugin-option.php:1883
+msgid "Search Input Icon"
+msgstr ""
+
+#: include/plugin-option.php:1889
+msgid "Tour Search Item Frame Backrgound"
+msgstr ""
+
+#: include/plugin-option.php:1895
+msgid "Tour Search Filter Text"
+msgstr ""
+
+#: include/plugin-option.php:1907
+msgid "Miscalleneous"
+msgstr ""
+
+#: include/plugin-option.php:1913
+msgid "Plugins"
+msgstr ""
+
+#: include/plugin-option.php:1917
+msgid "Font Awesome"
+msgstr ""
+
+#: include/plugin-option.php:1920
+msgid "Disable this if the \"Font Awesome\" is already included on your site."
+msgstr ""
+
+#: include/plugin-option.php:1923
+msgid "Elegant Icon"
+msgstr ""
+
+#: include/plugin-option.php:1926
+msgid "Disable this if the \"Elegant Icon\" is already included on your site."
+msgstr ""
+
+#: include/plugin-option.php:1933
+msgid "Import / Export"
+msgstr ""
+
+#: include/plugin-option.php:1937
+msgid "Export Option"
+msgstr ""
+
+#: include/plugin-option.php:1941
+msgid "All Options (general/color/miscellaneous)"
+msgstr ""
+
+#: include/plugin-option.php:1944
+msgid "Miscellaneous"
+msgstr ""
+
+#: include/plugin-option.php:1949
+msgid "Import Option"
+msgstr ""
+
+#: include/review-util.php:86
+msgid "Solo Traveller"
+msgstr ""
+
+#: include/review-util.php:88
+msgid "Couple Traveller"
+msgstr ""
+
+#: include/review-util.php:90
+msgid "Family Traveller"
+msgstr ""
+
+#: include/review-util.php:92
+msgid "Group Traveller"
+msgstr ""
+
+#: include/review-util.php:106
+msgid "Edit"
+msgstr ""
+
+#: include/review-util.php:153
+msgid "Reviewer Name"
+msgstr ""
+
+#: include/review-util.php:157
+msgid "Reviewer Email (For Gravatar Profile Picture)"
+msgstr ""
+
+#: include/review-util.php:164 include/review-util.php:245
+msgid "Tour Name :"
+msgstr ""
+
+#: include/review-util.php:169 include/review-util.php:250
+msgid "What do you say about this tour? *"
+msgstr ""
+
+#: include/review-util.php:173 include/review-util.php:256
+msgid "Which traveller type were you on this tour? *"
+msgstr ""
+
+#: include/review-util.php:176 include/review-util.php:259 single/tour.php:593
+msgid "Solo"
+msgstr ""
+
+#: include/review-util.php:177 include/review-util.php:260 single/tour.php:594
+msgid "Couple"
+msgstr ""
+
+#: include/review-util.php:178 include/review-util.php:261 single/tour.php:595
+msgid "Family"
+msgstr ""
+
+#: include/review-util.php:184 include/review-util.php:269
+msgid "Rate this tour *"
+msgstr ""
+
+#: include/review-util.php:211
+msgid "Published Date"
+msgstr ""
+
+#: include/review-util.php:225 include/review-util.php:230
+#: single/user/dashboard.php:148 single/user/reviews.php:32
+msgid "Submit Review"
+msgstr ""
+
+#: include/shortcodes-list.php:57
+msgid "Login Bar"
+msgstr ""
+
+#: include/shortcodes.php:21
+msgid "Quick Search"
+msgstr ""
+
+#: include/stripe/stripe.php:12 include/stripe/stripe.php:23
+msgid "Stripe"
+msgstr ""
+
+#: include/stripe/stripe.php:26
+msgid "Stripe Secret Key"
+msgstr ""
+
+#: include/stripe/stripe.php:30
+msgid "Stripe Publishable Key"
+msgstr ""
+
+#: include/stripe/stripe.php:34
+msgid "Stripe Currency Code"
+msgstr ""
+
+#: include/tour-coupon.php:18 include/tour-coupon.php:19
+#: include/tour-coupon.php:20 include/tour-coupon.php:21
+msgid "Tour Coupon"
+msgstr ""
+
+#: include/tour-coupon.php:22 include/tour-option.php:23
+#: include/tour-service.php:22
+msgid "Add New"
+msgstr ""
+
+#: include/tour-coupon.php:23
+msgid "Add New Coupon"
+msgstr ""
+
+#: include/tour-coupon.php:24
+msgid "New Coupon"
+msgstr ""
+
+#: include/tour-coupon.php:26
+msgid "View Coupon"
+msgstr ""
+
+#: include/tour-coupon.php:27
+msgid "All Coupon"
+msgstr ""
+
+#: include/tour-coupon.php:28
+msgid "Search Coupon"
+msgstr ""
+
+#: include/tour-coupon.php:29
+msgid "Parent Coupon:"
+msgstr ""
+
+#: include/tour-coupon.php:30
+msgid "No coupon found."
+msgstr ""
+
+#: include/tour-coupon.php:31
+msgid "No coupon found in Trash."
+msgstr ""
+
+#: include/tour-coupon.php:35 include/tour-option.php:36
+#: include/tour-service.php:35
+msgid "Description."
+msgstr ""
+
+#: include/tour-coupon.php:92
+msgid "Coupon Settings"
+msgstr ""
+
+#: include/tour-coupon.php:106
+msgid "Coupon Amount"
+msgstr ""
+
+#: include/tour-coupon.php:108
+msgid ""
+"Number of coupon available for uses. Leave this field blank for unlimited "
+"use."
+msgstr ""
+
+#: include/tour-coupon.php:111
+msgid "Coupon Expiry"
+msgstr ""
+
+#: include/tour-coupon.php:115
+msgid "Coupon Discount Type"
+msgstr ""
+
+#: include/tour-coupon.php:118
+msgid "Percent"
+msgstr ""
+
+#: include/tour-coupon.php:119
+msgid "Amount"
+msgstr ""
+
+#: include/tour-coupon.php:123
+msgid "Coupon Discount Amount"
+msgstr ""
+
+#: include/tour-coupon.php:125 include/tour-service.php:103
+msgid "Only number is allowed here"
+msgstr ""
+
+#: include/tour-coupon.php:128
+msgid "Apply Coupon To Only Specific Tour"
+msgstr ""
+
+#: include/tour-coupon.php:130
+msgid "Fill tour ID separated by comma"
+msgstr ""
+
+#: include/tour-filter.php:36 include/tour-option.php:109
+#: include/tour-option.php:118
+msgid "Thumbnail"
+msgstr ""
+
+#: include/tour-filter.php:51 include/tour-filter.php:52
+msgid "Add New Filter"
+msgstr ""
+
+#: include/tour-filter.php:117
+msgid "Taxonomy Slug"
+msgstr ""
+
+#: include/tour-filter.php:118
+msgid "Taxonomy Name"
+msgstr ""
+
+#: include/tour-filter.php:119
+msgid "Hierarchical"
+msgstr ""
+
+#: include/tour-filter.php:129
+msgid "The filter you selected will be permanently removed from the system."
+msgstr ""
+
+#: include/tour-filter.php:157
+msgid "Custom Filter Slug :"
+msgstr ""
+
+#: include/tour-filter.php:160
+msgid ""
+"Please only use lowercase English character and hypen with no spaces. ( \"a "
+"to z\" \"-\" \"_\")"
+msgstr ""
+
+#: include/tour-filter.php:165
+msgid "Custom Filter Label :"
+msgstr ""
+
+#: include/tour-filter.php:170
+msgid "Custom Filter Hierarchical :"
+msgstr ""
+
+#: include/tour-filter.php:173
+msgid ""
+"Enable this option to make custom filter behave like \"post category\". "
+"Otherwise, it will be similar to \"post tag\""
+msgstr ""
+
+#: include/tour-filter.php:178
+msgid "Create"
+msgstr ""
+
+#: include/tour-option.php:24
+msgid "Add New Tour"
+msgstr ""
+
+#: include/tour-option.php:25
+msgid "New Tour"
+msgstr ""
+
+#: include/tour-option.php:27
+msgid "View Tour"
+msgstr ""
+
+#: include/tour-option.php:28
+msgid "All Tour"
+msgstr ""
+
+#: include/tour-option.php:29
+msgid "Search Tour"
+msgstr ""
+
+#: include/tour-option.php:30
+msgid "Parent Tour:"
+msgstr ""
+
+#: include/tour-option.php:31
+msgid "No tour found."
+msgstr ""
+
+#: include/tour-option.php:32
+msgid "No tour found in Trash."
+msgstr ""
+
+#: include/tour-option.php:166
+msgid "Feature Image"
+msgstr ""
+
+#: include/tour-option.php:167
+msgid "Custom Image"
+msgstr ""
+
+#: include/tour-option.php:168
+msgid "Slider"
+msgstr ""
+
+#: include/tour-option.php:169 single/tour.php:164
+msgid "Gallery"
+msgstr ""
+
+#: include/tour-option.php:170
+msgid "Video ( Youtube & Vimeo )"
+msgstr ""
+
+#: include/tour-option.php:171
+msgid "Html5 Video"
+msgstr ""
+
+#: include/tour-option.php:180 include/tour-option.php:295
+msgid "Tour Settings"
+msgstr ""
+
+#: include/tour-option.php:189
+msgid "Header Background"
+msgstr ""
+
+#: include/tour-option.php:194
+msgid "Header Custom Image"
+msgstr ""
+
+#: include/tour-option.php:199
+msgid "Header Top Padding"
+msgstr ""
+
+#: include/tour-option.php:203 include/tour-option.php:210
+msgid "Leaving this field blank to use default value from tourmaster option"
+msgstr ""
+
+#: include/tour-option.php:206
+msgid "Header Bottom Padding"
+msgstr ""
+
+#: include/tour-option.php:213
+msgid "Title Background Overlay Opacity"
+msgstr ""
+
+#: include/tour-option.php:215
+msgid "Fill the number between 0 - 1 ( Leave Blank For Default Value )"
+msgstr ""
+
+#: include/tour-option.php:218
+msgid "Slider Images"
+msgstr ""
+
+#: include/tour-option.php:225
+msgid "Slider Images Thumbnail Size"
+msgstr ""
+
+#: include/tour-option.php:231
+msgid "Background Video URL"
+msgstr ""
+
+#: include/tour-option.php:236
+msgid "Background Video URL (MP4)"
+msgstr ""
+
+#: include/tour-option.php:241
+msgid "Background Video URL (WEBM)"
+msgstr ""
+
+#: include/tour-option.php:246
+msgid "Background Video URL (ogg)"
+msgstr ""
+
+#: include/tour-option.php:251
+msgid "Background Image Fallback"
+msgstr ""
+
+#: include/tour-option.php:254
+msgid ""
+"This background will be showing up when the device you're using cannot "
+"render the video as background ( eg. mobile device )"
+msgstr ""
+
+#: include/tour-option.php:258
+msgid "Show Wordpress Editor Content"
+msgstr ""
+
+#: include/tour-option.php:264
+msgid "Enable Header Review Number"
+msgstr ""
+
+#: include/tour-option.php:269
+msgid "Promo Text"
+msgstr ""
+
+#: include/tour-option.php:273
+msgid "Promo Text Ribbon Text Color"
+msgstr ""
+
+#: include/tour-option.php:278
+msgid "Promo Text Ribbon Background"
+msgstr ""
+
+#: include/tour-option.php:284
+msgid "Sidebar Widget"
+msgstr ""
+
+#: include/tour-option.php:298
+msgid "Form Settings"
+msgstr ""
+
+#: include/tour-option.php:301
+msgid "Only Booking Form"
+msgstr ""
+
+#: include/tour-option.php:302
+msgid "Only Enquiry Form"
+msgstr ""
+
+#: include/tour-option.php:303
+msgid "Both Booking & Enquiry Form"
+msgstr ""
+
+#: include/tour-option.php:308
+msgid "Show Header Price"
+msgstr ""
+
+#: include/tour-option.php:314
+msgid "Date Selection Type"
+msgstr ""
+
+#: include/tour-option.php:317
+msgid "Calendar"
+msgstr ""
+
+#: include/tour-option.php:318
+msgid "Date List"
+msgstr ""
+
+#: include/tour-option.php:323
+msgid "Last Minute Booking (Hour)"
+msgstr ""
+
+#: include/tour-option.php:326
+msgid ""
+"Specify the number of hours prior to the travel time you want to close the "
+"booking system."
+msgstr ""
+
+#: include/tour-option.php:329
+msgid "Book In Advance (Month)"
+msgstr ""
+
+#: include/tour-option.php:333
+msgid ""
+"For example, If you fill the number \"10\" (for ten months) and today is in "
+"March 2019, customers will have an ability to book the tour from today until "
+"Jan 2020 (ten months from current month). Leave this field blank for "
+"unlimited booking in advanced."
+msgstr ""
+
+#: include/tour-option.php:336
+msgid "Tour Price Text"
+msgstr ""
+
+#: include/tour-option.php:338 include/tour-option.php:343
+msgid ""
+"Use for search function and displaying as tour information. Only fill number "
+"here."
+msgstr ""
+
+#: include/tour-option.php:341
+msgid "Tour Price Discount Text"
+msgstr ""
+
+#: include/tour-option.php:346
+msgid "Duration Text"
+msgstr ""
+
+#: include/tour-option.php:348 include/tour-option.php:365
+#: include/tour-option.php:370 include/tour-option.php:375
+#: include/tour-option.php:380
+msgid "Only for displaying as tour information."
+msgstr ""
+
+#: include/tour-option.php:351
+msgid "Duration (Days)"
+msgstr ""
+
+#: include/tour-option.php:354
+msgid "Ex. Fill \"3\" for three days (Only Number is Allowed)"
+msgstr ""
+
+#: include/tour-option.php:363
+msgid "Date Range (Availability)"
+msgstr ""
+
+#: include/tour-option.php:373
+msgid "Destination Location"
+msgstr ""
+
+#: include/tour-option.php:384
+msgid "Minimum People Per Booking"
+msgstr ""
+
+#: include/tour-option.php:398
+msgid "Display Single Tour Info"
+msgstr ""
+
+#: include/tour-option.php:403
+msgid "Require Each Traveller's Info"
+msgstr ""
+
+#: include/tour-option.php:410
+msgid "Require Traveller's Title (Mr/Mrs)"
+msgstr ""
+
+#: include/tour-option.php:416
+msgid "Require Traveller's Passport"
+msgstr ""
+
+#: include/tour-option.php:422 include/tour-service.php:18
+#: include/tour-service.php:19 include/tour-service.php:20
+#: include/tour-service.php:21
+msgid "Tour Service"
+msgstr ""
+
+#: include/tour-option.php:434
+msgid "Custom Excerpt"
+msgstr ""
+
+#: include/tour-option.php:438
+msgid "Link Proceed Booking Button To External URL"
+msgstr ""
+
+#: include/tour-option.php:441
+msgid "This option will ignore all booking variables."
+msgstr ""
+
+#: include/tour-option.php:444
+msgid "External URL Text"
+msgstr ""
+
+#: include/tour-option.php:447
+msgid "Only works with external url."
+msgstr ""
+
+#: include/tour-option.php:453
+msgid "Date & Price"
+msgstr ""
+
+#: include/tour-option.php:457
+msgid "1. Select Tour Type"
+msgstr ""
+
+#: include/tour-option.php:469
+msgid "2. Select Timing Method"
+msgstr ""
+
+#: include/tour-option.php:480
+msgid "Add Date & Price"
+msgstr ""
+
+#: include/tour-option.php:493
+msgid "Mon"
+msgstr ""
+
+#: include/tour-option.php:494
+msgid "Tue"
+msgstr ""
+
+#: include/tour-option.php:495
+msgid "Wed"
+msgstr ""
+
+#: include/tour-option.php:496
+msgid "Thu"
+msgstr ""
+
+#: include/tour-option.php:497
+msgid "Fri"
+msgstr ""
+
+#: include/tour-option.php:498
+msgid "Sat"
+msgstr ""
+
+#: include/tour-option.php:499
+msgid "Sun"
+msgstr ""
+
+#: include/tour-option.php:500 include/tour-option.php:520
+msgid "Select All"
+msgstr ""
+
+#: include/tour-option.php:501 include/tour-option.php:521
+msgid "Deselect All"
+msgstr ""
+
+#: include/tour-option.php:505 include/utility.php:200
+msgid "Month"
+msgstr ""
+
+#: include/tour-option.php:508
+msgid "Jan"
+msgstr ""
+
+#: include/tour-option.php:509
+msgid "Feb"
+msgstr ""
+
+#: include/tour-option.php:510
+msgid "Mar"
+msgstr ""
+
+#: include/tour-option.php:511
+msgid "Apr"
+msgstr ""
+
+#: include/tour-option.php:512
+msgid "May"
+msgstr ""
+
+#: include/tour-option.php:513
+msgid "Jun"
+msgstr ""
+
+#: include/tour-option.php:514
+msgid "Jul"
+msgstr ""
+
+#: include/tour-option.php:515
+msgid "Aug"
+msgstr ""
+
+#: include/tour-option.php:516
+msgid "Sep"
+msgstr ""
+
+#: include/tour-option.php:517
+msgid "Oct"
+msgstr ""
+
+#: include/tour-option.php:518
+msgid "Nov"
+msgstr ""
+
+#: include/tour-option.php:519
+msgid "Dec"
+msgstr ""
+
+#: include/tour-option.php:525 include/utility.php:212
+msgid "Year"
+msgstr ""
+
+#: include/tour-option.php:537
+msgid ""
+"Fill the date in yyyy-mm-dd format and separated the date using comma. Eg. "
+"2020-12-25,2020-12-26,2020-12-27"
+msgstr ""
+
+#: include/tour-option.php:541
+msgid "INCLUDE EXTA DATES USING DATE FORMAT"
+msgstr ""
+
+#: include/tour-option.php:547
+msgid "EXCLUDE EXTRA DATES USING DATE FORMAT"
+msgstr ""
+
+#: include/tour-option.php:554
+msgid "PRICING"
+msgstr ""
+
+#: include/tour-option.php:559
+msgid "Pricing Method"
+msgstr ""
+
+#: include/tour-option.php:566
+msgid ""
+"* Variable pricing will differentiate the price of adult, children, studnet "
+"and infant."
+msgstr ""
+
+#: include/tour-option.php:569
+msgid "Enable Room Base"
+msgstr ""
+
+#: include/tour-option.php:576
+msgid ""
+"* Calculate tour price based on the hotel's room. For example, 2 Adults 2 "
+"Rooms will be more expensive than 2 Adults 1 Room."
+msgstr ""
+
+#: include/tour-option.php:580
+msgid ""
+"When you choose <strong>Room Base Pricing</strong>. There will be 2 parts of "
+"the price. The final price will be the summary of these two."
+msgstr ""
+
+#: include/tour-option.php:587
+msgid "Add Package"
+msgstr ""
+
+#: include/tour-option.php:590
+msgid "Default Package"
+msgstr ""
+
+#: include/tour-option.php:594
+msgid "Package Group Alias"
+msgstr ""
+
+#: include/tour-option.php:596
+msgid ""
+"Fill the same string on each package to group the people from 2 package "
+"together ( for Max people option )."
+msgstr ""
+
+#: include/tour-option.php:599
+msgid "Package Title"
+msgstr ""
+
+#: include/tour-option.php:603
+msgid "Package Caption"
+msgstr ""
+
+#: include/tour-option.php:607
+msgid "Start Time"
+msgstr ""
+
+#: include/tour-option.php:612
+msgid "BASE PRICE"
+msgstr ""
+
+#: include/tour-option.php:616
+msgid "Price Per Person"
+msgstr ""
+
+#: include/tour-option.php:618 include/tour-option.php:623
+#: include/tour-option.php:668
+msgid "Price per person (Fill only number)."
+msgstr ""
+
+#: include/tour-option.php:626 include/tour-util.php:313
+#: include/tour-util.php:433 include/tour-util.php:943
+#: include/tour-util.php:1117
+msgid "Child"
+msgstr ""
+
+#: include/tour-option.php:628 include/tour-option.php:633
+#: include/tour-option.php:638 include/tour-option.php:673
+#: include/tour-option.php:678 include/tour-option.php:683
+#: include/tour-option.php:688
+msgid ""
+"Price per person (Fill only number). * Leave this field blank to not apply."
+msgstr ""
+
+#: include/tour-option.php:641
+msgid "Price per group"
+msgstr ""
+
+#: include/tour-option.php:643
+msgid "Fill only number."
+msgstr ""
+
+#: include/tour-option.php:646
+msgid "Max group"
+msgstr ""
+
+#: include/tour-option.php:648
+msgid "How many group you can accept in this tour? (Fill only number)."
+msgstr ""
+
+#: include/tour-option.php:651
+msgid "Max people for each group"
+msgstr ""
+
+#: include/tour-option.php:653
+msgid "People amount in each group (Fill only number)."
+msgstr ""
+
+#: include/tour-option.php:657
+msgid "ROOM BASED PRICE"
+msgstr ""
+
+#: include/tour-option.php:661
+msgid "Initial Price"
+msgstr ""
+
+#: include/tour-option.php:663
+msgid "This price based on 2 adults"
+msgstr ""
+
+#: include/tour-option.php:666
+msgid "Additional Person"
+msgstr ""
+
+#: include/tour-option.php:671
+msgid "Additional Adult"
+msgstr ""
+
+#: include/tour-option.php:676
+msgid "Additional Child"
+msgstr ""
+
+#: include/tour-option.php:681
+msgid "Additional Student"
+msgstr ""
+
+#: include/tour-option.php:686
+msgid "Additional Infant"
+msgstr ""
+
+#: include/tour-option.php:691
+msgid "Max People Per Room"
+msgstr ""
+
+#: include/tour-option.php:702
+msgid "Select a Package Text"
+msgstr ""
+
+#: include/tour-option.php:704
+msgid "Leave blank for default"
+msgstr ""
+
+#: include/tour-option.php:714
+msgid "Group Discount"
+msgstr ""
+
+#: include/tour-option.php:719
+msgid "Add Group Discount"
+msgstr ""
+
+#: include/tour-option.php:724
+msgid "Travellers number"
+msgstr ""
+
+#: include/tour-option.php:728
+msgid "Discount"
+msgstr ""
+
+#: include/tour-option.php:733
+msgid ""
+"* Fill only number for fixed amount, ex. '10' for $10. Fill % at the end if "
+"using as percentage, ex. '10%'"
+msgstr ""
+
+#: include/tour-option.php:736
+#, php-format
+msgid ""
+"For example, if you create 2 discount boxes, and for the first box, you set "
+"up 5 travellers with 15% discount and for another box, 10 travellers with "
+"25% discount. When customers book for 5,6,7,8,9 travellers, they will get "
+"15% off. However, if they book for 10, 11, 12 ( and so on ) travellers, they "
+"will get 25% off."
+msgstr ""
+
+#: include/tour-option.php:742
+msgid "Urgency Message"
+msgstr ""
+
+#: include/tour-option.php:745
+msgid "Enable Urgency Message :"
+msgstr ""
+
+#: include/tour-option.php:748
+msgid ""
+"By enabling this option, the urgent message will be shown in the front-end "
+"of the single tour. Ex. \"20 travellers are considering this tour right now!"
+"\""
+msgstr ""
+
+#: include/tour-option.php:749
+msgid "** Urgency message will be disappeared for 1 day after you close it."
+msgstr ""
+
+#: include/tour-option.php:752
+msgid "Use Real Data :"
+msgstr ""
+
+#: include/tour-option.php:755
+msgid "Real data will record each user for 1 hour."
+msgstr ""
+
+#: include/tour-option.php:758
+msgid "Number From :"
+msgstr ""
+
+#: include/tour-option.php:762
+msgid ""
+"The system will randomly pick the number between \"from\" and \"to\" fields."
+msgstr ""
+
+#: include/tour-option.php:765
+msgid "Number To :"
+msgstr ""
+
+#: include/tour-option.php:774
+msgid "Reminder & Group Message"
+msgstr ""
+
+#: include/tour-option.php:777
+msgid "Reminder Message"
+msgstr ""
+
+#: include/tour-option.php:781
+msgid "Enable Reminder Message"
+msgstr ""
+
+#: include/tour-option.php:785
+msgid ""
+"By, enabling this option, the system will automatically send a reminder "
+"message to customer's email."
+msgstr ""
+
+#: include/tour-option.php:788
+msgid "Reminder Message Days Before Travel"
+msgstr ""
+
+#: include/tour-option.php:791
+msgid "Only number is allowed here."
+msgstr ""
+
+#: include/tour-option.php:794 include/tour-option.php:821
+msgid "Email Subject"
+msgstr ""
+
+#: include/tour-option.php:799 include/tour-option.php:825
+msgid "Email Message"
+msgstr ""
+
+#: include/tour-option.php:804 include/tour-option.php:829
+msgid "Send a copy to admin"
+msgstr ""
+
+#: include/tour-option.php:811
+msgid "Group Message"
+msgstr ""
+
+#: include/tour-option.php:816
+msgid "Group Message Date"
+msgstr ""
+
+#: include/tour-option.php:818
+msgid ""
+"* To specify the exact group of customer that you want to send the message "
+"to."
+msgstr ""
+
+#: include/tour-option.php:832
+msgid ""
+"Enable this to send the copy of the mail which cusmoter receieve to admin e-"
+"mail."
+msgstr ""
+
+#: include/tour-option.php:835
+msgid "Send Email"
+msgstr ""
+
+#: include/tour-option.php:849
+msgid "Review Manger"
+msgstr ""
+
+#: include/tour-option.php:855
+msgid "Manage Review"
+msgstr ""
+
+#: include/tour-option.php:866
+msgid "Add A Review"
+msgstr ""
+
+#: include/tour-service.php:23
+msgid "Add New Service"
+msgstr ""
+
+#: include/tour-service.php:24
+msgid "New Service"
+msgstr ""
+
+#: include/tour-service.php:26
+msgid "View Service"
+msgstr ""
+
+#: include/tour-service.php:27
+msgid "All Service"
+msgstr ""
+
+#: include/tour-service.php:28
+msgid "Search Service"
+msgstr ""
+
+#: include/tour-service.php:29
+msgid "Parent Service:"
+msgstr ""
+
+#: include/tour-service.php:30
+msgid "No service found."
+msgstr ""
+
+#: include/tour-service.php:31
+msgid "No service found in Trash."
+msgstr ""
+
+#: include/tour-service.php:92
+msgid "Additional Service"
+msgstr ""
+
+#: include/tour-service.php:106
+msgid "Per"
+msgstr ""
+
+#: include/tour-service.php:112
+msgid "Unit"
+msgstr ""
+
+#: include/tour-service.php:116
+msgid "Max Unit"
+msgstr ""
+
+#: include/tour-service.php:119
+msgid ""
+"*Per unit will allow customer to put item amount directly from front end."
+msgstr ""
+
+#: include/tour-service.php:122
+msgid "Mandatory"
+msgstr ""
+
+#: include/tour-util.php:61
+msgid ""
+"Sorry, the tour is now off for booking on the date/time you selected. Please "
+"select another date."
+msgstr ""
+
+#: include/tour-util.php:85
+msgid "Sorry, this tour is now full. Please select another date"
+msgstr ""
+
+#: include/tour-util.php:96
+#, php-format
+msgid "* You can select maximum %d persons per each room."
+msgstr ""
+
+#: include/tour-util.php:120
+msgid "Sorry, this tour is now full. Please try to select another date"
+msgstr ""
+
+#: include/tour-util.php:131
+#, php-format
+msgid "At least %d people is required to book this tour"
+msgstr ""
+
+#: include/tour-util.php:179 include/tour-util.php:250
+#, php-format
+msgid "Available: %d seats"
+msgstr ""
+
+#: include/tour-util.php:188
+msgid "Select a package"
+msgstr ""
+
+#: include/tour-util.php:214
+msgid "Start Time:"
+msgstr ""
+
+#: include/tour-util.php:234
+#, php-format
+msgid "Available: %d groups"
+msgstr ""
+
+#: include/tour-util.php:291 include/tour-util.php:415
+msgid "Number Of People"
+msgstr ""
+
+#: include/tour-util.php:345
+msgid "Number Of Rooms"
+msgstr ""
+
+#: include/tour-util.php:390 single/tour.php:259 single/tour.php:365
+msgid "Proceed Booking"
+msgstr ""
+
+#: include/tour-util.php:392
+msgid "* Please select all required fields to proceed to the next step."
+msgstr ""
+
+#: include/tour-util.php:954
+msgid "Group Price :"
+msgstr ""
+
+#: include/tour-util.php:962
+msgid "Base Price"
+msgstr ""
+
+#: include/tour-util.php:989
+msgid "Room Base Price :"
+msgstr ""
+
+#: include/tour-util.php:996
+msgid "Additional"
+msgstr ""
+
+#: include/tour-util.php:1012
+msgid "Additional Services"
+msgstr ""
+
+#: include/tour-util.php:1030
+msgid "Sub Total Price"
+msgstr ""
+
+#: include/tour-util.php:1039
+#, php-format
+msgid "Group Discount (%d people)"
+msgstr ""
+
+#: include/tour-util.php:1050 include/tour-util.php:1068
+msgid "Discounted Price"
+msgstr ""
+
+#: include/tour-util.php:1058
+msgid "Coupon Code :"
+msgstr ""
+
+#: include/tour-util.php:1078
+msgid "Tax Rate"
+msgstr ""
+
+#: include/tour-util.php:1088
+msgid "Tax Due"
+msgstr ""
+
+#: include/tour-util.php:1098
+#, php-format
+msgid "Paypal Service Fee (%s%%)"
+msgstr ""
+
+#: include/tour-util.php:1150
+msgid "Sub Total"
+msgstr ""
+
+#: include/tour-util.php:1159
+msgid "Group Discounted Price"
+msgstr ""
+
+#: include/tour-util.php:1168
+msgid "Tax"
+msgstr ""
+
+#: include/tour-util.php:1178
+msgid "Paypal Service Fee"
+msgstr ""
+
+#: include/tour-util.php:1197
+msgid "Full Name"
+msgstr ""
+
+#: include/tour-util.php:1202
+msgid "Email Address"
+msgstr ""
+
+#: include/tour-util.php:1207
+msgid "Your Enquiry"
+msgstr ""
+
+#: include/tour-util.php:1227
+msgid "Submit Enquiry"
+msgstr ""
+
+#: include/tour-util.php:1271
+msgid "Your enquiry has been sent. Thank you!"
+msgstr ""
+
+#: include/tour-util.php:1276
+msgid "Invalid Email Address"
+msgstr ""
+
+#: include/user-util.php:9
+msgid "Afghanistan"
+msgstr ""
+
+#: include/user-util.php:10
+msgid "Albania"
+msgstr ""
+
+#: include/user-util.php:11
+msgid "Algeria"
+msgstr ""
+
+#: include/user-util.php:12
+msgid "Andorra"
+msgstr ""
+
+#: include/user-util.php:13
+msgid "Angola"
+msgstr ""
+
+#: include/user-util.php:14
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: include/user-util.php:15
+msgid "Argentina"
+msgstr ""
+
+#: include/user-util.php:16
+msgid "Armenia"
+msgstr ""
+
+#: include/user-util.php:17
+msgid "Australia"
+msgstr ""
+
+#: include/user-util.php:18
+msgid "Austria"
+msgstr ""
+
+#: include/user-util.php:19
+msgid "Azerbaijan"
+msgstr ""
+
+#: include/user-util.php:20
+msgid "Bahamas"
+msgstr ""
+
+#: include/user-util.php:21
+msgid "Bahrain"
+msgstr ""
+
+#: include/user-util.php:22
+msgid "Bangladesh"
+msgstr ""
+
+#: include/user-util.php:23
+msgid "Barbados"
+msgstr ""
+
+#: include/user-util.php:24
+msgid "Belarus"
+msgstr ""
+
+#: include/user-util.php:25
+msgid "Belgium"
+msgstr ""
+
+#: include/user-util.php:26
+msgid "Belize"
+msgstr ""
+
+#: include/user-util.php:27
+msgid "Benin"
+msgstr ""
+
+#: include/user-util.php:28
+msgid "Bhutan"
+msgstr ""
+
+#: include/user-util.php:29
+msgid "Bolivia"
+msgstr ""
+
+#: include/user-util.php:30
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: include/user-util.php:31
+msgid "Botswana"
+msgstr ""
+
+#: include/user-util.php:32
+msgid "Brazil"
+msgstr ""
+
+#: include/user-util.php:33
+msgid "Brunei"
+msgstr ""
+
+#: include/user-util.php:34
+msgid "Bulgaria"
+msgstr ""
+
+#: include/user-util.php:35
+msgid "Burkina Faso"
+msgstr ""
+
+#: include/user-util.php:36
+msgid "Burundi"
+msgstr ""
+
+#: include/user-util.php:37
+msgid "Cabo Verde"
+msgstr ""
+
+#: include/user-util.php:38
+msgid "Cambodia"
+msgstr ""
+
+#: include/user-util.php:39
+msgid "Cameroon"
+msgstr ""
+
+#: include/user-util.php:40
+msgid "Canada"
+msgstr ""
+
+#: include/user-util.php:41
+msgid "Central African Republic (CAR)"
+msgstr ""
+
+#: include/user-util.php:42
+msgid "Chad"
+msgstr ""
+
+#: include/user-util.php:43
+msgid "Chile"
+msgstr ""
+
+#: include/user-util.php:44
+msgid "China"
+msgstr ""
+
+#: include/user-util.php:45
+msgid "Colombia"
+msgstr ""
+
+#: include/user-util.php:46
+msgid "Comoros"
+msgstr ""
+
+#: include/user-util.php:47
+msgid "Democratic Republic of the Congo"
+msgstr ""
+
+#: include/user-util.php:48
+msgid "Republic of the Congo"
+msgstr ""
+
+#: include/user-util.php:49
+msgid "Costa Rica"
+msgstr ""
+
+#: include/user-util.php:50
+msgid "Cote d'Ivoire"
+msgstr ""
+
+#: include/user-util.php:51
+msgid "Croatia"
+msgstr ""
+
+#: include/user-util.php:52
+msgid "Cuba"
+msgstr ""
+
+#: include/user-util.php:53
+msgid "Cyprus"
+msgstr ""
+
+#: include/user-util.php:54
+msgid "Czech Republic"
+msgstr ""
+
+#: include/user-util.php:55
+msgid "Denmark"
+msgstr ""
+
+#: include/user-util.php:56
+msgid "Djibouti"
+msgstr ""
+
+#: include/user-util.php:57
+msgid "Dominica"
+msgstr ""
+
+#: include/user-util.php:58
+msgid "Dominican Republic"
+msgstr ""
+
+#: include/user-util.php:59
+msgid "Ecuador"
+msgstr ""
+
+#: include/user-util.php:60
+msgid "Egypt"
+msgstr ""
+
+#: include/user-util.php:61
+msgid "El Salvador"
+msgstr ""
+
+#: include/user-util.php:62
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: include/user-util.php:63
+msgid "Eritrea"
+msgstr ""
+
+#: include/user-util.php:64
+msgid "Estonia"
+msgstr ""
+
+#: include/user-util.php:65
+msgid "Ethiopia"
+msgstr ""
+
+#: include/user-util.php:66
+msgid "Fiji"
+msgstr ""
+
+#: include/user-util.php:67
+msgid "Finland"
+msgstr ""
+
+#: include/user-util.php:68
+msgid "France"
+msgstr ""
+
+#: include/user-util.php:69
+msgid "Gabon"
+msgstr ""
+
+#: include/user-util.php:70
+msgid "Gambia"
+msgstr ""
+
+#: include/user-util.php:71
+msgid "Georgia"
+msgstr ""
+
+#: include/user-util.php:72
+msgid "Germany"
+msgstr ""
+
+#: include/user-util.php:73
+msgid "Ghana"
+msgstr ""
+
+#: include/user-util.php:74
+msgid "Greece"
+msgstr ""
+
+#: include/user-util.php:75
+msgid "Grenada"
+msgstr ""
+
+#: include/user-util.php:76
+msgid "Guatemala"
+msgstr ""
+
+#: include/user-util.php:77
+msgid "Guinea"
+msgstr ""
+
+#: include/user-util.php:78
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: include/user-util.php:79
+msgid "Guyana"
+msgstr ""
+
+#: include/user-util.php:80
+msgid "Haiti"
+msgstr ""
+
+#: include/user-util.php:81
+msgid "Honduras"
+msgstr ""
+
+#: include/user-util.php:82
+msgid "Hungary"
+msgstr ""
+
+#: include/user-util.php:83
+msgid "Iceland"
+msgstr ""
+
+#: include/user-util.php:84
+msgid "India"
+msgstr ""
+
+#: include/user-util.php:85
+msgid "Indonesia"
+msgstr ""
+
+#: include/user-util.php:86
+msgid "Iran"
+msgstr ""
+
+#: include/user-util.php:87
+msgid "Iraq"
+msgstr ""
+
+#: include/user-util.php:88
+msgid "Ireland"
+msgstr ""
+
+#: include/user-util.php:89
+msgid "Israel"
+msgstr ""
+
+#: include/user-util.php:90
+msgid "Italy"
+msgstr ""
+
+#: include/user-util.php:91
+msgid "Jamaica"
+msgstr ""
+
+#: include/user-util.php:92
+msgid "Japan"
+msgstr ""
+
+#: include/user-util.php:93
+msgid "Jordan"
+msgstr ""
+
+#: include/user-util.php:94
+msgid "Kazakhstan"
+msgstr ""
+
+#: include/user-util.php:95
+msgid "Kenya"
+msgstr ""
+
+#: include/user-util.php:96
+msgid "Kiribati"
+msgstr ""
+
+#: include/user-util.php:97
+msgid "Kosovo"
+msgstr ""
+
+#: include/user-util.php:98
+msgid "Kuwait"
+msgstr ""
+
+#: include/user-util.php:99
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: include/user-util.php:100
+msgid "Laos"
+msgstr ""
+
+#: include/user-util.php:101
+msgid "Latvia"
+msgstr ""
+
+#: include/user-util.php:102
+msgid "Lebanon"
+msgstr ""
+
+#: include/user-util.php:103
+msgid "Lesotho"
+msgstr ""
+
+#: include/user-util.php:104
+msgid "Liberia"
+msgstr ""
+
+#: include/user-util.php:105
+msgid "Libya"
+msgstr ""
+
+#: include/user-util.php:106
+msgid "Liechtenstein"
+msgstr ""
+
+#: include/user-util.php:107
+msgid "Lithuania"
+msgstr ""
+
+#: include/user-util.php:108
+msgid "Luxembourg"
+msgstr ""
+
+#: include/user-util.php:109
+msgid "Macedonia"
+msgstr ""
+
+#: include/user-util.php:110
+msgid "Madagascar"
+msgstr ""
+
+#: include/user-util.php:111
+msgid "Malawi"
+msgstr ""
+
+#: include/user-util.php:112
+msgid "Malaysia"
+msgstr ""
+
+#: include/user-util.php:113
+msgid "Maldives"
+msgstr ""
+
+#: include/user-util.php:114
+msgid "Mali"
+msgstr ""
+
+#: include/user-util.php:115
+msgid "Malta"
+msgstr ""
+
+#: include/user-util.php:116
+msgid "Marshall Islands"
+msgstr ""
+
+#: include/user-util.php:117
+msgid "Mauritania"
+msgstr ""
+
+#: include/user-util.php:118
+msgid "Mauritius"
+msgstr ""
+
+#: include/user-util.php:119
+msgid "Mexico"
+msgstr ""
+
+#: include/user-util.php:120
+msgid "Micronesia"
+msgstr ""
+
+#: include/user-util.php:121
+msgid "Moldova"
+msgstr ""
+
+#: include/user-util.php:122
+msgid "Monaco"
+msgstr ""
+
+#: include/user-util.php:123
+msgid "Mongolia"
+msgstr ""
+
+#: include/user-util.php:124
+msgid "Montenegro"
+msgstr ""
+
+#: include/user-util.php:125
+msgid "Morocco"
+msgstr ""
+
+#: include/user-util.php:126
+msgid "Mozambique"
+msgstr ""
+
+#: include/user-util.php:127
+msgid "Myanmar (Burma)"
+msgstr ""
+
+#: include/user-util.php:128
+msgid "Namibia"
+msgstr ""
+
+#: include/user-util.php:129
+msgid "Nauru"
+msgstr ""
+
+#: include/user-util.php:130
+msgid "Nepal"
+msgstr ""
+
+#: include/user-util.php:131
+msgid "Netherlands"
+msgstr ""
+
+#: include/user-util.php:132
+msgid "New Zealand"
+msgstr ""
+
+#: include/user-util.php:133
+msgid "Nicaragua"
+msgstr ""
+
+#: include/user-util.php:134
+msgid "Niger"
+msgstr ""
+
+#: include/user-util.php:135
+msgid "Nigeria"
+msgstr ""
+
+#: include/user-util.php:136
+msgid "North Korea"
+msgstr ""
+
+#: include/user-util.php:137
+msgid "Norway"
+msgstr ""
+
+#: include/user-util.php:138
+msgid "Oman"
+msgstr ""
+
+#: include/user-util.php:139
+msgid "Pakistan"
+msgstr ""
+
+#: include/user-util.php:140
+msgid "Palau"
+msgstr ""
+
+#: include/user-util.php:141
+msgid "Palestine"
+msgstr ""
+
+#: include/user-util.php:142
+msgid "Panama"
+msgstr ""
+
+#: include/user-util.php:143
+msgid "Papua New Guinea"
+msgstr ""
+
+#: include/user-util.php:144
+msgid "Paraguay"
+msgstr ""
+
+#: include/user-util.php:145
+msgid "Peru"
+msgstr ""
+
+#: include/user-util.php:146
+msgid "Philippines"
+msgstr ""
+
+#: include/user-util.php:147
+msgid "Poland"
+msgstr ""
+
+#: include/user-util.php:148
+msgid "Portugal"
+msgstr ""
+
+#: include/user-util.php:149
+msgid "Qatar"
+msgstr ""
+
+#: include/user-util.php:150
+msgid "Romania"
+msgstr ""
+
+#: include/user-util.php:151
+msgid "Russia"
+msgstr ""
+
+#: include/user-util.php:152
+msgid "Rwanda"
+msgstr ""
+
+#: include/user-util.php:153
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: include/user-util.php:154
+msgid "Saint Lucia"
+msgstr ""
+
+#: include/user-util.php:155
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: include/user-util.php:156
+msgid "Samoa"
+msgstr ""
+
+#: include/user-util.php:157
+msgid "San Marino"
+msgstr ""
+
+#: include/user-util.php:158
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: include/user-util.php:159
+msgid "Saudi Arabia"
+msgstr ""
+
+#: include/user-util.php:160
+msgid "Senegal"
+msgstr ""
+
+#: include/user-util.php:161
+msgid "Serbia"
+msgstr ""
+
+#: include/user-util.php:162
+msgid "Seychelles"
+msgstr ""
+
+#: include/user-util.php:163
+msgid "Sierra Leone"
+msgstr ""
+
+#: include/user-util.php:164
+msgid "Singapore"
+msgstr ""
+
+#: include/user-util.php:165
+msgid "Slovakia"
+msgstr ""
+
+#: include/user-util.php:166
+msgid "Slovenia"
+msgstr ""
+
+#: include/user-util.php:167
+msgid "Solomon Islands"
+msgstr ""
+
+#: include/user-util.php:168
+msgid "Somalia"
+msgstr ""
+
+#: include/user-util.php:169
+msgid "South Africa"
+msgstr ""
+
+#: include/user-util.php:170
+msgid "South Korea"
+msgstr ""
+
+#: include/user-util.php:171
+msgid "South Sudan"
+msgstr ""
+
+#: include/user-util.php:172
+msgid "Spain"
+msgstr ""
+
+#: include/user-util.php:173
+msgid "Sri Lanka"
+msgstr ""
+
+#: include/user-util.php:174
+msgid "Sudan"
+msgstr ""
+
+#: include/user-util.php:175
+msgid "Suriname"
+msgstr ""
+
+#: include/user-util.php:176
+msgid "Swaziland"
+msgstr ""
+
+#: include/user-util.php:177
+msgid "Sweden"
+msgstr ""
+
+#: include/user-util.php:178
+msgid "Switzerland"
+msgstr ""
+
+#: include/user-util.php:179
+msgid "Syria"
+msgstr ""
+
+#: include/user-util.php:180
+msgid "Taiwan"
+msgstr ""
+
+#: include/user-util.php:181
+msgid "Tajikistan"
+msgstr ""
+
+#: include/user-util.php:182
+msgid "Tanzania"
+msgstr ""
+
+#: include/user-util.php:183
+msgid "Thailand"
+msgstr ""
+
+#: include/user-util.php:184
+msgid "Timor-Leste"
+msgstr ""
+
+#: include/user-util.php:185
+msgid "Togo"
+msgstr ""
+
+#: include/user-util.php:186
+msgid "Tonga"
+msgstr ""
+
+#: include/user-util.php:187
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: include/user-util.php:188
+msgid "Tunisia"
+msgstr ""
+
+#: include/user-util.php:189
+msgid "Turkey"
+msgstr ""
+
+#: include/user-util.php:190
+msgid "Turkmenistan"
+msgstr ""
+
+#: include/user-util.php:191
+msgid "Tuvalu"
+msgstr ""
+
+#: include/user-util.php:192
+msgid "Uganda"
+msgstr ""
+
+#: include/user-util.php:193
+msgid "Ukraine"
+msgstr ""
+
+#: include/user-util.php:194
+msgid "United Arab Emirates (UAE)"
+msgstr ""
+
+#: include/user-util.php:195
+msgid "United Kingdom (UK)"
+msgstr ""
+
+#: include/user-util.php:196
+msgid "United States of America (USA)"
+msgstr ""
+
+#: include/user-util.php:197
+msgid "Uruguay"
+msgstr ""
+
+#: include/user-util.php:198
+msgid "Uzbekistan"
+msgstr ""
+
+#: include/user-util.php:199
+msgid "Vanuatu"
+msgstr ""
+
+#: include/user-util.php:200
+msgid "Vatican City (Holy See)"
+msgstr ""
+
+#: include/user-util.php:201
+msgid "Venezuela"
+msgstr ""
+
+#: include/user-util.php:202
+msgid "Vietnam"
+msgstr ""
+
+#: include/user-util.php:203
+msgid "Yemen"
+msgstr ""
+
+#: include/user-util.php:204
+msgid "Zambia"
+msgstr ""
+
+#: include/user-util.php:205
+msgid "Zimbabwe"
+msgstr ""
+
+#: include/user-util.php:299
+msgid "Incorrect email address."
+msgstr ""
+
+#: include/user-util.php:352 single/user/dashboard.php:16
+msgid "Gender"
+msgstr ""
+
+#: include/user-util.php:356
+msgid "Male"
+msgstr ""
+
+#: include/user-util.php:357
+msgid "Female"
+msgstr ""
+
+#: include/user-util.php:361 single/user/dashboard.php:17
+msgid "Birth Date"
+msgstr ""
+
+#: include/user-util.php:382 single/user/dashboard.php:21
+msgid "Contact Address"
+msgstr ""
+
+#: include/user-util.php:395
+msgid "My Account"
+msgstr ""
+
+#: include/user-util.php:398
+msgid "Dashboard"
+msgstr ""
+
+#: include/user-util.php:403 single/user/dashboard.php:10
+msgid "Edit Profile"
+msgstr ""
+
+#: include/user-util.php:408
+msgid "Change Password"
+msgstr ""
+
+#: include/user-util.php:413
+msgid "Tour Booking"
+msgstr ""
+
+#: include/user-util.php:416
+msgid "My Bookings"
+msgstr ""
+
+#: include/user-util.php:420
+msgid "Invoices"
+msgstr ""
+
+#: include/user-util.php:428
+msgid "Wish List"
+msgstr ""
+
+#: include/user-util.php:433
+msgid "Sign Out"
+msgstr ""
+
+#: include/user-util.php:530 include/user-util.php:534
+#: include/user-util.php:755
+msgid "Login"
+msgstr ""
+
+#: include/user-util.php:539 include/user-util.php:543
+#: include/user-util.php:666 include/user-util.php:737
+msgid "Sign Up"
+msgstr ""
+
+#: include/user-util.php:575 include/user-util.php:622
+#: include/user-util.php:694 single/register.php:11
+msgid "Username"
+msgstr ""
+
+#: include/user-util.php:579 include/user-util.php:626
+#: include/user-util.php:699 single/register.php:16
+msgid "Password"
+msgstr ""
+
+#: include/user-util.php:585 include/user-util.php:632
+msgid "Sign In!"
+msgstr ""
+
+#: include/user-util.php:588 include/user-util.php:635 single/login.php:113
+msgid "Forget Password?"
+msgstr ""
+
+#: include/user-util.php:597
+msgid "Do not have an account?"
+msgstr ""
+
+#: include/user-util.php:598
+msgid "Create an Account"
+msgstr ""
+
+#: include/user-util.php:619
+msgid "Already A Member?"
+msgstr ""
+
+#: include/user-util.php:652
+msgid "Don't have an account? Create one."
+msgstr ""
+
+#: include/user-util.php:655
+msgid ""
+"When you book with an account, you will be able to track your payment "
+"status, track the confirmation and you can also rate the tour after you "
+"finished the tour."
+msgstr ""
+
+#: include/user-util.php:670
+msgid "Or Continue As Guest"
+msgstr ""
+
+#: include/user-util.php:671
+msgid "Continue As Guest"
+msgstr ""
+
+#: include/user-util.php:704 single/register.php:21
+#: single/user/change-password.php:37
+msgid "Confirm Password"
+msgstr ""
+
+#: include/user-util.php:713
+msgid ""
+"After creating an account, you'll be able to track your payment status, "
+"track the confirmation and you can also rate the tour after you finished the "
+"tour."
+msgstr ""
+
+#: include/user-util.php:745
+#, php-format
+msgid ""
+"* Creating an account means you're okay with our <a href=\"%s\" target="
+"\"_blank\">Terms of Service</a> and <a href=\"%s\" target=\"_blank\">Privacy "
+"Statement</a>."
+msgstr ""
+
+#: include/user-util.php:754
+msgid "Already a member?"
+msgstr ""
+
+#: include/utility.php:166
+msgid "Click to select a file"
+msgstr ""
+
+#: include/widget/tour-category-widget.php:21
+msgid "Tour Category Widget ( Goodlayers )"
+msgstr ""
+
+#: include/widget/tour-category-widget.php:22
+msgid "A widget that show list of tour categories"
+msgstr ""
+
+#: include/widget/tour-category-widget.php:102
+msgid "Taxonomy"
+msgstr ""
+
+#: include/widget/tour-category-widget.php:109
+#: include/widget/tour-widget.php:98
+msgid "Display Number"
+msgstr ""
+
+#: include/widget/tour-category-widget.php:133
+msgid "List"
+msgstr ""
+
+#: include/widget/tour-search-widget.php:18
+msgid "Tour Search Widget ( Goodlayers )"
+msgstr ""
+
+#: include/widget/tour-search-widget.php:19
+msgid "A widget that show tour search box"
+msgstr ""
+
+#: include/widget/tour-search-widget.php:70
+msgid "Location"
+msgstr ""
+
+#: include/widget/tour-widget.php:21
+msgid "Tour Widget ( Goodlayers )"
+msgstr ""
+
+#: include/widget/tour-widget.php:22
+msgid "A widget that show latest tour"
+msgstr ""
+
+#: single/login.php:41
+msgid "The passwords do not match."
+msgstr ""
+
+#: single/login.php:68
+msgid "Invalid username, email address or incorrect password."
+msgstr ""
+
+#: single/login.php:80
+msgid "Invalid username or email."
+msgstr ""
+
+#: single/login.php:86
+msgid "Username or E-mail:"
+msgstr ""
+
+#: single/login.php:92
+msgid "Get New Password"
+msgstr ""
+
+#: single/login.php:106
+msgid ""
+"Your password reset link appears to be invalid. Please request a new link "
+"below."
+msgstr ""
+
+#: single/login.php:108
+msgid "Your password reset link has expired. Please request a new link below."
+msgstr ""
+
+#: single/login.php:119
+msgid "Your password has been reset."
+msgstr ""
+
+#: single/login.php:123
+msgid "Sign in to your account."
+msgstr ""
+
+#: single/login.php:137
+msgid "New password"
+msgstr ""
+
+#: single/login.php:139
+msgid "Strength indicator"
+msgstr ""
+
+#: single/login.php:143
+msgid "Confirm new password"
+msgstr ""
+
+#: single/payment.php:78
+msgid "Select Tour"
+msgstr ""
+
+#: single/payment.php:81
+msgid "Complete"
+msgstr ""
+
+#: single/register.php:42
+msgid "Username already exists, pleae try again with another name."
+msgstr ""
+
+#: single/register.php:44 single/user/user-update.php:17
+msgid "Password does not match the confirm password."
+msgstr ""
+
+#: single/search.php:183
+msgid "Not Found"
+msgstr ""
+
+#: single/search.php:184
+msgid ""
+"Nothing matched your search criteria. Please try again with different "
+"keywords"
+msgstr ""
+
+#: single/tour.php:187
+msgid "Send Us An Enquiry"
+msgstr ""
+
+#: single/tour.php:230
+msgid "Booking Form"
+msgstr ""
+
+#: single/tour.php:231
+msgid "Enquiry Form"
+msgstr ""
+
+#: single/tour.php:340
+msgid "The tour is not available yet."
+msgstr ""
+
+#: single/tour.php:403
+msgid "Save To Wish List"
+msgstr ""
+
+#: single/tour.php:408
+msgid "Adding item to wishlist requires an account"
+msgstr ""
+
+#: single/tour.php:522
+msgid "Related Tours"
+msgstr ""
+
+#: single/tour.php:585
+msgid "Sort By:"
+msgstr ""
+
+#: single/tour.php:592
+msgid "Filter By"
+msgstr ""
+
+#: single/tour.php:647
+#, php-format
+msgid "%d travellers are considering this tour right now!"
+msgstr ""
+
+#: single/user.php:41
+msgid "Sorry, we couldn't find the page you're looking for."
+msgstr ""
+
+#: single/user/change-password.php:20
+msgid "Your password has been successfully changed."
+msgstr ""
+
+#: single/user/change-password.php:27
+msgid "Old Password"
+msgstr ""
+
+#: single/user/change-password.php:32
+msgid "New Password"
+msgstr ""
+
+#: single/user/change-password.php:50
+msgid "Update Password"
+msgstr ""
+
+#: single/user/dashboard.php:9
+msgid "My Profile"
+msgstr ""
+
+#: single/user/dashboard.php:67
+msgid "Current Booking"
+msgstr ""
+
+#: single/user/dashboard.php:68
+msgid "View All Bookings"
+msgstr ""
+
+#: single/user/dashboard.php:74 single/user/dashboard.php:136
+#: single/user/invoices.php:35 single/user/my-booking.php:35
+#: single/user/reviews.php:20 single/user/wish-list.php:10
+msgid "Tour Name"
+msgstr ""
+
+#: single/user/dashboard.php:130
+msgid "View All Reviews"
+msgstr ""
+
+#: single/user/dashboard.php:137 single/user/reviews.php:21
+msgid "Status"
+msgstr ""
+
+#: single/user/dashboard.php:151 single/user/reviews.php:35
+msgid "Submit Your Review"
+msgstr ""
+
+#: single/user/dashboard.php:156 single/user/reviews.php:40
+msgid "Submitted"
+msgstr ""
+
+#: single/user/dashboard.php:159 single/user/reviews.php:43
+msgid "View Review"
+msgstr ""
+
+#: single/user/dashboard.php:162 single/user/reviews.php:46
+msgid "Your Review"
+msgstr ""
+
+#: single/user/edit-profile.php:20
+msgid "Your profile has been successfully changed."
+msgstr ""
+
+#: single/user/edit-profile.php:29
+msgid "Change Profile Picture"
+msgstr ""
+
+#: single/user/edit-profile.php:37
+msgid "Update Profile"
+msgstr ""
+
+#: single/user/invoices-single.php:32
+msgid "Invoice ID :"
+msgstr ""
+
+#: single/user/invoices-single.php:33
+msgid "Invoice date :"
+msgstr ""
+
+#: single/user/invoices-single.php:58
+msgid "Description"
+msgstr ""
+
+#: single/user/invoices-single.php:80
+msgid "Bank Transfer"
+msgstr ""
+
+#: single/user/invoices-single.php:82
+msgid "Online Payment"
+msgstr ""
+
+#: single/user/invoices-single.php:111
+msgid "Make a Payment"
+msgstr ""
+
+#: single/user/invoices-single.php:113
+msgid "Print"
+msgstr ""
+
+#: single/user/my-booking-single.php:7
+msgid "Cannot upload a media file, please try uploading it again."
+msgstr ""
+
+#: single/user/my-booking-single.php:45
+msgid "Bank Payment Receipt"
+msgstr ""
+
+#: single/user/my-booking-single.php:48
+msgid "Submit Payment Receipt"
+msgstr ""
+
+#: single/user/my-booking-single.php:51
+msgid "Submit Bank Payment Receipt"
+msgstr ""
+
+#: single/user/my-booking-single.php:56
+msgid "Make an Online Payment"
+msgstr ""
+
+#: single/user/my-booking.php:77
+msgid "Make Payment"
+msgstr ""
+
+#: single/user/my-booking.php:81
+msgid "Just To Confirm"
+msgstr ""
+
+#: single/user/my-booking.php:84
+msgid "Are you sure you want to do this ?"
+msgstr ""
+
+#: single/user/user-update.php:21
+msgid "Old password incorrect."
+msgstr ""
+
+#: single/user/user-update.php:32
+msgid "The session is expired. Please refesh the page to try again."
+msgstr ""
+
+#: tourmaster.php:93
+msgid "Done"
+msgstr ""
+
+#: tourmaster.php:94
+msgid "Today"
+msgstr ""

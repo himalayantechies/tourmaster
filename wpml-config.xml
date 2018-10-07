@@ -1,0 +1,26 @@
+<wpml-config>
+    <admin-texts>
+        <key name="tourmaster_general">
+            <key name="admin-booking-made-mail-title" />
+            <key name="admin-booking-made-mail" />
+            <key name="admin-guest-booking-made-mail-title" />
+            <key name="admin-guest-booking-made-mail" />
+            <key name="admin-payment-submitted-mail-title" />
+            <key name="admin-payment-submitted-mail" />
+            <key name="admin-online-payment-made-mail-title" />
+            <key name="admin-online-payment-made-mail" />
+            <key name="registration-complete-mail-title" />
+            <key name="registration-complete-mail" />
+            <key name="booking-made-mail-title" />
+            <key name="booking-made-mail" />
+            <key name="guest-booking-made-mail-title" />
+            <key name="guest-booking-made-mail" />
+            <key name="payment-made-mail-title" />
+            <key name="payment-made-mail" />
+            <key name="booking-cancelled-mail-title" />
+            <key name="booking-cancelled-mail" />
+            <key name="booking-reject-mail-title" />
+            <key name="booking-reject-mail" />
+        </key>
+    </admin-texts>
+</wpml-config>
