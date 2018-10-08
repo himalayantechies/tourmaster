@@ -37,6 +37,7 @@
 
 	include_once(TOURMASTER_LOCAL . '/include/template-settings.php');
 	include_once(TOURMASTER_LOCAL . '/include/paypal.php');
+	include_once(TOURMASTER_LOCAL . '/include/hblpay.php');  //HBL Pay file included
 	
 	include_once(TOURMASTER_LOCAL . '/include/pb/tour-style.php');
 	include_once(TOURMASTER_LOCAL . '/include/pb/tour-item.php');

@@ -28,7 +28,10 @@ if( !empty($_POST) ){
 			if( !empty($_GET['payment_method']) && $_GET['payment_method'] == 'hipayprofessional' ){
 				$booking_detail['payment_method'] = 'hipayprofessional';
 			}
-
+			if( !empty($_GET['payment_method']) && $_GET['payment_method'] == 'hblpay' ){
+				$booking_detail['payment_method'] = 'hblpay';
+			}
+			
 			$transaction_id = $_GET['tid'];
 
 			if( $booking_detail['step'] != 4 ){

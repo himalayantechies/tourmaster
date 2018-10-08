@@ -1065,6 +1065,7 @@
 										'paypal' => esc_html__('Paypal', 'tourmaster'),
 										'credit-card' => esc_html__('Credit Card', 'tourmaster'),
 										'hipayprofessional' => esc_html__('Hipay Professional', 'tourmaster'),
+										'hblpay' => esc_html__('HBL Pay', 'tourmaster'),
 									),
 									'default' => array('booking', 'paypal', 'credit-card'),
 									'description' => esc_html__('You can use Ctrl/Command button to select multiple items or remove the selected item.', 'tourmaster'),
@@ -1176,7 +1177,7 @@
 '.tourmaster-login-form .tourmaster-login-lost-password a:hover, ' .
 '.tourmaster-login-bottom .tourmaster-login-bottom-link, ' .
 '.tourmaster-register-bottom .tourmaster-register-bottom-link{ color: #gdlr#; }' . 
-'.tourmaster-payment-method-wrap .tourmaster-payment-paypal > img:hover, .tourmaster-payment-method-wrap .tourmaster-payment-credit-card > img:hover{ border-color: #gdlr#; }',
+'.tourmaster-payment-method-wrap .tourmaster-payment-paypal > img:hover, .tourmaster-payment-method-wrap .tourmaster-payment-credit-card > img:hover, .tourmaster-payment-method-wrap .tourmaster-payment-hblpay > img:hover{ border-color: #gdlr#; }',
 									'default' => '#485da1',
 								),
 								'tourmaster-theme-color-link' => array(

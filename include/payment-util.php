@@ -873,7 +873,8 @@
 			$paypal_enable = in_array('paypal', $payment_method);
 			$credit_card_enable = in_array('credit-card', $payment_method);
 			$hipayprofessional_enable = in_array('hipayprofessional', $payment_method);
-
+			$hblpay_enable = in_array('hblpay', $payment_method);
+			
 			$extra_class = '';
 			if( $paypal_enable && $credit_card_enable ){
 				$extra_class .= ' tourmaster-both-online-payment';
@@ -881,7 +882,13 @@
 				$extra_class .= ' tourmaster-both-online-payment';
 			}elseif( $credit_card_enable && $hipayprofessional_enable ){
 				$extra_class .= ' tourmaster-both-online-payment';
-			}elseif( !$paypal_enable && !$credit_card_enable && !$hipayprofessional_enable){
+			}elseif( $credit_card_enable && $hblpay_enable ){
+				$extra_class .= ' tourmaster-both-online-payment';
+			}elseif( $paypal_enable && $hblpay_enable ){
+				$extra_class .= ' tourmaster-both-online-payment';
+			}elseif( $hipayprofessional_enable && $hblpay_enable ){
+				$extra_class .= ' tourmaster-both-online-payment';
+			}elseif( !$paypal_enable && !$credit_card_enable && !$hipayprofessional_enable && !$hblpay_enable){
 				$extra_class .= ' tourmaster-none-online-payment';
 			}
 			$ret  = '<div class="tourmaster-payment-method-wrap ' . esc_attr($extra_class) . '" >';
@@ -911,7 +918,7 @@
 			$ret .= '></div>';
 			$ret .= '</div>'; // tourmaster-payment-terms
 
-			if( $paypal_enable || $credit_card_enable || $hipayprofessional_enable ){
+			if( $paypal_enable || $credit_card_enable || $hipayprofessional_enable || $hblpay_enable){
 				$ret .= '<div class="tourmaster-payment-gateway clearfix" >';
 				if( $paypal_enable ){
 					$paypal_button_atts = apply_filters('tourmaster_paypal_button_atts', array());
@@ -981,6 +988,20 @@
 					$ret .= ' />';
 					$ret .= '</div>';
 	
+				}
+				
+				if( $hblpay_enable ){
+					
+					$hblpay_button_atts = apply_filters('tourmaster_hblpay_button_atts', array());
+					$ret .= '<div class="tourmaster-online-payment-method tourmaster-payment-hblpay" >';
+					$ret .= '<img src="' . esc_attr(TOURMASTER_URL) . '/images/hblpay.png" alt="hblpay" width="170" height="76" ';
+					if( !empty($hblpay_button_atts['method']) && $hblpay_button_atts['method'] == 'ajax' ){
+						$ret .= 'data-method="ajax" data-action="tourmaster_payment_selected" data-ajax="' . esc_url(TOURMASTER_AJAX_URL) . '" ';
+						if( !empty($hblpay_button_atts['type']) ){
+							$ret .= 'data-action-type="' . esc_attr($hblpay_button_atts['type']) . '" ';
+						}
+					}
+					$ret .= ' />';
 				}
 				$ret .= '</div>'; // tourmaster-payment-gateway
 			}
