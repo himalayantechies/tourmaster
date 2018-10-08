@@ -7,7 +7,7 @@ get_header();
 		'column-size' => tourmaster_get_option('general', 'search-page-column-size', '20'),
 		'thumbnail-size' => tourmaster_get_option('general', 'search-page-thumbnail-size', 'full'),
 		'tour-info' => tourmaster_get_option('general', 'search-page-tour-info', array()),
-		'excerpt' => tourmaster_get_option('general', 'search-page-with-excerpt', 'specify-number'),
+		'excerpt' => tourmaster_get_option('general', 'search-page-excerpt', 'specify-number'),
 		'excerpt-number' => tourmaster_get_option('general', 'search-page-excerpt-number', '55'),
 		'tour-rating' => tourmaster_get_option('general', 'search-page-tour-rating', 'enable'),
 		'custom-pagination' => true

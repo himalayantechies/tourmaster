@@ -15,6 +15,9 @@
 				if( !empty($settings['reply-to']) ){
 					$headers .= "Reply-To: {$settings['reply-to']}\r\n";
 				}
+				if( !empty($settings['cc']) ){
+					$headers .= "CC: {$settings['cc']}\r\n"; 
+				}
 				$headers .= "MIME-Version: 1.0\r\n";
 				$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 
@@ -26,12 +29,15 @@
 	}
 
 	if( !function_exists('tourmaster_mail_content') ){
-		function tourmaster_mail_content( $content = '', $header = true, $footer = true){
+		function tourmaster_mail_content( $content = '', $header = true, $footer = true, $settings = array() ){
+
+			$settings['width'] = empty($settings['width'])? '600': $settings['width'];
+			$settings['padding'] = empty($settings['padding'])? '60px 60px 40px': $settings['padding'];
 
 			ob_start();
 
 			echo '<html><body>';
-			echo '<div class="tourmaster-mail-template" style="line-height: 1.7; background: #f5f5f5; margin: 40px auto 40px; width: 600px; font-size: 14px; font-family: Arial, Helvetica, sans-serif; color: #838383;" >';
+			echo '<div class="tourmaster-mail-template" style="line-height: 1.7; background: #f5f5f5; margin: 40px auto 40px; width: ' . $settings['width'] . 'px; font-size: 14px; font-family: Arial, Helvetica, sans-serif; color: #838383;" >';
 			if( !empty($header) ){
 				$header_logo = tourmaster_get_option('general', 'mail-header-logo', TOURMASTER_URL . '/images/logo.png');
 
@@ -41,7 +47,9 @@
 				echo '</div>';
 			}
 
-			$content = tourmaster_content_filter($content);
+			if( empty($settings['no-filter']) ){
+				$content = tourmaster_content_filter($content);
+			}
 
 			//apply css to link and p tag
 			$pointer = 0;
@@ -57,7 +65,7 @@
 					$content  = $first_section . ' style="color: #4290de; text-decoration: none;" ' . $last_section;
 				}
 			}
-			echo '<div class="tourmaster-mail-content" style="padding: 60px 60px 40px;" >' . $content . '</div>';
+			echo '<div class="tourmaster-mail-content" style="padding: ' . $settings['padding'] . ';" >' . $content . '</div>';
 
 			if( !empty($footer) ){
 				$footer_left = tourmaster_get_option('general', 'mail-footer-left', '');
@@ -83,7 +91,6 @@
 
 		} // tourmaster_mail_content
 	}
-	
 	if( !function_exists('tourmaster_mail_notification') ){
 		function tourmaster_mail_notification( $type, $tid = '', $user_id = '', $settings = array() ){
 
@@ -123,6 +130,11 @@
 					$tour_name .= '</h4>';
 					$raw_message = str_replace('{tour-name}', $tour_name, $raw_message);
 
+					// cc mail
+					if( strpos($type, 'admin') === 0 ){
+						$cc_mail = get_post_meta($result->tour_id, 'tourmaster-tour-cc-mail', true);
+					}
+
 					// customer name
 					$customer_name  = '<strong>' . $contact_info['first_name'] . ' ' . $contact_info['last_name'] . '</strong>';
 					$raw_message = str_replace('{customer-name}', $customer_name, $raw_message);
@@ -141,6 +153,8 @@
 						$payment_method .= '<span class="payment-method" >';
 						if( $payment_info['payment_method'] == 'paypal' ){
 							$payment_method .= esc_html__('Paypal', 'tourmaster');
+						}else if( $payment_info['payment_method'] == 'hipayprofessional' ){
+							$payment_method .= esc_html__('Hipay Professional', 'tourmaster');
 						}else if( $payment_info['payment_method'] == 'receipt' ){
 							$payment_method .= esc_html__('Receipt', 'tourmaster');
 						}else{
@@ -170,7 +184,7 @@
 						$raw_message = str_replace('{transaction-id}', '', $raw_message);
 					}
 
-					if( !empty($result->payment_date) ){
+					if( !empty($result->payment_date) && $result->payment_date != '0000-00-00 00:00:00' ){
 						$payment_date  = '<div class="tourmaster-mail-payment-info" style="font-weight: 600; margin-bottom: 5px;" >';
 						$payment_date .= '<span class="tourmaster-head" >' . esc_html__('Payment Date :', 'tourmaster') . '</span> ';
 						$payment_date .= '<span class="payment-method" >' . tourmaster_date_format($result->payment_date) . '</span>';
@@ -204,6 +218,14 @@
 					$travel_date .= '</div>';
 					$raw_message = str_replace('{travel-date}', $travel_date, $raw_message);
 
+					// traveller amount
+					$booking_detail = json_decode($result->booking_detail, true);
+					if( empty($booking_detail['group']) && !empty($result->traveller_amount) ){
+						$raw_message = str_replace('{traveller-amount}', esc_html__('Traveller Amount :', 'tourmaster') . ' ' . $result->traveller_amount, $raw_message);
+					}else{
+						$raw_message = str_replace('{traveller-amount}', '', $raw_message);
+					}
+
 					// admin transaction url
 					$raw_message = str_replace('{admin-transaction-link}', admin_url('admin.php?page=tourmaster_order&single=' . $result->id), $raw_message);
 					
@@ -234,6 +256,10 @@
 
 					$user_email = tourmaster_get_user_meta($user_id, 'email');
 					$raw_message = str_replace('{customer-email}', $user_email, $raw_message);
+
+					$user_phone = tourmaster_get_user_meta($user_id, 'phone');
+					$user_phone = empty($user_phone)? ' -': $user_phone; 
+					$raw_message = str_replace('{customer-phone}', $user_phone, $raw_message);
 				}
 
 				// profile page url
@@ -246,18 +272,25 @@
 				$raw_message = str_replace('{divider}', '<div class="tourmaster-mail-divider" style="border-bottom-width: 1px; border-bottom-style: solid; margin-bottom: 30px; margin-top: 30px; border-color: #d7d7d7;" ></div>', $raw_message);
 
 				$message = tourmaster_mail_content($raw_message);
-				
+
 				// send the mail
 				$mail_settings = array(
 					'title' => $mail_title,
 					'message' => $message
 				);
 				
-				if( strpos($type, 'admin') === 0 ){
+				if( $type == 'admin-registration-complete-mail' ){
+					$mail_settings['recipient'] = tourmaster_get_option('general', 'admin-registration-email-address');
+					$mail_settings['reply-to'] = $user_email;
+				}else if( strpos($type, 'admin') === 0 ){
 					$mail_settings['recipient'] = tourmaster_get_option('general', 'admin-email-address');
 					$mail_settings['reply-to'] = $user_email;
 				}else if( !empty($user_email) ){
 					$mail_settings['recipient'] = $user_email;
+				}
+
+				if( !empty($cc_mail) ){
+					$mail_settings['cc'] = $cc_mail;
 				}
 
 				if( !empty($mail_settings['recipient']) ){
@@ -267,7 +300,7 @@
 
 		} // tourmaster_mail_notification
 	}
-	
+
 	// group message
 	add_action('wp_ajax_tourmaster_submit_group_message', 'tourmaster_ajax_submit_group_message');
 	if( !function_exists('tourmaster_ajax_submit_group_message') ){
@@ -393,4 +426,142 @@
 		    }
 
 		} // tourmaster_mail_reminder
+	}
+
+	if( !function_exists('tourmaster_send_email_invoice') ){
+		function tourmaster_send_email_invoice( $tid ){
+
+			$enable_email_invoice = tourmaster_get_option('general', 'enable-customer-invoice', 'enable');
+			if( $enable_email_invoice == 'disable' ) return;
+
+			ob_start();
+			$result = tourmaster_get_booking_data(array(
+				'id' => $tid,
+			), array('single' => true));
+
+			echo '<div style="background: #fff; padding: 50px 50px; font-size: 14px; " >'; // tourmaster-invoice-wrap
+
+			$invoice_logo = tourmaster_get_option('general', 'invoice-logo');
+			$billing_info = empty($result->billing_info)? array(): json_decode($result->billing_info, true);
+			echo '<div style="margin-bottom: 60px; color: #121212;" >'; // tourmaster-invoice-head
+			echo '<div style="float: left;" >'; // tourmaster-invoice-head-left
+			echo '<div style="margin-bottom: 35px;" >'; // tourmaster-invoice-logo
+			if( empty($invoice_logo) ){
+				echo tourmaster_get_image(TOURMASTER_URL . '/images/invoice-logo.png');
+			}else{
+				echo tourmaster_get_image($invoice_logo);
+			}
+			echo '</div>'; // tourmaster-invoice-logo
+			echo '<div style="font-size: 16px; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;" >' . esc_html__('Invoice ID :', 'tourmaster') . ' #' . $result->id . '</div>'; // tourmaster-invoice-id
+			echo '<div>' . esc_html__('Invoice date :', 'tourmaster') . ' ' . tourmaster_date_format($result->booking_date) . '</div>'; // tourmaster-invoice-date
+			echo '<div style="margin-top: 34px;" >'; // tourmaster-invoice-receiver
+			echo '<div style="font-size: 16px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px;" >' . esc_html__('Invoice To', 'tourmaster') . '</div>'; // tourmaster-invoice-receiver-head
+			echo '<div>'; // tourmaster-invoice-receiver-info
+			$customer_address = tourmaster_get_option('general', 'invoice-customer-address');
+			if( empty($customer_address) ){
+				echo '<span style="display: block; margin-bottom: 4px;" >' . $billing_info['first_name'] . ' ' . $billing_info['last_name'] . '</span>'; // tourmaster-invoice-receiver-name
+				echo '<span style="display: block; max-width: 250px;" >' . (empty($billing_info['contact_address'])? '': $billing_info['contact_address']) . '</span>'; // tourmaster-invoice-receiver-address
+			}else{
+				echo tourmaster_content_filter(tourmaster_set_contact_form_data($customer_address, $billing_info));
+			}
+			echo '</div>';
+			echo '</div>';
+			echo '</div>'; // tourmaster-invoice-head-left
+			
+			$company_name = tourmaster_get_option('general', 'invoice-company-name', '');
+			$company_info = tourmaster_get_option('general', 'invoice-company-info', '');
+			echo '<div style="float: right; padding-top: 10px; width: 180px;" >'; // tourmaster-invoice-head-right
+			echo '<div>'; // tourmaster-invoice-company-info
+			echo '<div style="font-size: 16px; font-weight: bold; margin-bottom: 20px;" >' . $company_name . '</div>'; // tourmaster-invoice-company-name
+			echo '<div>' . tourmaster_content_filter($company_info) . '</div>'; // tourmaster-invoice-company-info
+			echo '</div>';
+			echo '</div>'; // tourmaster-invoice-head-right
+
+			echo '<div style="clear: both" ></div>';
+			echo '</div>'; // tourmaster-invoice-head
+
+			// price breakdown
+			if( !empty($result->pricing_info) ){
+				$pricing_info = json_decode($result->pricing_info, true);
+				echo '<div>'; // tourmaster-invoice-price-breakdown
+				echo '<div style="padding: 18px 25px; font-size: 14px; font-weight: 700; text-transform: uppercase; color: #454545; background-color: #f3f3f3" >'; // tourmaster-invoice-price-head
+				echo '<span style="width: 80%; float: left;" >' . esc_html__('Description', 'tourmaster') . '</span>'; // tourmaster-head
+				echo '<span style="overflow: hidden;" >' . esc_html__('Total', 'tourmaster') . '</span>'; // tourmaster-tail
+				echo '</div>'; // tourmaster-invoice-price-head
+
+				echo tourmaster_get_tour_invoice_price_email($result->tour_id, $pricing_info['price-breakdown']);
+
+				echo '<div style="font-weight: bold; padding: 18px 25px; border-width: 1px 0px 2px; border-style: solid; border-color: #e1e1e1;" >'; // tourmaster-invoice-total-price
+				echo '<span style="float: left; margin-left: 55%; width: 25%; font-size: 15px;" >' . esc_html__('Total', 'tourmaster') . '</span> '; // tourmaster-head
+				echo '<span style="display: block; overflow: hidden; font-size: 16px;" >' . tourmaster_money_format($result->total_price) . '</span>'; // tourmaster-tail
+				echo '</div>'; // tourmaster-invoice-total-price
+				echo '</div>'; // tourmaster-invoice-price-breakdown
+			}
+
+			if( !empty($result->order_status) && in_array($result->order_status, array('approve', 'online-paid', 'departed', 'deposit-paid')) ){
+				$payment_date = tourmaster_date_format($result->payment_date);
+				$payment_info = json_decode($result->payment_info, true);
+
+				echo '<div style="padding: 22px 35px; margin-top: 40px; background: #f3f3f3; color: #454545" >'; // tourmaster-invoice-payment-info
+				echo '<div style="float: left; margin-right: 60px; text-transform: uppercase;" >'; // tourmaster-invoice-payment-info-item
+				echo '<div style="font-weight: 800; margin-bottom: 5px;" >' . esc_html__('Payment Method', 'tourmaster') . '</div>'; // tourmaster-head
+				echo '<div>'; // tourmaster-tail
+				if( !empty($payment_info['payment_method']) && $payment_info['payment_method'] == 'receipt' ){
+					echo esc_html__('Bank Transfer', 'tourmaster');
+				}else if( !empty($payment_info['payment_method']) ){
+					echo esc_html__('Online Payment', 'tourmaster');
+				}
+				echo '</div>';
+				echo '</div>'; // tourmaster-invoice-payment-info-item
+
+				if( !empty($payment_info['amount']) ){
+					echo '<div style="float: left; margin-right: 60px; text-transform: uppercase;" >'; // tourmaster-invoice-payment-info-item
+					echo '<div style="font-weight: 800; margin-bottom: 5px;" >' . esc_html__('Paid Amount', 'tourmaster') . '</div>'; // tourmaster-head
+					if( !empty($payment_info['deposit_amount']) ){
+						echo '<div>' . tourmaster_money_format($payment_info['deposit_amount']) . '</div>'; // tourmaster-tail
+					}else{
+						echo '<div>' . tourmaster_money_format($payment_info['amount']) . '</div>';	// tourmaster-tail
+					}
+					echo '</div>'; // tourmaster-invoice-payment-info-item
+				}
+
+				echo '<div style="float: left; margin-right: 60px; text-transform: uppercase;" >'; // tourmaster-invoice-payment-info-item
+				echo '<div style="font-weight: 800; margin-bottom: 5px;" >' . esc_html__('Date', 'tourmaster') . '</div>'; // tourmaster-head
+				echo '<div>' . $payment_date . '</div>'; // tourmaster-tail
+				echo '</div>'; // tourmaster-invoice-payment-info-item
+				
+				$transaction_id = '';
+				if( !empty($payment_info['transaction_id']) ){
+					$transaction_id = $payment_info['transaction_id'];
+				}else if( !empty($payment_info['transaction-id']) ){
+					$transaction_id = $payment_info['transaction-id'];
+				}
+				if( !empty($transaction_id) ){
+					echo '<div style="float: left; margin-right: 60px; text-transform: uppercase;" >'; // tourmaster-invoice-payment-info-item
+					echo '<div style="font-weight: 800; margin-bottom: 5px;" >' . esc_html__('Transaction ID', 'tourmaster') . '</div>'; // tourmaster-head
+					echo '<div>' . $transaction_id . '</div>'; // tourmaster-tail
+					echo '</div>'; // tourmaster-invoice-payment-info-item
+				}
+
+				echo '<div style="clear: both" ></div>';
+				echo '</div>';
+			}
+
+			echo '</div>'; // tourmaster-invoice-wrap
+
+			$content = ob_get_contents();
+			ob_end_clean();
+
+			// send the mail
+			$mail_settings = array(
+				'title' => sprintf(esc_html__('Invoice From %s', 'tourmaster'), tourmaster_get_option('general', 'system-email-name', 'WORDPRESS')), 
+				'message' => tourmaster_mail_content($content, true, true, array('width' => '1210', 'padding' => '0px 1px', 'no-filter' => true)),
+				'recipient' => $billing_info['email']
+			);
+			
+			if( !empty($mail_settings['recipient']) ){
+				tourmaster_mail($mail_settings);
+			}
+
+		} // tourmaster_send_email_invoice
 	}

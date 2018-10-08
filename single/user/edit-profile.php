@@ -16,17 +16,26 @@
 			}
 			tourmaster_user_update_notification($error_messages, false);
 		}else{
+			tourmaster_update_profile_avatar();			
 			tourmaster_update_profile_field($profile_fields);
 			tourmaster_user_update_notification(esc_html__('Your profile has been successfully changed.', 'tourmaster'));
 		}
 	}
 
 	// edit profile page content
-	echo '<form class="tourmaster-edit-profile-wrap tourmaster-form-field" method="POST" >';
-
+	$avatar = get_the_author_meta('tourmaster-user-avatar', $current_user->data->ID);
+	echo '<form class="tourmaster-edit-profile-wrap tourmaster-form-field" method="POST" enctype="multipart/form-data" >';
 	echo '<div class="tourmaster-edit-profile-avatar" >';
-	echo get_avatar($current_user->data->ID, 85);
-	echo '<a class="tourmaster-button" href="https://gravatar.com" target="_blank" >' . esc_html__('Change Profile Picture', 'tourmaster') . '</a>';
+	if( !empty($avatar['file_url']) ){
+		echo '<img src="' . esc_url($avatar['file_url']) . '" alt="profile-image" />';
+	}else{
+		echo get_avatar($current_user->data->ID, 85);
+	}
+	echo '<label>';
+	echo '<a class="tourmaster-button" >' . esc_html__('Change Profile Picture', 'tourmaster') . '</a>';
+	echo '<input type="file" name="profile-image" />';
+	echo '</label>';
+	// echo '<a class="tourmaster-button" href="https://gravatar.com" target="_blank" >' . esc_html__('Change Profile Picture', 'tourmaster') . '</a>';
 	echo '</div>';
 
 	foreach( $profile_fields as $slug => $profile_field ){

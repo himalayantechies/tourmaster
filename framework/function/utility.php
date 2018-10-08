@@ -6,6 +6,34 @@
 	*	---------------------------------------------------------------------
 	*/
 
+	// Setup a post object and store the original loop item so we can reset it later
+	if( !function_exists('tourmaster_setup_admin_postdata') ){
+		function tourmaster_setup_admin_postdata(){
+			global $post;
+
+			if( is_admin() ){
+				global $tourmaster_post;
+				$tourmaster_post = $post;
+			}
+		}
+	}
+
+	// Reset $post back to the original item
+	if( !function_exists('tourmaster_reset_admin_postdata') ){
+		function tourmaster_reset_admin_postdata(){
+			global $tourmaster_post;
+
+			if( is_admin() && !empty($tourmaster_post) ){
+				global $post;
+				$post = $tourmaster_post;
+				setup_postdata($post);
+
+				// clean up the data
+				unset($tourmaster_post);
+			}
+		}
+	}
+
 	// include utility function for uses 
 	// make sure to call this function inside wp_enqueue_script action
 	if( !function_exists('tourmaster_include_utility_script') ){
@@ -273,7 +301,7 @@
 	// retrieve all posts from each post type
 	if( !function_exists('tourmaster_get_post_list') ){	
 		function tourmaster_get_post_list( $post_type, $with_none = false ){
-			$post_list = get_posts(array('post_type' => $post_type, 'numberposts'=>99));
+			$post_list = get_posts(array('post_type' => $post_type, 'numberposts'=>999));
 
 			$ret = array();
 			if( !empty($with_none) ){
@@ -387,10 +415,6 @@
 	}
 	if( !function_exists('tourmaster_get_ajax_pagination') ){	
 		function tourmaster_get_ajax_pagination($post_type, $settings, $max_num_page, $target, $extra_class = ''){
-			if( function_exists('gdlr_core_get_ajax_pagination') ){
-				return gdlr_core_get_ajax_pagination($post_type, $settings, $max_num_page, $target, $extra_class);
-			}
-
 			if( $max_num_page <= 1 ) return '';
 			
 			if( empty($settings['pagination-style']) || $settings['pagination-style'] == 'default' ){
@@ -433,10 +457,6 @@
 	}
 	if( !function_exists('tourmaster_get_ajax_load_more') ){	
 		function tourmaster_get_ajax_load_more($post_type, $settings, $paged, $max_num_page, $target, $extra_class){
-			if( function_exists('gdlr_core_get_ajax_load_more') ){
-				return gdlr_core_get_ajax_load_more($post_type, $settings, $paged, $max_num_page, $target, $extra_class);
-			}
-
 			$ret  = '';
 			if( $paged <= $max_num_page ){
 				$extra_class = str_replace('gdlr-core', 'tourmaster', $extra_class);
@@ -461,10 +481,6 @@
 	}
 	if( !function_exists('tourmaster_get_ajax_filterer') ){	
 		function tourmaster_get_ajax_filterer($post_type, $taxonomy, $settings, $target, $extra_class){
-			if( function_exists('gdlr_core_get_ajax_filterer') ){
-				return gdlr_core_get_ajax_filterer($post_type, $taxonomy, $settings, $target, $extra_class);
-			}		
-
 			$extra_class = str_replace('gdlr-core', 'tourmaster', $extra_class);
 
 			$ret  = '<div class="tourmaster-filterer-wrap tourmaster-ajax-action ' . esc_attr($extra_class) . '" ';

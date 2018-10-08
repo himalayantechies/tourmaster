@@ -1,6 +1,258 @@
 (function($){
 	"use strict";
 
+	// tour booking bar
+	function tourmaster_tour_booking_ajax( ajax_url, ajax_settings, ajax_data ){
+
+		var ajax_settings = $.extend({
+			beforeSend: function( jqXHR, settings ){},
+			error: function( jqXHR, textStatus, errorThrown ){
+
+				// print error message for debug purpose
+				console.log(jqXHR, textStatus, errorThrown);
+			},
+			success: function( data ){ 
+				// console.log('success', data); 
+			}
+		}, ajax_settings);
+
+		var ajax_data = $.extend({
+			action: 'tourmaster_tour_order_booking',
+		}, ajax_data);
+
+		$.ajax({
+			type: 'POST',
+			url: ajax_url,
+			data: ajax_data,
+			dataType: 'json',
+			beforeSend: ajax_settings.beforeSend,
+			error: ajax_settings.error,
+			success: ajax_settings.success
+		});
+	}
+
+	// read form data
+	function tourmaster_tour_input( form ){
+		var ret = {};
+
+		form.find('input[name], select[name], textarea[name]').each(function(){
+			var key = $(this).attr('name');
+			var value;
+
+			if( $(this).is('[type="checkbox"]') ){
+				var value = $(this).is(':checked')? $(this).val(): 0;
+			}else if( $(this).is('[type="radio"]') ){
+				if( $(this).is(':checked') ){
+					var value = $(this).val();
+				}
+			}else{
+				var value = $(this).val();
+			}
+
+			if( (key.lastIndexOf('[]') == (key.length - 2)) ){
+				key = key.substr(0, key.length - 2);
+				if( typeof(ret[key]) != 'object' ){
+					ret[key] = []
+				}
+
+				ret[key].push(value);
+			}else{	
+				ret[$(this).attr('name')] = value;
+			}
+		});	
+
+		return ret;
+	}
+
+	// tourmaster lightbox
+	function tourmaster_lightbox_tour_edit( lightbox_wrap ){
+
+		// step 1
+		lightbox_wrap.on('change', 'input[name="tour-date"], select[name="tour-date"]', function(){
+			var form = $(this).closest('form');
+			var sent_data = tourmaster_tour_input(form);
+			sent_data['step'] = 1;
+
+			// remove unrelated input
+			form.find('[data-step]').each(function(){
+				if( $(this).attr('data-step') > 1 ){
+					$(this).slideUp(200, function(){ $(this).remove(); });
+				}
+			});
+
+			// get new input
+			tourmaster_tour_booking_ajax(form.attr('data-ajax'), {
+				success: function(data){
+					if( typeof(data.content) != 'undefined' ){
+
+						// remove unrelated input once again
+						form.find('[data-step]').each(function(){
+							if( $(this).attr('data-step') > 1 ){
+								$(this).slideUp(200, function(){ $(this).remove(); });
+							}
+						});
+
+						var content = $(data.content).hide();
+						form.append(content);
+						content.slideDown(200);
+					}
+				}
+			}, {
+				data: sent_data
+			});
+		});
+
+		// tour room changed
+		lightbox_wrap.on('change', 'select[name="tour-room"]', function(){
+			var wrap = $(this).closest('.tourmaster-tour-booking-room');
+			var template = wrap.siblings('.tourmaster-tour-booking-room-template').children();
+			var container = wrap.siblings('.tourmaster-tour-booking-people-container');
+			var container_animate = false;
+
+			if( $(this).val() && container.length == 0 ){
+				var container = $('<div class="tourmaster-tour-booking-people-container" data-step="999" ></div>').hide();
+				container.insertAfter(wrap);
+				container_animate = true;
+			}
+
+			if( $(this).val() ){
+				var count = parseInt($(this).val()) - container.children().length;
+
+				// add template fields
+				if( count > 0 ){
+					for( var i = 0; i < count; i++ ){
+						var clone = template.clone();
+						clone.attr('data-step', 4);
+						clone.find('.tourmaster-tour-booking-room-text > span').html((container.children().length + 1));
+
+						container.append(clone);
+						if( !container_animate ){
+							clone.hide();
+							clone.slideDown(200);
+						}
+					} 
+
+				// remove excess fields
+				}else if( count < 0 ){
+					container.children('div').slice(count).slideUp(200, function(){ $(this).remove(); });	
+				}
+
+				if( container_animate ){
+					container.slideDown(200);
+				}
+			
+			}else{
+				// remove container out
+				if( container.length > 0 ){
+					container.slideUp(200, function(){ $(this).remove(); });
+				}
+			}
+		});
+
+	}
+	function tourmaster_lightbox( content ){
+
+		var lightbox_wrap = $('<div class="tourmaster-lightbox-wrapper" ></div>').hide();
+		var lightbox_content_wrap = $('<div class="tourmaster-lightbox-content-cell" ></div>');
+		lightbox_wrap.append(lightbox_content_wrap);
+		lightbox_content_wrap.wrap($('<div class="tourmaster-lightbox-content-row" ></div>'));
+		lightbox_content_wrap.append(content);
+
+		var scrollPos = $(window).scrollTop();
+		$('html').addClass('tourmaster-lightbox-on');
+		$('body').append(lightbox_wrap);
+		lightbox_wrap.fadeIn(300);
+
+		// do a lightbox action
+		lightbox_wrap.on('click', '.tourmaster-lightbox-close', function(){
+			$('html').removeClass('tourmaster-lightbox-on');
+			$(window).scrollTop(scrollPos);
+			lightbox_wrap.fadeOut(300, function(){
+				$(this).remove();
+			});
+		});
+
+		// combobox list
+		lightbox_wrap.on('click', '.tourmaster-combobox-list-display', function(){
+			var display_box_wrap = $(this).closest('.tourmaster-combobox-list-wrap');
+			var display_box = $(this).siblings('ul');
+			if( display_box.css('display') == 'none' ){
+				display_box.css('display', 'block');
+				display_box_wrap.css('padding-bottom', display_box.outerHeight());
+				display_box.css('display', 'none');
+			}
+
+			$(this).siblings('ul').fadeToggle(200, function(){
+				if( display_box.css('display') == 'none' ){
+					display_box_wrap.css('padding-bottom', '0');
+				}
+			});
+		});
+		lightbox_wrap.on('click', '.tourmaster-combobox-list-wrap ul li', function(){
+			var value = $(this).attr('data-value');
+			var display_box_wrap = $(this).closest('.tourmaster-combobox-list-wrap');
+			$(this).closest('ul').fadeOut(200, function(){
+				display_box_wrap.css('padding-bottom', '0');
+			});
+			$(this).closest('ul').siblings('input').val(value).trigger('change');
+			$(this).closest('ul').siblings('.tourmaster-combobox-list-display').children('span').html(value);
+		});
+		$(document).mouseup(function(e){
+		    var container = $('.tourmaster-combobox-list-wrap');
+
+		    // if the target of the click isn't the container nor a descendant of the container
+		    if( container.length && !container.is(e.target) && container.has(e.target).length === 0 ) {
+		        container.find('ul').fadeOut(200, function(){
+		        	container.css('padding-bottom', '0');
+		        });
+		    }
+		});
+
+		// tour edit action
+		tourmaster_lightbox_tour_edit(lightbox_wrap);
+
+		// form submission
+		lightbox_wrap.find('form .tourmaster-order-edit-submit').click(function(){
+			var form = $(this).closest('form');
+			var loading = form.find('.tourmaster-order-edit-form-load');
+			var error = form.find('.tourmaster-order-edit-form-error');
+
+			error.slideUp(150);
+			loading.slideDown(150);
+
+			$.ajax({
+				type: 'POST',
+				url: form.attr('data-ajax-url'),
+				data: tourmaster_tour_input(form),
+				dataType: 'json',
+				error: function( jqXHR, textStatus, errorThrown ){
+
+					loading.slideUp(150);
+					error.slideDown(150);
+
+					// print error message for debug purpose
+					console.log(jqXHR, textStatus, errorThrown);
+				},
+				success: function( data ){
+
+					loading.slideUp(150);
+
+					if( data.status == 'success' ){
+						location.reload();
+					}else if( data.status == 'failed' ){
+						error.html(data.message).slideDown();
+					}else{
+						console.log(data);
+					}
+
+				}
+			});
+
+			return false;
+		});
+
+	} // tourmaster_lightbox
+
 	// on document ready
 	$(document).ready(function(){
 
@@ -26,6 +278,16 @@
 		});
 
 		$('a[href$=".jpg"], a[href$=".png"], a[href$=".gif"]').fancybox();
+
+		$('#tourmaster-csv-export').on('click', function(){
+			$(this).siblings('input[name="export"]').val(1);
+			$(this).closest('form').submit();
+		});
+
+		$('[data-tmlb]').on('click', function(){
+			var lb_content = $(this).siblings('[data-tmlb-id="' + $(this).attr('data-tmlb') + '"]');
+			tourmaster_lightbox(lb_content.clone());
+		});
 
 	}); // document.ready
 

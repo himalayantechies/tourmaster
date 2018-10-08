@@ -21,8 +21,18 @@
 					'title' => empty($booking_detail['traveller_title'])? '': $booking_detail['traveller_title'],
 					'first_name' => $booking_detail['traveller_first_name'],
 					'last_name' => $booking_detail['traveller_last_name'],
-					'passport' => $booking_detail['traveller_passport'],
+					'passport' => empty($booking_detail['traveller_passport'])? '': $booking_detail['traveller_passport'],
 				);
+
+				$additional_traveller_fields = tourmaster_get_option('general', 'additional-traveller-fields', '');
+				if( !empty($additional_traveller_fields) ){
+					$additional_traveller_fields = tourmaster_read_custom_fields($additional_traveller_fields);
+					foreach( $additional_traveller_fields as $field ){
+						if( !empty($booking_detail['traveller_' . $field['slug']]) ){
+							$traveller_info[$field['slug']] = $booking_detail['traveller_' . $field['slug']]; 
+						}
+					}
+				}
 			}
 			$contact_fields = tourmaster_get_payment_contact_form_fields();
 			foreach( $contact_fields as $field_slug => $contact_field ){
@@ -38,6 +48,11 @@
 				$contact_info['additional_notes'] = $booking_detail['additional_notes'];
 			}
 
+			// traveller amount
+			$male_amount = empty($traveller_amount['male'])? 0: $traveller_amount['male'];
+			$female_amount = empty($traveller_amount['female'])? 0: $traveller_amount['female'];
+			$traveller_amount = is_array($traveller_amount)? $traveller_amount['sum']: $traveller_amount;
+
 			// inserting the data
 			$data = array(
 				'booking_date' => current_time('mysql'),
@@ -50,12 +65,14 @@
 				'total_price' => $tour_price['total-price'],
 				'pricing_info' => json_encode($tour_price),
 				'booking_detail' => json_encode($booking_detail),
-				'traveller_amount' => $traveller_amount
+				'traveller_amount' => $traveller_amount,
+				'male_amount' => $male_amount,
+				'female_amount' => $female_amount
 			);
 			if( $tour_price['total-price'] <= 0 ){
 				$data['order_status'] = 'approved';
 			} 
-			$format = array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d');
+			$format = array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d');
 
 			$price_breakdown = $tour_price['price-breakdown'];
 			if( !empty($price_breakdown['coupon-code']) ){
@@ -163,10 +180,10 @@
 			}
 
 			// pagination	
-			if( $column == 'COUNT(*)' || $column == 'count(*)' || strpos($column, 'SUM') !== false ){
-				return $wpdb->get_var($sql);
-			}else if( !empty($settings['single']) ){
+			if( !empty($settings['single']) ){
 				return $wpdb->get_row($sql);	
+			}else if( $column == 'COUNT(*)' || $column == 'count(*)' || strpos($column, 'SUM') !== false ){
+				return $wpdb->get_var($sql);
 			}else{
 				return $wpdb->get_results($sql);	
 			}

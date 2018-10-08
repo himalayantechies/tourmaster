@@ -186,14 +186,24 @@
 
 				$t_data = apply_filters('goodlayers_payment_get_transaction_data', array(), $_POST['tid'], array('price', 'email'));
 
-				if( empty($t_data['price']) ){
+				$price = '';
+				if( $t_data['price']['deposit-price'] ){
+					$price = $t_data['price']['deposit-price'];
+					if( !empty($t_data['price']['deposit-price-raw']) ){
+						$deposit_amount = $t_data['price']['deposit-price-raw'];
+					}
+				}else{
+					$price = $t_data['price']['total-price'];
+				}
+
+				if( empty($price) ){
 					$ret['status'] = 'failed';
 					$ret['message'] = esc_html__('Cannot retrieve pricing data, please try again.', 'tourmaster');
 				
 				// Start the payment process
 				}else{
 
-					$price = intval(floatval($t_data['price']) * 100) / 100;
+					$price = round(floatval($price) * 100) / 100;
 
 					try{
 						// Common setup for API credentials
@@ -232,6 +242,9 @@
 									'amount' => $price,
 									'transaction_id' => $tresponse->getTransId()
 								);
+								if( !empty($deposit_amount) ){
+									$payment_info['deposit_amount'] = $deposit_amount;
+								}
 								do_action('goodlayers_set_payment_complete', $_POST['tid'], $payment_info);
 
 								$ret['status'] = 'success';

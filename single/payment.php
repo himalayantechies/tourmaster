@@ -2,8 +2,7 @@
 	/**
 	 * The template for displaying single tour posttype
 	 */
-//print_r($_REQUEST);
-	
+
 if( !empty($_POST) ){
 	$booking_cookie = json_encode($_POST);
 	setcookie('tourmaster-booking-detail', $booking_cookie, 0, '/', COOKIE_DOMAIN, is_ssl(), false);
@@ -19,17 +18,15 @@ if( !empty($_POST) ){
 			)
 		), array('single' => true));
 		
-		//print_r($result);
 		if( !empty($result) ){
 			$booking_detail = json_decode($result->booking_detail, true);
-			//print_r($booking_detail);exit;
 			$booking_detail['tid'] = $_GET['tid'];
 			$booking_detail['step'] = (empty($_GET['step'])? 3: intval($_GET['step']));
 			if( !empty($_GET['payment_method']) && $_GET['payment_method'] == 'paypal' ){
 				$booking_detail['payment_method'] = 'paypal';
 			}
-			if( !empty($_GET['payment_method']) && $_GET['payment_method'] == 'hblpay' ){
-				$booking_detail['payment_method'] = 'hblpay';
+			if( !empty($_GET['payment_method']) && $_GET['payment_method'] == 'hipayprofessional' ){
+				$booking_detail['payment_method'] = 'hipayprofessional';
 			}
 
 			$transaction_id = $_GET['tid'];
@@ -73,6 +70,7 @@ get_header();
 		}
 		echo ' >';
 		echo '<div class="traveltour-header-transparent-substitute" ></div>';
+		echo '<div class="tourmaster-payment-head-overlay-opacity" ></div>';
 		echo '<div class="tourmaster-payment-head-overlay" ></div>';
 		echo '<div class="tourmaster-payment-head-top-overlay" ></div>';
 		echo '<div class="tourmaster-payment-title-container tourmaster-container" >';
@@ -124,6 +122,7 @@ get_header();
 	echo '<div class="tourmaster-page-content tourmaster-item-pdlr clearfix" >';
 
 	$content = tourmaster_get_payment_page($booking_detail, true);
+
 	/* tourmaster booking bar */
 	echo '<div class="tourmaster-tour-booking-bar-wrap" id="tourmaster-tour-booking-bar-wrap" >';
 	echo '<div class="tourmaster-tour-booking-bar-outer" >';
@@ -153,7 +152,7 @@ get_header();
 
 	echo '</div>'; // tourmaster-page-wrapper
 get_footer(); 
-//exit;
+
 do_action('include_goodlayers_payment_script');
 
 ?>

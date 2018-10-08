@@ -220,6 +220,9 @@
 				) + tourmaster_get_custom_tax_list() + array(
 					'duration' => esc_html__('Duration', 'tourmaster'),
 					'date' => esc_html__('Date', 'tourmaster'),
+					'month' => esc_html__('Month', 'tourmaster'),
+					// 'start_date' => esc_html__('Start Date', 'tourmaster'),
+					// 'end_date' => esc_html__('End Date', 'tourmaster'),
 					'min-price' => esc_html__('Min Price', 'tourmaster'),
 					'max-price' => esc_html__('Max Price', 'tourmaster'),
 				);			
@@ -230,6 +233,7 @@
 					'tour_tag' => esc_html__('Tag', 'tourmaster'),
 					'duration' => esc_html__('Duration', 'tourmaster'),
 					'date' => esc_html__('Date', 'tourmaster'),
+					'month' => esc_html__('Month', 'tourmaster'),
 					'min-price' => esc_html__('Min Price', 'tourmaster'),
 					'max-price' => esc_html__('Max Price', 'tourmaster'),
 				);	

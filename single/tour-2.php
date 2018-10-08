@@ -25,7 +25,7 @@ get_header();
 	$tour_option = tourmaster_get_post_meta(get_the_ID(), 'tourmaster-tour-option');
 	$tour_option['form-settings'] = empty($tour_option['form-settings'])? 'booking': $tour_option['form-settings'];
 
-	echo '<div class="tourmaster-page-wrapper tourmaster-tour-style-1 ';
+	echo '<div class="tourmaster-page-wrapper tourmaster-tour-style-2 ';
 	echo ($tour_option['form-settings'] == 'none')? 'tourmaster-without-sidebar': 'tourmaster-with-sidebar';
 	echo '" id="tourmaster-page-wrapper" >';
 	
@@ -136,7 +136,7 @@ get_header();
 	if( !empty($tour_option['header-background-gradient']) && $tour_option['header-background-gradient'] != 'default' ){
 		$header_overlay = $tour_option['header-background-gradient'];
 	}
-
+	
 	echo '<div class="tourmaster-single-header-background-overlay" ' . tourmaster_esc_style(array(
 		'opacity' => empty($tour_option['header-background-overlay-opacity'])? '': $tour_option['header-background-overlay-opacity']
 	)) . ' ></div>';
@@ -189,7 +189,7 @@ get_header();
 
 		echo '</div>';
 	}
-	
+
 	if( empty($tour_option['enable-page-title']) || $tour_option['enable-page-title'] == 'enable' ){
 		echo '<h1 class="tourmaster-single-header-title" >' . get_the_title() . '</h1>';
 	} 
@@ -207,7 +207,6 @@ get_header();
 			
 			$header_price .= '<div class="tourmaster-header-enquiry-ribbon" ></div>';
 			$header_price .= '<div class="tourmaster-header-price-wrap" >';
-			$header_price .= '<div class="tourmaster-header-price-overlay" ></div>';
 			$header_price .= '<span class="tourmaster-header-enquiry" >';
 			if( $tour_option['form-settings'] == 'enquiry' ){
 				$header_price .= esc_html__('Send Us An Enquiry', 'tourmaster');
@@ -228,13 +227,10 @@ get_header();
 			}
 			$header_price .= '</div>';
 			$header_price .= '<div class="tourmaster-header-price-wrap" >';
-			$header_price .= '<div class="tourmaster-header-price-overlay" ></div>';
 			$header_price .= $tour_style->get_price(array('with-info' => true));
 			$header_price .= '</div>'; // tourmaster-header-price-wrap
 		}
 		$header_price .= '</div>'; // touramster-header-price 
-
-		echo $header_price;
 	}
 	echo '</div>'; // tourmaster-single-header-container-inner
 	echo '</div>'; // tourmaster-single-header-container

@@ -8,7 +8,7 @@
 
 	if( !function_exists('tourmaster_get_payment_page') ){
 		function tourmaster_get_payment_page($booking_detail, $is_single = false){
-			
+
 			// initiate the variable
 			if( !empty($booking_detail['tour-id']) && !empty($booking_detail['tour-date']) ){
 				$tour_option = tourmaster_get_post_meta($booking_detail['tour-id'], 'tourmaster-tour-option');
@@ -37,15 +37,20 @@
 
 			// booking step 2
 			if( empty($booking_detail['step']) || $booking_detail['step'] == '2' ){
+
+				unset($booking_detail['payment_method']);
+
 				return array(
 					'content' => tourmaster_payment_traveller_form( $tour_option, $date_price, $booking_detail ) . 
 								 tourmaster_payment_contact_form( $booking_detail ),
 					'sidebar' => tourmaster_get_booking_bar_summary( $tour_option, $date_price, $booking_detail, true)
 				);
 
-
 			// booking step 3
 			}else if( $booking_detail['step'] == '3' ){
+
+				unset($booking_detail['payment_method']);
+
 				return array(
 					'content' => tourmaster_payment_service_form( $tour_option, $booking_detail ) . 
 								 tourmaster_payment_contact_detail( $booking_detail ) . 
@@ -53,12 +58,11 @@
 								 tourmaster_payment_method(),
 					'sidebar' => tourmaster_get_booking_bar_summary( $tour_option, $date_price, $booking_detail )
 				);
-				
+
 			// booking step 4
 			}else if( $booking_detail['step'] == '4' ){
-			
+				
 				if( $is_single ){
-			
 					return array(
 						'content' => tourmaster_payment_complete_delay(),
 						'sidebar' => tourmaster_get_booking_bar_summary( $tour_option, $date_price, $booking_detail ),
@@ -69,7 +73,7 @@
 					if( $date_price['pricing-method'] == 'group' ){
 						$traveller_amount = 1;
 					}else{
-						$traveller_amount = tourmaster_get_tour_people_amount($tour_option, $date_price, $booking_detail);
+						$traveller_amount = tourmaster_get_tour_people_amount($tour_option, $date_price, $booking_detail, 'all');
 					}
 					$package_group_slug = empty($date_price['group-slug'])? '': $date_price['group-slug'];
 					
@@ -167,6 +171,18 @@
 						$ret .= '<span class="tourmaster-tail" >' . (empty($booking_detail['tour-adult'])? '0': $booking_detail['tour-adult']) . '</span>';
 						$ret .= '</div>'; // tourmaster-tour-booking-bar-summary-people-amount
 					}
+					if( !empty($date_price['male-price']) ){
+						$ret .= '<div class="tourmaster-tour-booking-bar-summary-people-amount tourmaster-male" >';
+						$ret .= '<span class="tourmaster-head" >' . esc_html__('Male', 'tourmaster') . ' : </span>';
+						$ret .= '<span class="tourmaster-tail" >' . (empty($booking_detail['tour-male'])? '0': $booking_detail['tour-male']) . '</span>';
+						$ret .= '</div>'; // tourmaster-tour-booking-bar-summary-people-amount
+					}
+					if( !empty($date_price['female-price']) ){
+						$ret .= '<div class="tourmaster-tour-booking-bar-summary-people-amount tourmaster-female" >';
+						$ret .= '<span class="tourmaster-head" >' . esc_html__('Female', 'tourmaster') . ' : </span>';
+						$ret .= '<span class="tourmaster-tail" >' . (empty($booking_detail['tour-female'])? '0': $booking_detail['tour-female']) . '</span>';
+						$ret .= '</div>'; // tourmaster-tour-booking-bar-summary-people-amount
+					}
 					if( !empty($date_price['children-price']) ){
 						$ret .= '<div class="tourmaster-tour-booking-bar-summary-people-amount tourmaster-children" >';
 						$ret .= '<span class="tourmaster-head" >' . esc_html__('Children', 'tourmaster') . ' : </span>';
@@ -211,6 +227,18 @@
 							$ret .= '<div class="tourmaster-tour-booking-bar-summary-people-amount tourmaster-adult" >';
 							$ret .= '<span class="tourmaster-head" >' . esc_html__('Adult', 'tourmaster') . ' : </span>';
 							$ret .= '<span class="tourmaster-tail" >' . (empty($booking_detail['tour-adult'][$i])? '0': $booking_detail['tour-adult'][$i]) . '</span>';
+							$ret .= '</div>'; // tourmaster-tour-booking-bar-summary-people-amount
+						}
+						if( !empty($date_price['male-price']) ){
+							$ret .= '<div class="tourmaster-tour-booking-bar-summary-people-amount tourmaster-male" >';
+							$ret .= '<span class="tourmaster-head" >' . esc_html__('Male', 'tourmaster') . ' : </span>';
+							$ret .= '<span class="tourmaster-tail" >' . (empty($booking_detail['tour-male'][$i])? '0': $booking_detail['tour-male'][$i]) . '</span>';
+							$ret .= '</div>'; // tourmaster-tour-booking-bar-summary-people-amount
+						}
+						if( !empty($date_price['female-price']) ){
+							$ret .= '<div class="tourmaster-tour-booking-bar-summary-people-amount tourmaster-female" >';
+							$ret .= '<span class="tourmaster-head" >' . esc_html__('Female', 'tourmaster') . ' : </span>';
+							$ret .= '<span class="tourmaster-tail" >' . (empty($booking_detail['tour-female'][$i])? '0': $booking_detail['tour-female'][$i]) . '</span>';
 							$ret .= '</div>'; // tourmaster-tour-booking-bar-summary-people-amount
 						}
 						if( !empty($date_price['children-price']) ){
@@ -259,8 +287,17 @@
 		
 			$ret .= '</div>'; // tourmaster-tour-booking-bar-summary
 
-			// deposit payment
-			$enable_deposit_payment = tourmaster_get_option('payment', 'enable-deposit-payment', 'disable');
+			// payment option	
+			$enable_full_payment = tourmaster_get_option('payment', 'enable-full-payment', 'enable');
+
+			if( empty($tour_option['deposit-booking']) || $tour_option['deposit-booking'] == 'default' ){
+				$enable_deposit_payment = tourmaster_get_option('payment', 'enable-deposit-payment', 'disable');
+				$deposit_amount = tourmaster_get_option('payment', 'deposit-payment-amount', '0');
+			}else{
+				$enable_deposit_payment = $tour_option['deposit-booking'];
+				$deposit_amount = empty($tour_option['deposit-amount'])? 0: $tour_option['deposit-amount'];
+			}
+			
 			if( $enable_deposit_payment == 'enable' ){
 				$current_date = strtotime(current_time('Y-m-d'));
 				$deposit_before_days = intval(tourmaster_get_option('payment', 'display-deposit-payment-day', '0'));
@@ -269,15 +306,18 @@
 					$payment_type = 'full';
 				}else{
 					$payment_type = empty($booking_detail['payment-type'])? 'full': $booking_detail['payment-type'];
-					$deposit_amount = tourmaster_get_option('payment', 'deposit-payment-amount', '0');
 				}
 			}else{
 				$payment_type = 'full';
 			}
 
+			if( $payment_type == 'full' && $enable_full_payment == 'disable' ){
+				$payment_type = 'partial';
+			}	
+
 			$ret .= '<div class="tourmaster-tour-booking-bar-total-price-wrap ' . ($payment_type == 'partial'? 'tourmaster-deposit': '') . '" >';
 
-			if( $enable_deposit_payment == 'enable' && !empty($deposit_amount) && $editable ){
+			if( $enable_full_payment == 'enable' && $enable_deposit_payment == 'enable' && !empty($deposit_amount) && $editable ){
 				$ret .= '<div class="tourmaster-tour-booking-bar-deposit-option" >';
 				$ret .= '<label class="tourmaster-deposit-payment-full" >';
 				$ret .= '<input type="radio" name="payment-type" value="full" ' . ($payment_type == 'full'? 'checked': '') . ' />';
@@ -308,16 +348,47 @@
 			if( $enable_deposit_payment == 'enable' && !empty($deposit_amount) ){
 
 				// for price with paypal service fee
-				if( !empty($tour_price['deposit-price']) ){
-					$deposit_price = $tour_price['deposit-price'];
-				}else{
+				if( $editable ){
 					$deposit_price = ($tour_price['total-price'] * floatval($deposit_amount)) / 100;
+				}else if( !empty($tour_price['deposit-price']) ){
+					$deposit_price = $tour_price['deposit-price'];
 				}
-				$ret .= '<div class="tourmaster-tour-booking-bar-deposit-text ' . ($payment_type == 'partial'? 'tourmaster-active': '') . '" >';
-				$ret .= '<span class="tourmaster-tour-booking-bar-deposit-title" >' . sprintf(esc_html__('%d%% deposit'), $deposit_amount) . '</span>';
-				$ret .= '<span class="tourmaster-tour-booking-bar-deposit-price" >' . tourmaster_money_format($deposit_price) . '</span>';
-				$ret .= '<span class="tourmaster-tour-booking-bar-deposit-caption" >' . esc_html__('*Pay the rest later', 'tourmaster') . '</span>';
-				$ret .= '</div>';
+
+				if( !empty($deposit_price) ){
+					$display_rate = true;	
+
+					$ret .= '<div class="tourmaster-tour-booking-bar-deposit-text ' . ($payment_type == 'partial'? 'tourmaster-active': '') . '" >';
+					
+					if( !empty($tour_price['deposit-price-raw']) ){
+						$ret .= '<div class="tourmaster-tour-booking-bar-deposit-info clearfix" >';
+						$ret .= '<span class="tourmaster-head" >' . sprintf(esc_html__('Deposit Amount (%s%%)', 'tourmaster'), $deposit_amount) . '</span>';
+						$ret .= '<span class="tourmaster-tail" >' . tourmaster_money_format($tour_price['deposit-price-raw']) . '</span>';
+						$ret .= '</div>';
+
+						$display_rate = false;
+					}
+
+					if( !empty($tour_price['deposit-paypal-service-rate']) && !empty($tour_price['deposit-paypal-service-fee']) ){
+						$ret .= '<div class="tourmaster-tour-booking-bar-deposit-info clearfix" >';
+						$ret .= '<span class="tourmaster-head" >' . sprintf(esc_html__('%d%% Paypal Service Fee', 'tourmaster'), $tour_price['deposit-paypal-service-rate']) . '</span>';
+						$ret .= '<span class="tourmaster-tail" >' . tourmaster_money_format($tour_price['deposit-paypal-service-fee']) . '</span>';
+						$ret .= '</div>';
+					}else if( !empty($tour_price['deposit-credit-card-service-rate']) && !empty($tour_price['deposit-credit-card-service-fee']) ){
+						$ret .= '<div class="tourmaster-tour-booking-bar-deposit-info clearfix" >';
+						$ret .= '<span class="tourmaster-head" >' . sprintf(esc_html__('%d%% Credit Card Service Fee', 'tourmaster'), $tour_price['deposit-credit-card-service-rate']) . '</span>';
+						$ret .= '<span class="tourmaster-tail" >' . tourmaster_money_format($tour_price['deposit-credit-card-service-fee']) . '</span>';
+						$ret .= '</div>';
+					}
+
+					if( $display_rate ){
+						$ret .= '<span class="tourmaster-tour-booking-bar-deposit-title" >' . sprintf(esc_html__('%s%% Deposit ', 'tourmaster'), $deposit_amount) . '</span>';
+					}else{
+						$ret .= '<span class="tourmaster-tour-booking-bar-deposit-title" >' . esc_html__('Deposit Price', 'tourmaster') . '</span>';
+					}
+					$ret .= '<span class="tourmaster-tour-booking-bar-deposit-price" >' . tourmaster_money_format($deposit_price) . '</span>';
+					$ret .= '<span class="tourmaster-tour-booking-bar-deposit-caption" >' . esc_html__('*Pay the rest later', 'tourmaster') . '</span>';
+					$ret .= '</div>';
+				}
 			}
 
 			if( $editable ){
@@ -467,6 +538,39 @@
 			if( !empty($tour_option['require-traveller-passport']) && $tour_option['require-traveller-passport'] == 'enable' ){
 				$ret .= '<input type="text" class="tourmaster-traveller-info-passport" name="traveller_passport[]" value="' . esc_attr($passport) . '" placeholder="' . esc_html__('Passport Number', 'tourmaster') . ($required? ' *': '') . '" ' . $data_required . ' />';
 			}
+
+			// additional traveller fields
+			if( !empty($tour_option['additional-traveller-fields']) ){
+				foreach( $tour_option['additional-traveller-fields'] as $field ){
+					$field_value = empty($booking_detail['traveller_' . $field['slug']][$i])? '': $booking_detail['traveller_' . $field['slug']][$i];
+
+					if( !empty($field['width']) ){
+						$ret .= '<div style="float: left; width: ' . esc_attr($field['width']) . '" >';
+					}
+					$ret .= '<div class="tourmaster-traveller-info-custom" >';
+					if( $field['type'] == 'combobox' ){	
+						$ret .= '<div class="tourmaster-combobox-wrap" >';
+						$ret .= '<select name="traveller_' . esc_attr($field['slug']) . '[]" >';
+						foreach( $field['options'] as $option_val => $option_title ){
+							$ret .= '<option value="' . esc_attr($option_val) . '" ' . ($field_value == $option_val? 'selected': '') . ' >' . $option_title . '</option>';
+						}
+						$ret .= '</select>';
+						$ret .= '</div>';
+					}else{
+						$ret .= '<input type="text" ';
+						$ret .= 'name="traveller_' . esc_attr($field['slug']) . '[]" ';
+						$ret .= 'value="' . esc_attr($field_value) . '" ';
+						$ret .= 'placeholder="' . esc_attr($field['title']) . ((!empty($field['required']) && $field['required'] == 'true')? ' *': '') . '" ';
+						$ret .= (!empty($field['required']) && $field['required'] == 'true')? 'data-required ': '';
+						$ret .= ' />';
+					}
+					$ret .= '</div>';
+					if( !empty($field['width']) ){
+						$ret .= '</div>';
+					}
+				}
+			}
+
 			$ret .= '</span>';
 			$ret .= '</div>';
 
@@ -477,6 +581,14 @@
 		function tourmaster_payment_traveller_form( $tour_option, $date_price, $booking_detail ){
 			
 			$ret  = '';
+
+			// get additonal traveller fields
+			if( empty($tour_option['additional-traveller-fields']) ){
+				$tour_option['additional-traveller-fields'] = tourmaster_get_option('general', 'additional-traveller-fields', '');
+			}
+			if( !empty($tour_option['additional-traveller-fields']) ){
+				$tour_option['additional-traveller-fields'] = tourmaster_read_custom_fields($tour_option['additional-traveller-fields']);
+			}
 
 			// traveller detail
 			if( !empty($tour_option['require-each-traveller-info']) && $tour_option['require-each-traveller-info'] == 'enable' ){
@@ -515,6 +627,7 @@
 			}
 
 			return $ret;
+
 		} // tourmaster_payment_traveller_form
 	}
 	if( !function_exists('tourmaster_payment_traveller_detail') ){
@@ -522,6 +635,14 @@
 			$tour_option['require-traveller-info-title'] = empty($tour_option['require-traveller-info-title'])? 'enable': $tour_option['require-traveller-info-title'];
 			if( $tour_option['require-traveller-info-title'] == 'enable' ){
 				$title_types = tourmaster_payment_traveller_title();
+			}
+
+			// get additonal traveller fields
+			if( empty($tour_option['additional-traveller-fields']) ){
+				$tour_option['additional-traveller-fields'] = tourmaster_get_option('general', 'additional-traveller-fields', '');
+			}
+			if( !empty($tour_option['additional-traveller-fields']) ){
+				$tour_option['additional-traveller-fields'] = tourmaster_read_custom_fields($tour_option['additional-traveller-fields']);
 			}
 
 			$ret = '';
@@ -545,6 +666,15 @@
 						if( !empty($booking_detail['traveller_passport'][$i]) ){
 							$ret .= '<br>' . esc_html__('Passport ID :', 'tourmaster') . ' ' . $booking_detail['traveller_passport'][$i];
 						}
+
+						if( !empty($tour_option['additional-traveller-fields']) ){
+							foreach($tour_option['additional-traveller-fields'] as $field){
+								if( !empty($booking_detail['traveller_' . $field['slug']][$i]) ){
+									$ret .= '<br>' . $field['title'] . ' ' . $booking_detail['traveller_' . $field['slug']][$i];
+								}
+							}
+						} 
+						
 						$ret .= '</span>';
 						$ret .= '</div>';
 					}
@@ -560,41 +690,56 @@
 	if( !function_exists('tourmaster_get_payment_contact_form_fields') ){
 		function tourmaster_get_payment_contact_form_fields(){
 
-			return array(
-				'first_name' => array(
-					'title' => esc_html__('First Name', 'tourmaster'),
-					'type' => 'text',
-					'required' => true
-				),
-				'last_name' => array(
-					'title' => esc_html__('Last Name', 'tourmaster'),
-					'type' => 'text',
-					'required' => true
-				),
-				'email' => array(
-					'title' => esc_html__('Email', 'tourmaster'),
-					'type' => 'text',
-					'required' => true
-				),
-				'phone' => array(
-					'title' => esc_html__('Phone', 'tourmaster'),
-					'type' => 'text',
-					'required' => true
-				),
-				'country' => array(
-					'title' => esc_html__('Country', 'tourmaster'),
-					'type' => 'combobox',
-					'required' => true, 
-					'options' => tourmaster_get_country_list(),
-					'default' => tourmaster_get_option('general', 'user-default-country', '')
-				),
-				'contact_address' => array(
-					'title' => esc_html__('Address', 'tourmaster'),
-					'type' => 'textarea'
-				),
-			);
+			$custom_fields = tourmaster_get_option('general', 'contact-detail-fields', '');
+			if( empty($custom_fields) ){
+				return array(
+					'first_name' => array(
+						'title' => esc_html__('First Name', 'tourmaster'),
+						'type' => 'text',
+						'required' => true
+					),
+					'last_name' => array(
+						'title' => esc_html__('Last Name', 'tourmaster'),
+						'type' => 'text',
+						'required' => true
+					),
+					'email' => array(
+						'title' => esc_html__('Email', 'tourmaster'),
+						'type' => 'email',
+						'required' => true
+					),
+					'phone' => array(
+						'title' => esc_html__('Phone', 'tourmaster'),
+						'type' => 'text',
+						'required' => true
+					),
+					'country' => array(
+						'title' => esc_html__('Country', 'tourmaster'),
+						'type' => 'combobox',
+						'required' => true, 
+						'options' => tourmaster_get_country_list(),
+						'default' => tourmaster_get_option('general', 'user-default-country', '')
+					),
+					'contact_address' => array(
+						'title' => esc_html__('Address', 'tourmaster'),
+						'type' => 'textarea'
+					),
+				);			
+			}else{
+				return tourmaster_read_custom_fields($custom_fields);
+			}
+
 
 		} // tourmaster_get_payment_contact_form_fields
+	}
+	if( !function_exists('tourmaster_set_contact_form_data') ){
+		function tourmaster_set_contact_form_data( $content, $data, $type = '' ){
+			foreach( $data as $slug => $value ){
+				$content = str_replace('{' . $slug . '}', $value, $content);
+			}
+
+			return $content;
+		}
 	}
 	if( !function_exists('tourmaster_payment_contact_form') ){
 		function tourmaster_payment_contact_form( $booking_detail ){
@@ -656,7 +801,11 @@
 			$ret .= '</div>'; // additional-note-field
 			$ret .= '</div>'; // tourmasster-payment-additional-note-wrap
 
-			$ret .= '<div class="tourmaster-tour-booking-required-error tourmaster-notification-box tourmaster-failure">' . esc_html__('Please fill all required fields.', 'tourmaster') . '</div>';
+			$ret .= '<div class="tourmaster-tour-booking-required-error tourmaster-notification-box tourmaster-failure" ';
+			$ret .= 'data-default="' . esc_html__('Please fill all required fields.', 'tourmaster') . '" ';
+			$ret .= 'data-email="' . esc_html__('Invalid E-Mail, please try again.', 'tourmaster') . '" ';
+			$ret .= 'data-phone="' . esc_html__('Invalid phone number, please try again.', 'tourmaster') . '" ';
+			$ret .= '></div>';
 			$ret .= '<a class="tourmaster-tour-booking-continue tourmaster-button tourmaster-payment-step" data-step="3" >' . esc_html__('Next Step', 'tourmaster') . '</a>';
 
 			return $ret;
@@ -720,21 +869,49 @@
 	if( !function_exists('tourmaster_payment_method') ){
 		function tourmaster_payment_method(){
 
-			$payment_method = tourmaster_get_option('payment', 'payment-method', array('booking', 'paypal', 'credit-card', 'hblpay'));
+			$payment_method = tourmaster_get_option('payment', 'payment-method', array('booking', 'paypal', 'credit-card'));
 			$paypal_enable = in_array('paypal', $payment_method);
 			$credit_card_enable = in_array('credit-card', $payment_method);
-			$hblpay_enable = in_array('hblpay', $payment_method);
+			$hipayprofessional_enable = in_array('hipayprofessional', $payment_method);
 
 			$extra_class = '';
-			if( $paypal_enable && $credit_card_enable && $hblpay_enable){
+			if( $paypal_enable && $credit_card_enable ){
 				$extra_class .= ' tourmaster-both-online-payment';
-			}else if( !$paypal_enable && !$credit_card_enable && !$hblpay_enable){
+			}elseif( $paypal_enable && $hipayprofessional_enable ){
+				$extra_class .= ' tourmaster-both-online-payment';
+			}elseif( $credit_card_enable && $hipayprofessional_enable ){
+				$extra_class .= ' tourmaster-both-online-payment';
+			}elseif( !$paypal_enable && !$credit_card_enable && !$hipayprofessional_enable){
 				$extra_class .= ' tourmaster-none-online-payment';
 			}
 			$ret  = '<div class="tourmaster-payment-method-wrap ' . esc_attr($extra_class) . '" >';
 			$ret .= '<h3 class="tourmaster-payment-method-title" >' . esc_html__('Please select a payment method', 'tourmaster') . '</h3>';
 			
-			if( $paypal_enable || $credit_card_enable || $hblpay_enable ){
+			if( in_array('booking', $payment_method) ){
+				if( is_user_logged_in() ){
+					$ret .= '<div class="tourmaster-payment-method-description" >';
+					$ret .= esc_html__('* If you wish to do a bank transfer, please select "Book and pay later" button.', 'tourmaster'); 
+					$ret .= '<br>' . esc_html__('You will have an option to submit payment receipt on your dashboard page.', 'tourmaster');
+					$ret .= '</div>';
+				}
+			}
+
+			$our_term = tourmaster_get_option('payment', 'term-of-service-page', '#');
+			$our_term = is_numeric($our_term)? get_permalink($our_term): $our_term; 
+			$privacy = tourmaster_get_option('payment', 'privacy-statement-page', '#');
+			$privacy = is_numeric($privacy)? get_permalink($privacy): $privacy; 
+			$ret .= '<div class="tourmaster-payment-terms" >';
+			$ret .= '<input type="checkbox" name="term-and-service" />';
+			$ret .= sprintf(wp_kses(
+				__('* I agree with <a href="%s" target="_blank">Terms of Service</a> and <a href="%s" target="_blank">Privacy Statement</a>.', 'tourmaster'), 
+				array('a' => array( 'href'=>array(), 'target'=>array() ))
+			), $our_term, $privacy);
+			$ret .= '<div class="tourmaster-tour-booking-required-error tourmaster-notification-box tourmaster-failure" ';
+			$ret .= 'data-default="' . esc_attr(esc_html__('Please agree to all the terms and conditions before proceeding to the next step.', 'tourmaster')) . '" ';
+			$ret .= '></div>';
+			$ret .= '</div>'; // tourmaster-payment-terms
+
+			if( $paypal_enable || $credit_card_enable || $hipayprofessional_enable ){
 				$ret .= '<div class="tourmaster-payment-gateway clearfix" >';
 				if( $paypal_enable ){
 					$paypal_button_atts = apply_filters('tourmaster_paypal_button_atts', array());
@@ -749,30 +926,11 @@
 					$ret .= ' />';
 
 					if( !empty($paypal_button_atts['service-fee']) ){
-						if( $paypal_button_atts['service-fee'] == intval($paypal_button_atts['service-fee']) ){
-							$paypal_service_fee = number_format(floatval($paypal_button_atts['service-fee']), 0, '.', ',');
-						}else{
-							$paypal_service_fee = number_format(floatval($paypal_button_atts['service-fee']), 2, '.', ',');
-						}
-
 						$ret .= '<div class="tourmaster-payment-paypal-service-fee-text" >';
-						$ret .= sprintf(esc_html__('Additional %s%% is charged for PayPal payment.', 'tourmaster'), $paypal_service_fee);
+						$ret .= sprintf(esc_html__('Additional %s%% is charged for PayPal payment.', 'tourmaster'), $paypal_button_atts['service-fee']);
 						$ret .= '</div>';
 					}
 					$ret .= '</div>';
-				}
-				if( $hblpay_enable ){
-					
-					$hblpay_button_atts = apply_filters('tourmaster_hblpay_button_atts', array());
-					$ret .= '<div class="tourmaster-online-payment-method tourmaster-payment-hblpay" >';
-					$ret .= '<img src="' . esc_attr(TOURMASTER_URL) . '/images/hblpay.png" alt="hblpay" width="170" height="76" ';
-					if( !empty($hblpay_button_atts['method']) && $hblpay_button_atts['method'] == 'ajax' ){
-						$ret .= 'data-method="ajax" data-action="tourmaster_payment_selected" data-ajax="' . esc_url(TOURMASTER_AJAX_URL) . '" ';
-						if( !empty($hblpay_button_atts['type']) ){
-							$ret .= 'data-action-type="' . esc_attr($hblpay_button_atts['type']) . '" ';
-						} 
-					}
-					$ret .= ' />';
 				}
 
 				if( $credit_card_enable ){
@@ -787,7 +945,16 @@
 					}
 					$ret .= ' />';
 
-					$credit_card_types = tourmaster_get_option('payment', 'accepted-credit-card-type', array('visa', 'master-card', 'american-express', 'jcb'));
+					// service fee
+					$credit_card_service_fee = tourmaster_get_option('payment', 'credit-card-service-fee', '');
+					if( !empty($credit_card_service_fee) ){
+						$ret .= '<div class="tourmaster-payment-credit-card-service-fee-text" >';
+						$ret .= sprintf(esc_html__('Additional %s%% is charged for payment via credit card.', 'tourmaster'), $credit_card_service_fee);
+						$ret .= '</div>';
+					}
+
+					// image display
+					$credit_card_types = tourmaster_get_option('payment', 'accepted-credit-card-type', array());
 					if( !empty($credit_card_types) ){
 						$ret .= '<div class="tourmaster-payment-credit-card-type" >';
 						foreach( $credit_card_types as $type ){
@@ -796,7 +963,24 @@
 						}
 						$ret .= '</div>';	
 					}
+
 					$ret .= '</div>';
+				}
+
+				if( $hipayprofessional_enable ){
+					$hipayprofessional_button_atts = apply_filters('tourmaster_hipayprofessional_button_atts', array());
+
+					$ret .= '<div class="tourmaster-online-payment-method" >';
+					$ret .= '<img src="' . esc_attr(TOURMASTER_URL) . '/images/hipay.png" alt="hipayprofessional" ';
+					if( !empty($hipayprofessional_button_atts['method']) && $hipayprofessional_button_atts['method'] == 'ajax' ){
+						$ret .= 'data-method="ajax" data-action="tourmaster_payment_selected" data-ajax="' . esc_url(TOURMASTER_AJAX_URL) . '" ';
+						if( !empty($hipayprofessional_button_atts['type']) ){
+							$ret .= 'data-action-type="' . esc_attr($hipayprofessional_button_atts['type']) . '" ';
+						} 
+					}
+					$ret .= ' />';
+					$ret .= '</div>';
+	
 				}
 				$ret .= '</div>'; // tourmaster-payment-gateway
 			}
@@ -836,25 +1020,8 @@
 						));	
 					}
 				}
-				if( is_user_logged_in() ){
-					$ret .= '<div class="tourmaster-payment-method-description" >';
-					$ret .= esc_html__('* If you wish to do a bank transfer, please select "Book and pay later" button.', 'tourmaster'); 
-					$ret .= '<br>' . esc_html__('You will have an option to submit payment receipt on your dashboard page.', 'tourmaster');
-					$ret .= '</div>';
-				}
 				$ret .= '</div>'; // tourmaster-payment-method-booking
 			}
-
-			$our_term = tourmaster_get_option('payment', 'term-of-service-page', '#');
-			$our_term = is_numeric($our_term)? get_permalink($our_term): $our_term; 
-			$privacy = tourmaster_get_option('payment', 'privacy-statement-page', '#');
-			$privacy = is_numeric($privacy)? get_permalink($privacy): $privacy; 
-			$ret .= '<div class="tourmaster-payment-terms" >';
-			$ret .= sprintf(wp_kses(
-				__('* To continue means you\'re okay with our <a href="%s" target="_blank">Terms of Service</a> and <a href="%s" target="_blank">Privacy Statement</a>.', 'tourmaster'), 
-				array('a' => array( 'href'=>array(), 'target'=>array() ))
-			), $our_term, $privacy);
-			$ret .= '</div>'; // tourmaster-payment-terms
 
 			$ret .= '</div>'; // tourmaster-payment-method-wrap
 
@@ -901,7 +1068,7 @@
 			$ret .= '<i class=" icon_check_alt2 tourmaster-payment-complete-icon" ></i>';
 			$ret .= '<div class="tourmaster-payment-complete-thank-you" >' . esc_html__('Thank you!', 'tourmaster') . '</div>';
 			$ret .= '<div class="tourmaster-payment-complete-content" >';
-			$ret .= wp_kses(__('Your booking detail will be sent to your email shortly. <br> You can check the payment status from your dashboard.', 'tourmaster'), array('br'=>array()));
+			$ret .= wp_kses(__('Your booking detail will be sent to your email shortly. <br> You can check the payment status from your dashboard.<br> ( There might be some delay processing the paypal payment )', 'tourmaster'), array('br'=>array()));
 			$ret .= '</div>'; // tourmaster-payment-complete-content
 
 			if( is_user_logged_in() ){
@@ -948,8 +1115,16 @@
 
 			// deposit payment
 			$result = tourmaster_get_booking_data(array('id'=>$transaction_id), array('single'=>true));
-			$enable_deposit_payment = tourmaster_get_option('payment', 'enable-deposit-payment', 'disable');
-			$deposit_amount = tourmaster_get_option('payment', 'deposit-payment-amount', '0');
+			$tour_option = tourmaster_get_post_meta($result->tour_id, 'tourmaster-tour-option');
+			$enable_full_payment = tourmaster_get_option('payment', 'enable-full-payment', 'enable');
+
+			if( empty($tour_option['deposit-booking']) || $tour_option['deposit-booking'] == 'default' ){
+				$enable_deposit_payment = tourmaster_get_option('payment', 'enable-deposit-payment', 'disable');
+				$deposit_amount = tourmaster_get_option('payment', 'deposit-payment-amount', '0');
+			}else{
+				$enable_deposit_payment = $tour_option['deposit-booking'];
+				$deposit_amount = empty($tour_option['deposit-amount'])? 0: $tour_option['deposit-amount'];
+			}
 			
 			if( $enable_deposit_payment == 'enable' ){
 				$current_date = strtotime(current_time('Y-m-d'));
@@ -959,24 +1134,29 @@
 				}
 			}
 
-			if( $enable_deposit_payment == 'enable' && !empty($deposit_amount) ){
-				$pricing_info = json_decode($result->pricing_info, true);
-				
-				$ret .= '<div class="tourmaster-payment-receipt-field tourmaster-payment-receipt-field-payment-type clearfix" >';
-				$ret .= '<div class="tourmaster-head" >' . esc_html__('Select Payment Type', 'tourmaster') . '</div>';
-				$ret .= '<div class="tourmaster-tail clearfix" >';
-				$ret .= '<div class="tourmaster-payment-receipt-deposit-option" >';
+			
+			$pricing_info = json_decode($result->pricing_info, true);
+			$payment_type_checked = false;
+			$ret .= '<div class="tourmaster-payment-receipt-field tourmaster-payment-receipt-field-payment-type clearfix" >';
+			$ret .= '<div class="tourmaster-head" >' . esc_html__('Select Payment Type', 'tourmaster') . '</div>';
+			$ret .= '<div class="tourmaster-tail clearfix" >';
+			$ret .= '<div class="tourmaster-payment-receipt-deposit-option" >';
+			if( $enable_full_payment == 'enable' ){
 				$ret .= '<label class="tourmaster-deposit-payment-full" >';
-				$ret .= '<input type="radio" name="payment-type" value="full" checked />';
+				$ret .= '<input type="radio" name="payment-type" value="full" ' . ($payment_type_checked? '': 'checked') . ' />';
 				$ret .= '<span class="tourmaster-content" >';
 				$ret .= '<i class="icon_check_alt2" ></i>';
 				$ret .= sprintf(esc_html__('Pay Full Amount : %s', 'tourmaster'), tourmaster_money_format($pricing_info['total-price']));
 				$ret .= '</span>';
-				$ret .= '</label>'; 
+				$ret .= '</label>'; 	
 
+				$payment_type_checked = true;
+			}
+
+			if( $enable_deposit_payment == 'enable' && !empty($deposit_amount) ){
 				$deposit_price = ($pricing_info['total-price'] * intval($deposit_amount)) / 100;
 				$ret .= '<label class="tourmaster-deposit-payment-partial" >';
-				$ret .= '<input type="radio" name="payment-type" value="partial" />';
+				$ret .= '<input type="radio" name="payment-type" value="partial" ' . ($payment_type_checked? '': 'checked') . ' />';
 				$ret .= '<span class="tourmaster-content" >';
 				$ret .= '<i class="icon_check_alt2" ></i>';
 				$ret .= sprintf(esc_html__('Pay %d%% Deposit : %s', 'tourmaster'), $deposit_amount, tourmaster_money_format($deposit_price));
@@ -984,11 +1164,12 @@
 				$ret .= '<input type="hidden" name="deposit-price" value="' . esc_attr($deposit_price) . '" />';
 				$ret .= '</span>';
 				$ret .= '</label>';
-				$ret .= '</div>';
-
-				$ret .= '</div>';
-				$ret .= '</div>';
 			}
+
+			$ret .= '</div>';
+			$ret .= '</div>';
+			$ret .= '</div>';
+
 
 			foreach( $form_fields as $field_slug => $form_field ){
 				$form_field['echo'] = false;
@@ -1151,13 +1332,7 @@
 
 				foreach( $types as $type ){
 					if( $type == 'price' ){
-						$pricing_info = json_decode($result->pricing_info, true);
-						if( $pricing_info['deposit-price'] ){
-							$ret[$type] = $pricing_info['deposit-price'];
-						}else{
-							$ret[$type] = $pricing_info['total-price'];
-						}
-
+						$ret[$type] = json_decode($result->pricing_info, true);
 					}else if( $type == 'email' ){
 						$contact_info = json_decode($result->contact_info, true);
 						$ret[$type] = $contact_info[$type];
@@ -1202,6 +1377,7 @@
 
 			tourmaster_mail_notification('payment-made-mail', $tid);
 			tourmaster_mail_notification('admin-online-payment-made-mail', $tid);
+			tourmaster_send_email_invoice($tid);
 		}
 	}
 
@@ -1230,13 +1406,14 @@
 					$tour_option = tourmaster_get_post_meta($booking_detail['tour-id'], 'tourmaster-tour-option');
 					$date_price = tourmaster_get_tour_date_price($tour_option, $booking_detail['tour-id'], $booking_detail['tour-date']);
 					$date_price = tourmaster_get_tour_date_price_package($date_price, $booking_detail);
-				
+						
+					$booking_detail['payment_method'] = $_POST['type'];
 					$tour_price = tourmaster_get_tour_price($tour_option, $date_price, $booking_detail);
 					
 					if( $date_price['pricing-method'] == 'group' ){
 						$traveller_amount = 1;
 					}else{
-						$traveller_amount = tourmaster_get_tour_people_amount($tour_option, $date_price, $booking_detail);
+						$traveller_amount = tourmaster_get_tour_people_amount($tour_option, $date_price, $booking_detail, 'all');
 					}
 					
 					$package_group_slug = empty($date_price['group-slug'])? '': $date_price['group-slug'];
@@ -1246,16 +1423,14 @@
 						$ret['content'] = tourmaster_payment_complete();
 						$ret['cookie'] = '';
 						
-					}else if( !empty($_POST['type']) ){
+					}else{
 						$booking_detail['tid'] = $tid;
 
 						$ret['content'] = apply_filters('goodlayers_' . $_POST['type'] . '_payment_form', '', $tid);
 						$ret['cookie'] = $booking_detail;
 						
-						if( $_POST['type'] == 'paypal' ){
-							$booking_detail['payment_method'] = 'paypal';
-							$ret['sidebar'] = tourmaster_get_booking_bar_summary( $tour_option, $date_price, $booking_detail );
-						}
+						// recalculate the fee
+						$ret['sidebar'] = tourmaster_get_booking_bar_summary( $tour_option, $date_price, $booking_detail );
 					}
 				}
 			}

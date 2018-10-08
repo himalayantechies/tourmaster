@@ -37,8 +37,8 @@
 
 			tourmaster_set_plugin_role();
 
-			wp_schedule_event(time(), 'hourly', 'tourmaster_schedule_hourly');
-			wp_schedule_event(time(), 'daily', 'tourmaster_schedule_daily');
+			//wp_schedule_event(time(), 'hourly', 'tourmaster_schedule_hourly');
+			//wp_schedule_event(time(), 'daily', 'tourmaster_schedule_daily');
 
 			// update the plugin version
 			update_option('tourmaster-plugin-version', 	$current_version);
@@ -49,6 +49,24 @@
 			wp_clear_scheduled_hook('tourmaster_schedule_hourly');
 			wp_clear_scheduled_hook('tourmaster_schedule_daily');
 		}	
+	}
+
+	add_action('plugins_loaded', 'tourmaster_custom_schedule');
+	if( !function_exists('tourmaster_custom_schedule') ){
+		function tourmaster_custom_schedule(){
+			$current_time = strtotime("now");
+			$daily_schedule = get_option('tourmaster_daily_schedule', '');
+			if( empty($daily_schedule) || $current_time > $daily_schedule + 43200 ){
+				do_action('tourmaster_schedule_daily');
+				update_option('tourmaster_daily_schedule', $current_time);
+			}
+			
+			$hourly_schedule = get_option('tourmaster_hourly_schedule', '');
+			if( empty($hourly_schedule) || $current_time > $hourly_schedule + 3600 ){
+				do_action('tourmaster_schedule_hourly');
+				update_option('tourmaster_hourly_schedule', $current_time);
+			}
+		}
 	}
 
 	if( !function_exists('tourmaster_table_init') ){
@@ -69,10 +87,11 @@
 				travel_date date DEFAULT '0000-00-00' NOT NULL,
 				package_group_slug varchar(100) DEFAULT '' NOT NULL,
 				traveller_amount tinyint UNSIGNED DEFAULT NULL,
+				male_amount tinyint UNSIGNED DEFAULT NULL,
+				female_amount tinyint UNSIGNED DEFAULT NULL,
 				contact_info longtext DEFAULT NULL,
 				billing_info longtext DEFAULT NULL,
 				traveller_info longtext DEFAULT NULL,
-				customer_note longtext DEFAULT NULL,
 				coupon_code varchar(20) DEFAULT NULL,
 				order_status varchar(20) DEFAULT NULL,
 				payment_date datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
@@ -180,7 +199,8 @@
 					$staff_capability[$cap] = true;
 				}
 			}
-			add_role('tour_staff', esc_html__('Tour Staff', 'tourmaster'), $staff_capability);
+			$staff_capability['manage_woocommerce'] = true;
+ 			add_role('tour_staff', esc_html__('Tour Staff', 'tourmaster'), $staff_capability);
 
 			// for tour author
 			$author_cap = tourmaster_get_option('general', 'tour-author-capability', '');
@@ -190,6 +210,7 @@
 					$author_capability[$cap] = true;
 				}
 			}
+			$author_capability['manage_woocommerce'] = true;
 			add_role('tour_author', esc_html__('Tour Author', 'tourmaster'), $author_capability);
 
 		}

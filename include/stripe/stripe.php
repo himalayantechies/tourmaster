@@ -195,15 +195,26 @@
 				$currency = trim(apply_filters('goodlayers_payment_get_option', 'usd', 'stripe-currency-code'));
 
 				$t_data = apply_filters('goodlayers_payment_get_transaction_data', array(), $_POST['tid'], array('price', 'email'));
-				if( empty($t_data['price']) ){
+				
+				$price = '';
+				if( $t_data['price']['deposit-price'] ){
+					$price = $t_data['price']['deposit-price'];
+					if( !empty($t_data['price']['deposit-price-raw']) ){
+						$deposit_amount = $t_data['price']['deposit-price-raw'];
+					}
+				}else{
+					$price = $t_data['price']['total-price'];
+				}
+
+				if( empty($price) ){
 					$ret['status'] = 'failed';
 					$ret['message'] = esc_html__('Cannot retrieve pricing data, please try again.', 'tourmaster');
 				}else{
 					if( in_array(strtolower($currency), array('jpy')) ){
-						$price = intval(floatval($t_data['price']));
+						$price = intval(floatval($price));
 						$charge_amount = $price;
 					}else{
-						$price = intval(floatval($t_data['price']) * 100);
+						$price = round(floatval($price) * 100);
 						$charge_amount = $price / 100;
 					}
 
@@ -228,6 +239,9 @@
 							'amount' => $charge_amount,
 							'transaction_id' => $charge->id 
 						);
+						if( !empty($deposit_amount) ){
+							$payment_info['deposit_amount'] = $deposit_amount;
+						}
 						do_action('goodlayers_set_payment_complete', $_POST['tid'], $payment_info);
 
 						$ret['status'] = 'success';

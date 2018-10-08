@@ -58,7 +58,8 @@
 					'page-title' => esc_html__('Tourmaster', 'tourmaster'),
 					'menu-title' => esc_html__('Tourmaster', 'tourmaster'),
 					'slug' => 'tourmaster_admin_option', 
-					'filewrite' => tourmaster_get_style_custom(true)
+					'filewrite' => tourmaster_get_style_custom(true),
+					'position' => 120
 				));
 
 				// general
@@ -180,6 +181,11 @@
 									'title' => esc_html__('User Default Country', 'tourmaster'),
 									'type' => 'combobox',
 									'options' => tourmaster_get_country_list(true)
+								),
+								'mobile-login-link' => array(
+									'title' => esc_html__('Change Mobile Login/Register (From Lightbox) To Link', 'tourmaster'),
+									'type' => 'checkbox',
+									'default' => 'disable'
 								)
 							)
 						),
@@ -199,6 +205,7 @@
 										'edit_tour' => esc_html__('Edit Tour', 'tourmaster'),
 										'read_tour' => esc_html__('Read Tour', 'tourmaster'),
 										'delete_tour' => esc_html__('Delete Tour', 'tourmaster'),
+										'delete_tours' => esc_html__('Delete Tours', 'tourmaster'),
 										'edit_tours' => esc_html__('Edit Tours', 'tourmaster'),
 										'edit_others_tours' => esc_html__('Edit Others Tours', 'tourmaster'),
 										'publish_tours' => esc_html__('Publish Tours', 'tourmaster'),
@@ -222,16 +229,17 @@
 										'publish_services' => esc_html__('Publish Services', 'tourmaster'),
 										'read_private_services' => esc_html__('Read Private Services', 'tourmaster'),
 										'manage_tour_order' => esc_html__('Manage Tour Order', 'tourmaster'),
+										'upload_files' => esc_html__('Upload Files', 'tourmaster'),
 									),
 									'default' => array( 
-										'edit_tour', 'read_tour', 'delete_tour', 
+										'edit_tour', 'read_tour', 'delete_tour', 'delete_tours', 
 										'edit_tours', 'edit_others_tours', 'publish_tours', 'read_private_tours',
 										'manage_tour_category', 'manage_tour_tag', 'manage_tour_filter',
 										'edit_coupon', 'read_coupon', 'delete_coupon', 
 										'edit_coupons', 'edit_others_coupons', 'publish_coupons', 'read_private_coupons',
 										'edit_service', 'read_service', 'delete_service', 
 										'edit_services', 'edit_others_services', 'publish_services', 'read_private_services',
-										'manage_tour_order',
+										'manage_tour_order', 'upload_files'
 									)
 								),
 								'tour-author-capability' => array(
@@ -241,6 +249,7 @@
 										'edit_tour' => esc_html__('Edit Tour', 'tourmaster'),
 										'read_tour' => esc_html__('Read Tour', 'tourmaster'),
 										'delete_tour' => esc_html__('Delete Tour', 'tourmaster'),
+										'delete_tours' => esc_html__('Delete Tours', 'tourmaster'),
 										'edit_tours' => esc_html__('Edit Tours', 'tourmaster'),
 										'edit_others_tours' => esc_html__('Edit Others Tours', 'tourmaster'),
 										'publish_tours' => esc_html__('Publish Tours', 'tourmaster'),
@@ -256,15 +265,17 @@
 										'publish_coupons' => esc_html__('Publish Coupons', 'tourmaster'),
 										'read_private_coupons' => esc_html__('Read Private Coupons', 'tourmaster'),
 										'manage_tour_order' => esc_html__('Manage Tour Order', 'tourmaster'),
+										'upload_files' => esc_html__('Upload Files', 'tourmaster'),
 									),
 									'default' => array( 
-										'edit_tour', 'read_tour', 'delete_tour', 
+										'edit_tour', 'read_tour', 'delete_tour', 'delete_tours', 
 										'edit_tours', 'edit_others_tours', 'publish_tours', 'read_private_tours',
 										'manage_tour_category', 'manage_tour_tag', 'manage_tour_filter',
 										'edit_coupon', 'read_coupon', 'delete_coupon', 
 										'edit_coupons', 'edit_others_coupons', 'publish_coupons', 'read_private_coupons',
 										'edit_service', 'read_service', 'delete_service', 
 										'edit_services', 'edit_others_services', 'publish_services', 'read_private_services',
+										'upload_files'
 									)
 								),
 							)
@@ -289,9 +300,21 @@
 									'type' => 'textarea',
 								),
 								'enable-booking-via-email' => array(
-									'title' => esc_html__('Enable Booking Via Email ( Without Login )', 'tourmaster'),
+									'title' => esc_html__('Enable Booking Via Email ( For Guest )', 'tourmaster'),
 									'type' => 'checkbox',
-									'default' => 'enable'
+									'default' => 'enable',
+									'description' => esc_html__('Guest user will still be able pay for the tour without logging in.', 'tourmaster')
+								),
+
+								'contact-detail-fields' => array(
+									'title' => esc_html__('Contact Detail Fields', 'tourmaster'),
+									'type' => 'textarea',
+									'description' => wp_kses(__('Leave blank for default. You can see how to create the fields <a href="http://support.goodlayers.com/document/2018/05/01/tourmaster-modifying-the-contact-detail-fields-since-v3-0-8/" target="_blank" >here</a>', 'tourmaster'), array('a'=>array( 'href'=> array(), 'target'=>array())) )
+								),
+								'additional-traveller-fields' => array(
+									'title' => esc_html__('Additional Traveller Fields', 'tourmaster'),
+									'type' => 'textarea',
+									'description' => wp_kses(__('Use to add new fields at the "traveller details" area. Learn more about this <a href="http://support.goodlayers.com/document/2018/05/03/tourmaster-modifying-the-traveller-detail-fields-since-v3-0-8/" target="_blank" >here</a>', 'tourmaster'), array('a'=>array( 'href'=> array(), 'target'=>array())) )
 								),
 							)
 						),
@@ -324,11 +347,6 @@
 									'options' => 'sidebar',
 									'default' => 'none',
 									'condition' => array( 'search-sidebar'=>array('right', 'both') )
-								),
-								'search-page-num-fetch' => array(
-									'title' => esc_html__('Archive Tour Display Amount', 'tourmaster'),
-									'type' => 'text',
-									'default' => 9,
 								),
 								'search-page-tour-style' => array(
 									'title' => esc_html__('Archive Tour Style', 'tourmaster'),
@@ -402,6 +420,12 @@
 						'search-page' => array(
 							'title' => esc_html__('Search Page', 'tourmaster'),
 							'options' => array(
+								'search-month-amount' => array(
+									'title' => esc_html__('Tour Search Item Month Amount (Number)', 'tourmaster'),
+									'type' => 'text',
+									'default' => '12',
+									'description' => esc_html__('Display number of specified month when select the "month" option in search item.', 'tourmaster')
+								),
 								'search-page' => array(
 									'title' => esc_html__('Search Page', 'tourmaster'),
 									'type' => 'combobox',
@@ -561,17 +585,30 @@
 									'title' => esc_html__('Invoice Company Info', 'tourmaster'),
 									'type' => 'textarea',
 								),
+								'invoice-customer-address' => array(
+									'title' => esc_html__('Invoice Customer Address', 'tourmaster'),
+									'type' => 'textarea',
+									'description' => wp_kses(__('Fill this to modify customer address format, if you change the <a href="http://support.goodlayers.com/document/2018/05/01/tourmaster-modifying-the-contact-detail-fields-since-v3-0-8/" target="_blank" >contact detail fileds</a>', 'tourmaster'), array('a'=>array( 'href'=> array(), 'target'=>array())) )
+								),
 							)
 						),
 						'single-tour' => array(
 							'title' => esc_html__('Single Tour', 'tourmaster'),
 							'options' => array(
+								'single-tour-style' => array(
+									'title' => esc_html__('Single Tour Style', 'tourmaster'),
+									'type' => 'combobox',
+									'options' => array(
+										'style-1' => esc_html__('Style 1', 'tourmaster'),
+										'style-2' => esc_html__('Style 2', 'tourmaster'),
+									)
+								),
 								'tour-header-top-padding' => array(
 									'title' => esc_html__('Tour Header Top Padding', 'tourmaster'),
 									'type' => 'fontslider',
 									'data-type' => 'pixel',
 									'data-min' => '0',
-									'data-max' => '500',
+									'data-max' => '1000',
 			 						'default' => '400px',
 									'selector' => '.tourmaster-single-header-title-wrap{ padding-top: #gdlr#; }'
 								),
@@ -591,6 +628,43 @@
 									'default' => '30',
 									'selector' => '.tourmaster-single-header-background-overlay{ opacity: #gdlr#; }'
 								),
+								'single-tour-header-gradient' => array(
+									'title' => esc_html__('Single Tour Header Gradient', 'tourmaster'),
+									'type' => 'combobox',
+									'options' => array(
+										'both' => esc_html__('Both', 'tourmaster'),
+										'top' => esc_html__('Top', 'tourmaster'),
+										'bottom' => esc_html__('Bottom', 'tourmaster'),
+										'none' => esc_html__('None', 'tourmaster'),
+									),
+									'default' => 'both'
+								),
+								'single-tour-top-gradient-size' => array(
+									'title' => esc_html__('Single Tour Top Gradient Size', 'tourmaster'),
+									'type' => 'fontslider',
+									'data-type' => 'pixel',
+									'data-min' => '0',
+									'data-max' => '1000',
+			 						'default' => '500px',
+									'selector' => '.tourmaster-single-header-top-overlay{ height: #gdlr#; }',
+									'condition' => array( 'single-tour-header-gradient' => array('top', 'both') )
+								),
+								'single-tour-bottom-gradient-size' => array(
+									'title' => esc_html__('Single Tour Bottom Gradient Size', 'tourmaster'),
+									'type' => 'fontslider',
+									'data-type' => 'pixel',
+									'data-min' => '0',
+									'data-max' => '1000',
+			 						'default' => '300px',
+									'selector' => '.tourmaster-single-header-overlay{ height: #gdlr#; }',
+									'condition' => array( 'single-tour-header-gradient' => array('bottom', 'both') )
+								),
+								'update-header-price' => array(
+									'title' => esc_html__('Update Header price', 'tourmaster'),
+									'type' => 'checkbox',
+									'default' => 'enable',
+									'description' => esc_html__('Update header price after all necessary information is selected', 'tourmaster')
+								),
 								'show-remaining-available-number' => array(
 									'title' => esc_html__('Show Remaining Available Number', 'tourmaster'),
 									'type' => 'checkbox',
@@ -599,12 +673,19 @@
 								'max-dropdown-people-amount' => array(
 									'title' => esc_html__('Max Dropdown People Amount', 'tourmaster'),
 									'type' => 'text',
-									'default' => '5'
+									'default' => '5',
+									'description' => esc_html__('Will be overrided by "Maximum People Per Booking" option in each tour', 'tourmaster')
 								),
 								'max-dropdown-room-amount' => array(
 									'title' => esc_html__('Max Dropdown Room Amount', 'tourmaster'),
 									'type' => 'text',
 									'default' => '10'
+								),
+								'require-adult-to-book-tour' => array(
+									'title' => esc_html__('Require an "adult" to book the tour', 'tourmaster'),
+									'type' => 'checkbox',
+									'default' => 'disable',
+									'description' => esc_html__('Only for variable price tour', 'tourmaster')
 								),
 								'single-tour-default-sidebar' => array(
 									'title' => esc_html__('Single Tour Default Sidebar ( Widget )', 'tourmaster'),
@@ -721,9 +802,14 @@
 									'type' => 'text'
 								),
 								'admin-email-address' => array(
-									'title' => esc_html__('Admin E-Mail Address', 'tourmaster'),
+									'title' => esc_html__('Admin Booking E-Mail Address', 'tourmaster'),
 									'type' => 'text',
-									'description' => esc_html__('Fill the admin email here to submit the notification upon completing some neccessary process.')
+									'description' => esc_html__('Fill the admin email here to submit the notification upon completing booking process.')
+								),
+								'admin-registration-email-address' => array(
+									'title' => esc_html__('Admin Registration E-Mail Address', 'tourmaster'),
+									'type' => 'text',
+									'description' => esc_html__('Fill the admin email here to submit the notification upon completing the user registration process. Leave this field blank to use the same mail as "Booking Email Address"')
 								),
 								'mail-header-logo' => array(
 									'title' => esc_html__('E-Mail Header Logo', 'tourmaster'),
@@ -742,6 +828,23 @@
 						'admin-mail-content' => array(
 							'title' => esc_html__('Admin E-Mail Content', 'tourmaster'),
 							'options' => array(
+								'enable-admin-registration-complete-mail' => array(
+									'title' => esc_html__('Enable Admin Registration Complete E-Mail', 'tourmaster'),
+									'type' => 'checkbox'
+								),
+								'admin-registration-complete-mail-title' => array(
+									'title' => esc_html__('Admin Registration Complete E-Mail Title', 'tourmaster'),
+									'type' => 'text',
+									'default' => "New user registration",
+									'condition' => array('enable-admin-registration-complete-mail' => 'enable')
+								),
+								'admin-registration-complete-mail' => array(
+									'title' => esc_html__('Admin Registration Complete E-Mail', 'tourmaster'),
+									'type' => 'textarea',
+									'default' => "<strong>Dear Admin,</strong> \n New customer has created an account \n\n Customer’s name : {customer-name} \n Customer’s email : {customer-email} \n Customer’s contact number : {customer-phone}",
+									'wrapper-class' => 'tourmaster-fullsize', 
+									'condition' => array('enable-admin-registration-complete-mail' => 'enable')
+								),
 								'enable-admin-booking-made-mail' => array(
 									'title' => esc_html__('Enable Admin Booking Made E-Mail', 'tourmaster'),
 									'type' => 'checkbox'
@@ -856,6 +959,10 @@
 									'condition' => array( 'enable-guest-booking-made-mail' => 'enable' ),
 									'default' => "<strong>Dear {customer-name}</strong>,\nYou have made a booking on\n\n{tour-name}\n{order-number}\n{travel-date}\n{total-price}\n{divider}\nOur team will contact you back via the email you provided,\n{customer-email}"
 								),
+								'enable-customer-invoice' => array(
+									'title' => esc_html__('Send Invoice To Customer E-mail', 'tourmaster'),
+									'type' => 'checkbox'
+								),
 								'enable-payment-made-mail' => array(
 									'title' => esc_html__('Enable Payment Made E-Mail', 'tourmaster'),
 									'type' => 'checkbox'
@@ -907,6 +1014,12 @@
 						'enquiry-mail-content' => array(
 							'title' => esc_html__('Enquiry E-Mail Content', 'tourmaster'),
 							'options' => array(
+
+								'enquiry-form-fields' => array(
+									'title' => esc_html__('Enquiry Form Fields', 'tourmaster'),
+									'type' => 'textarea',
+									'description' => wp_kses(__('Leave blank for default. You can see how to create the fields <a href="http://support.goodlayers.com/document/2017/10/06/tourmaster-modifying-the-enquiry-form/" target="_blank" >here</a>', 'tourmaster'), array('a'=>array( 'href'=> array(), 'target'=>array())) )
+								),
 								'admin-enquiry-mail-title' => array(
 									'title' => esc_html__('Enquiry E-Mail Title ( Admin )', 'tourmaster'),
 									'type' => 'text',
@@ -951,10 +1064,15 @@
 										'booking' => esc_html__('Booking', 'tourmaster'),
 										'paypal' => esc_html__('Paypal', 'tourmaster'),
 										'credit-card' => esc_html__('Credit Card', 'tourmaster'),
-										'hblpay' => esc_html__('HBL Pay', 'tourmaster'),
+										'hipayprofessional' => esc_html__('Hipay Professional', 'tourmaster'),
 									),
-									'default' => array('booking', 'paypal', 'credit-card', 'hblpay'),
+									'default' => array('booking', 'paypal', 'credit-card'),
 									'description' => esc_html__('You can use Ctrl/Command button to select multiple items or remove the selected item.', 'tourmaster'),
+								),
+								'enable-full-payment' => array(
+									'title' => esc_html__('Enable Full Payment', 'tourmaster'),
+									'type' => 'checkbox',
+									'default' => 'enable'
 								),
 								'enable-deposit-payment' => array(
 									'title' => esc_html__('Enable Deposit Payment', 'tourmaster'),
@@ -979,6 +1097,12 @@
 									'title' => esc_html__('Credit Card Payment Gateway', 'tourmaster'),
 									'type' => 'combobox',
 									'options' => apply_filters('goodlayers_credit_card_payment_gateway_options', array('' => esc_html__('None', 'tourmaster')))
+								),
+								'credit-card-service-fee' => array(
+									'title' => esc_html__('Credit Card Service Fee (%)', 'tourmaster'),
+									'type' => 'text',
+									'default' => '',
+									'description' => esc_html__('Fill only number here', 'tourmaster')
 								),
 								'accepted-credit-card-type' => array(
 									'title' => esc_html__('Accepted Credit Card Type', 'tourmaster'),
@@ -1052,7 +1176,7 @@
 '.tourmaster-login-form .tourmaster-login-lost-password a:hover, ' .
 '.tourmaster-login-bottom .tourmaster-login-bottom-link, ' .
 '.tourmaster-register-bottom .tourmaster-register-bottom-link{ color: #gdlr#; }' . 
-'.tourmaster-payment-method-wrap .tourmaster-payment-paypal > img:hover, .tourmaster-payment-method-wrap .tourmaster-payment-hblpay > img:hover, .tourmaster-payment-method-wrap .tourmaster-payment-credit-card > img:hover{ border-color: #gdlr#; }',
+'.tourmaster-payment-method-wrap .tourmaster-payment-paypal > img:hover, .tourmaster-payment-method-wrap .tourmaster-payment-credit-card > img:hover{ border-color: #gdlr#; }',
 									'default' => '#485da1',
 								),
 								'tourmaster-theme-color-link' => array(
@@ -1100,17 +1224,20 @@
 '.tourmaster-tour-category-grid-2.tourmaster-with-thumbnail .tourmaster-tour-category-head-divider{ border-color: #gdlr#; }' . 
 '.tourmaster-tour-booking-date > i, .tourmaster-tour-booking-room > i, .tourmaster-tour-booking-people > i, .tourmaster-tour-booking-submit > i,' .
 '.tourmaster-tour-booking-package > i, ' . 
-'.tourmaster-tour-booking-bar-wrap .tourmaster-view-count i, .tourmaster-save-wish-list-icon-wrap .tourmaster-icon-active{ color: #gdlr#; }' . 
+'.tourmaster-tour-style-1 .tourmaster-tour-booking-bar-wrap .tourmaster-view-count i, .tourmaster-save-wish-list-icon-wrap .tourmaster-icon-active{ color: #gdlr#; }' . 
 '.tourmaster-tour-booking-next-sign:before, .tourmaster-tour-booking-next-sign span, .tourmaster-tour-booking-next-sign:after{ background-color: #gdlr#; }' . 
 '.tourmaster-tour-item .tourmaster-tour-grid .tourmaster-tour-discount-price, ' .
 '.tourmaster-tour-item .tourmaster-tour-grid .tourmaster-tour-price .tourmaster-tail{ color: #gdlr#; }' .
-'.tourmaster-body .tourmaster-tour-order-filterer-style a.gdlr-core-active, ' .
+'.tourmaster-body .tourmaster-tour-order-filterer-style a.tourmaster-active, ' .
 '.tourmaster-urgency-message .tourmaster-urgency-message-icon, ' .
 '.tourmaster-payment-receipt-deposit-option label input:checked + span, ' .
 '.tourmaster-tour-booking-bar-deposit-option label input:checked + span, ' .
 '.tourmaster-tour-search-item .tourmaster-type-filter-title i, ' .
 '.tourmaster-type-filter-term input:checked + .tourmaster-type-filter-display, ' . 
-'.tourmaster-tour-search-item-head .tourmaster-tour-search-item-head-title i{ color: #gdlr#; }',
+'.tourmaster-tour-search-item-head .tourmaster-tour-search-item-head-title i{ color: #gdlr#; }' . 
+'.tourmaster-body.tourmaster-template-search .tourmaster-pagination a:hover, ' . 
+'.tourmaster-body.tourmaster-template-search .tourmaster-pagination a.tourmaster-active, ' . 
+'.tourmaster-body.tourmaster-template-search .tourmaster-pagination span{ background-color: #gdlr#; }',
 									'default' => '#4692e7'
 								),
 								'tourmaster-single-price-head-background' => array(
@@ -1135,16 +1262,25 @@
 									'default' => '#4692e7',
 								),
 								'tourmaster-single-price-head-featured-background' => array(
-									'title' => esc_html__('Single Price Head Featured Background', 'tourmaster'),
+									'title' => esc_html__('Single (Style 1) Price Head Featured Background', 'tourmaster'),
+									'type' => 'colorpicker',
+									'data-type' => 'rgba', 
+									'selector' => '.tourmaster-tour-style-1 .tourmaster-header-price .tourmaster-header-price-ribbon, ' . 
+										'.tourmaster-tour-style-1 .tourmaster-header-price .tourmaster-header-enquiry-ribbon{ background: #gdlr#; background: rgba(#gdlra#, 0.9); }' . 
+										'.tourmaster-tour-style-1 .tourmaster-tour-booking-bar-wrap.tourmaster-top .tourmaster-header-price .tourmaster-header-price-ribbon,' . 
+										'.tourmaster-tour-style-1 .tourmaster-tour-booking-bar-wrap.tourmaster-bottom .tourmaster-header-price .tourmaster-header-price-ribbon,' . 
+										'.tourmaster-tour-style-1 .tourmaster-tour-booking-bar-wrap.tourmaster-lock .tourmaster-header-price .tourmaster-header-price-ribbon,' . 
+										'.tourmaster-tour-style-1 .tourmaster-tour-booking-bar-wrap.tourmaster-fixed .tourmaster-header-price .tourmaster-header-price-ribbon{ background: #gdlr#; }',
+									'default' => '#2c487a',
+								),
+								'tourmaster-single-price-head-text' => array(
+									'title' => esc_html__('Single Price Head Text Color', 'tourmaster'),
 									'type' => 'colorpicker',
 									'data-type' => 'rgba', 
 									'selector' => '.tourmaster-header-price .tourmaster-header-price-ribbon, ' . 
-										'.tourmaster-header-price .tourmaster-header-enquiry-ribbon{ background: #gdlr#; background: rgba(#gdlra#, 0.9); }' . 
-										'.tourmaster-tour-booking-bar-wrap.tourmaster-top .tourmaster-header-price .tourmaster-header-price-ribbon,' . 
-										'.tourmaster-tour-booking-bar-wrap.tourmaster-bottom .tourmaster-header-price .tourmaster-header-price-ribbon,' . 
-										'.tourmaster-tour-booking-bar-wrap.tourmaster-lock .tourmaster-header-price .tourmaster-header-price-ribbon,' . 
-										'.tourmaster-tour-booking-bar-wrap.tourmaster-fixed .tourmaster-header-price .tourmaster-header-price-ribbon{ background: #gdlr#; }',
-									'default' => '#2c487a',
+										'.tourmaster-header-price .tourmaster-tour-price-wrap, ' .
+										'.tourmaster-header-price .tourmaster-header-enquiry{ color: #gdlr#; }',
+									'default' => '#ffffff',
 								),
 								'tourmaster-single-price-head-discount-text' => array(
 									'title' => esc_html__('Single Price Head Discount Text', 'tourmaster'),
@@ -1460,7 +1596,10 @@
 								'tourmaster-booking-bar-background' => array(
 									'title' => esc_html__('Booking Bar Background', 'tourmaster'),
 									'type' => 'colorpicker',
-									'selector' => '.tourmaster-tour-booking-bar-inner, .tourmaster-form-field .tourmaster-combobox-list-wrap ul{ background-color: #gdlr#; }',
+									'selector' => '.tourmaster-tour-style-1 .tourmaster-tour-booking-bar-inner, ' . 
+										'.tourmaster-tour-style-2 .tourmaster-tour-booking-bar-outer, ' . 
+										'.tourmaster-form-field .tourmaster-combobox-list-wrap ul, ' . 
+										'.tourmaster-template-payment .tourmaster-tour-booking-bar-wrap{ background-color: #gdlr#; }',
 									'default' => '#ffffff',
 								),
 								'tourmaster-booking-bar-text' => array(
@@ -1524,6 +1663,35 @@
 						'tourmaster-payment' => array(
 							'title' => esc_html__('Tourmaster Payment', 'tourmaster'),
 							'options' => array(
+								'tourmaster-payment-title-overlay' => array(
+									'title' => esc_html__('Payment Title Overlay Color', 'tourmaster'),
+									'type' => 'colorpicker',
+									'data-type' => 'rgba',
+									'selector' => '.tourmaster-payment-head .tourmaster-payment-head-overlay-opacity{ background-color: rgba(#gdlra#, 0.5); }',
+									'default' => '#000000',
+								),
+								'tourmaster-payment-complete-background' => array(
+									'title' => esc_html__('Payment Complete Background', 'tourmaster'),
+									'type' => 'colorpicker',
+									'selector' => '.tourmaster-payment-complete-wrap,.tourmaster-payment-method-wrap{ background-color: #gdlr#; }',
+									'default' => '#f5f5f5',
+								),
+								'tourmaster-payment-complete-title' => array(
+									'title' => esc_html__('Payment Complete Title Color', 'tourmaster'),
+									'type' => 'colorpicker',
+									'selector' => '.tourmaster-payment-complete-wrap .tourmaster-payment-complete-head, ' .
+										'.tourmaster-payment-method-wrap .tourmaster-payment-method-title, ' .
+										'.tourmaster-payment-method-wrap .tourmaster-payment-method-or{ color: #gdlr#; }',
+									'default' => '#262626',
+								),
+								'tourmaster-payment-complete-border' => array(
+									'title' => esc_html__('Payment Complete Border Color', 'tourmaster'),
+									'type' => 'colorpicker',
+									'selector' => '.tourmaster-payment-complete-wrap .tourmaster-payment-complete-bottom-text, ' .
+										'.tourmaster-payment-complete-wrap .tourmaster-payment-complete-head, ' .
+										'.tourmaster-payment-method-wrap .tourmaster-payment-method-title{ border-color: #gdlr#; }',
+									'default' => '#e3e3e3',
+								),
 								'payment-service-form-background' => array(
 									'title' => esc_html__('Service Form Background ( Payment )', 'tourmaster'),
 									'type' => 'colorpicker',
@@ -1551,7 +1719,7 @@
 							)
 						),
 						'tourmaster-single' => array(
-							'title' => esc_html__('Tourmaster Single', 'tourmaster'),
+							'title' => esc_html__('Tourmaster Template', 'tourmaster'),
 							'options' => array(
 								'search-page-background' => array(
 									'title' => esc_html__('Search/Archive Page Background', 'tourmaster'),
@@ -1576,6 +1744,22 @@
 									'type' => 'colorpicker',
 									'selector' => '.tourmaster-single-search-not-found-wrap .tourmaster-single-search-not-found-caption{ color: #gdlr#; }',
 									'default' => '#a8a8a8',
+								),
+								'single-tour-top-gradient' => array(
+									'title' => esc_html__('Single Tour Top Gradient', 'tourmaster'),
+									'type' => 'colorpicker',
+									'data-type' => 'rgba',
+									'selector' => '.tourmaster-single-header-top-overlay, .tourmaster-payment-head .tourmaster-payment-head-top-overlay{ ' .
+										'background: -webkit-linear-gradient(to top, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); ' . 
+										'background: -o-linear-gradient(to top, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); ' . 
+										'background: -moz-linear-gradient(to top, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); ' . 
+										'background: linear-gradient(to top, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); }' .
+										'.tourmaster-single-header-overlay, .tourmaster-payment-head .tourmaster-payment-head-overlay{ ' .
+										'background: -webkit-linear-gradient(to bottom, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); ' . 
+										'background: -o-linear-gradient(to bottom, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); ' . 
+										'background: -moz-linear-gradient(to bottom, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); ' . 
+										'background: linear-gradient(to bottom, rgba(#gdlra#, 0), rgba(#gdlra#, 1)); }',
+									'default' => '#000',
 								),
 								'single-tour-info-background' => array(
 									'title' => esc_html__('Single Tour Info Background', 'tourmaster'),
@@ -1604,28 +1788,6 @@
 									'selector' => '.tourmaster-single-review-content .tourmaster-single-review-detail-date{ color: #gdlr#; }',
 									'default' => '#a3a3a3',
 								),
-								'tourmaster-payment-complete-background' => array(
-									'title' => esc_html__('Payment Complete Background', 'tourmaster'),
-									'type' => 'colorpicker',
-									'selector' => '.tourmaster-payment-complete-wrap,.tourmaster-payment-method-wrap{ background-color: #gdlr#; }',
-									'default' => '#f5f5f5',
-								),
-								'tourmaster-payment-complete-title' => array(
-									'title' => esc_html__('Payment Complete Title Color', 'tourmaster'),
-									'type' => 'colorpicker',
-									'selector' => '.tourmaster-payment-complete-wrap .tourmaster-payment-complete-head, ' .
-										'.tourmaster-payment-method-wrap .tourmaster-payment-method-title, ' .
-										'.tourmaster-payment-method-wrap .tourmaster-payment-method-or{ color: #gdlr#; }',
-									'default' => '#262626',
-								),
-								'tourmaster-payment-complete-border' => array(
-									'title' => esc_html__('Payment Complete Border Color', 'tourmaster'),
-									'type' => 'colorpicker',
-									'selector' => '.tourmaster-payment-complete-wrap .tourmaster-payment-complete-bottom-text, ' .
-										'.tourmaster-payment-complete-wrap .tourmaster-payment-complete-head, ' .
-										'.tourmaster-payment-method-wrap .tourmaster-payment-method-title{ border-color: #gdlr#; }',
-									'default' => '#e3e3e3',
-								),
 								'tourmaster-pagination-background' => array(
 									'title' => esc_html__('Pagination Text Color ( Review )', 'tourmaster'),
 									'type' => 'colorpicker',
@@ -1648,25 +1810,37 @@
 							)
 						),
 						'tourmaster-single2' => array(
-							'title' => esc_html__('Tourmaster Single 2', 'tourmaster'),
+							'title' => esc_html__('Tourmaster Template 2', 'tourmaster'),
 							'options' => array(
 								'booking-bar-tab-title-background' => array(
 									'title' => esc_html__('Booking Bar Tab Title Background', 'tourmaster'),
 									'type' => 'colorpicker',
-									'selector' => '.tourmaster-booking-tab-title{ background-color: #gdlr#; }',
+									'selector' => '.tourmaster-tour-style-1 .tourmaster-booking-tab-title{ background-color: #gdlr#; }',
 									'default' => '#f5f5f5',
 								),
 								'booking-bar-tab-title-text' => array(
 									'title' => esc_html__('Booking Bar Tab Title Text', 'tourmaster'),
 									'type' => 'colorpicker',
-									'selector' => '.tourmaster-booking-tab-title{ color: #gdlr#; }',
+									'selector' => '.tourmaster-booking-tab-title-item{ color: #gdlr#; }',
 									'default' => '#929292',
 								),
 								'booking-bar-tab-active-title-text' => array(
 									'title' => esc_html__('Booking Bar Tab Active Title Text', 'tourmaster'),
 									'type' => 'colorpicker',
-									'selector' => '.tourmaster-booking-tab-title{ color: #gdlr#; }',
+									'selector' => '.tourmaster-booking-tab-title-item.tourmaster-active{ color: #gdlr#; }',
 									'default' => '#242424',
+								),
+								'booking-bar-tab-title-divider' => array(
+									'title' => esc_html__('Booking Bar Tab Title Divider ( Tour Style 2 )', 'tourmaster'),
+									'type' => 'colorpicker',
+									'selector' => '.tourmaster-tour-style-2 .tourmaster-booking-tab-title-item{ border-color: #gdlr#; }',
+									'default' => '#d6d6d6',
+								),
+								'booking-bar-tab-title-divider' => array(
+									'title' => esc_html__('Booking Bar Tab Title Divider Active ( Tour Style 2 )', 'tourmaster'),
+									'type' => 'colorpicker',
+									'selector' => '.tourmaster-tour-style-2 .tourmaster-booking-tab-title-item.tourmaster-active{ border-color: #gdlr#; }',
+									'default' => '#234076',
 								),
 								'enquery-success-message-background' => array(
 									'title' => esc_html__('Enquery Form Success Message Background', 'tourmaster'),
@@ -1742,7 +1916,7 @@
 								'tour-item-order-filterer-icon' => array(
 									'title' => esc_html__('Tour Item Order Filterer Icon', 'tourmaster'),
 									'type' => 'colorpicker',
-									'selector' => '.tourmaster-body .tourmaster-tour-order-filterer-style a, .tourmaster-body .tourmaster-tour-order-filterer-style a:hover{ color: #gdlr#; }',
+									'selector' => '.tourmaster-body .tourmaster-tour-order-filterer-style a{ color: #gdlr#; }',
 									'default' => '#adadad',
 								),
 								'tour-item-frame-background' => array(

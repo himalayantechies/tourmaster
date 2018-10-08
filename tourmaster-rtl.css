@@ -187,13 +187,13 @@ table.tourmaster-my-booking-table .tourmaster-my-booking-action{ margin-left: 4p
 .single-tour .tourmaster-tour-info-outer .tourmaster-tour-info{ float: right; }
 
 .single-tour .tourmaster-single-header-title-wrap,
-.single-tour .tourmaster-tour-info-outer .tourmaster-tour-info-wrap{ padding-left: 410px; padding-right: 20px;}
+.single-tour .tourmaster-tour-info-outer .tourmaster-tour-info-wrap{ padding-left: 410px; padding-right: 20px !important; }
 .single-tour .tourmaster-tour-info-outer .tourmaster-tour-info-wrap,
 .single-tour .tourmaster-single-main-content,
-.single-tour .tourmaster-single-review{padding-left: 410px; padding-right: 0;  }
+.single-tour .tourmaster-single-review{ padding-left: 410px; padding-right: 0;  }
 .single-tour.tourmaster-body .gdlr-core-container{padding-left: 430px; padding-right: 15px; }
 .single-tour.tourmaster-body .gdlr-core-container .gdlr-core-container{ padding-left: 0px; padding-right: 15px;  }
-.single-tour.tourmaster-body .tourmaster-single-related-tour-container{padding-left: 430px; padding-right: 20px; }
+.single-tour.tourmaster-body .tourmaster-single-related-tour-container{ padding-left: 430px; padding-right: 20px; }
 
 .tourmaster-single-header .tourmaster-single-header-gallery-button i{ margin-left: 8px; margin-right: 0;}
 

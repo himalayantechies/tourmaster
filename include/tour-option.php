@@ -131,7 +131,12 @@
 		function tourmaster_tour_template( $template ){
 
 			if( get_post_type() == 'tour' ){
-				$template = TOURMASTER_LOCAL . '/single/tour.php';
+				$tour_style = tourmaster_get_option('general', 'single-tour-style', 'style-1');
+				if( $tour_style == 'style-1' ){
+					$template = TOURMASTER_LOCAL . '/single/tour.php';
+				}else if( $tour_style == 'style-2' ){
+					$template = TOURMASTER_LOCAL . '/single/tour-2.php';
+				}
 			}
 
 			return $template;
@@ -214,12 +219,28 @@
 									'type' => 'text',
 									'description' => esc_html__('Fill the number between 0 - 1 ( Leave Blank For Default Value )', 'tourmaster'),
 								),
+								'header-background-gradient' => array(
+									'title' => esc_html__('Title Background Gradient', 'tourmaster'),
+									'type' => 'combobox',
+									'options' => array(
+										'default' => esc_html__('Default', 'tourmaster'),
+										'both' => esc_html__('Both', 'tourmaster'),
+										'top' => esc_html__('Top', 'tourmaster'),
+										'bottom' => esc_html__('Bottom', 'tourmaster'),
+										'none' => esc_html__('None', 'tourmaster'),
+									),
+								),
 								'header-slider' => array(
 									'title' => esc_html__('Slider Images', 'tourmaster'),
 									'type' => 'custom',
 									'item-type' => 'gallery',
 									'condition' => array( 'header-image'=>array('slider', 'gallery') ),
 									'wrapper-class' => 'tourmaster-fullsize',
+								),
+								'lightbox-video-url' => array(
+									'title' => esc_html__('Lightbox Video URL', 'tourmaster'),
+									'type' => 'text',
+									'condition' => array( 'header-image' => 'gallery' ),
 								),
 								'header-slider-thumbnail' => array(
 									'title' => esc_html__('Slider Images Thumbnail Size', 'tourmaster'),
@@ -260,6 +281,11 @@
 									'default' => 'enable'
 								),
 
+								'enable-page-title' => array(
+									'title' => esc_html__('Enable Page Title', 'tourmaster'),
+									'type' => 'checkbox',
+									'default' => 'enable'
+								),
 								'enable-header-review-number' => array(
 									'title' => esc_html__('Enable Header Review Number', 'tourmaster'),
 									'type' => 'checkbox',
@@ -295,14 +321,27 @@
 							'title' => esc_html__('Tour Settings', 'tourmaster'),
 							'options' => array(
 								'form-settings' => array(
-									'title' =>  esc_html__('Form Settings', 'tourmaster'),
+									'title' =>  esc_html__('Reservation Bar', 'tourmaster'),
 									'type' => 'combobox',
 									'options' => array(
 										'booking' => esc_html__('Only Booking Form', 'tourmaster'),
 										'enquiry' => esc_html__('Only Enquiry Form', 'tourmaster'),
 										'both' => esc_html__('Both Booking & Enquiry Form', 'tourmaster'),
+										'custom' => esc_html__('Custom Code', 'tourmaster'),
+										'none' => esc_html__('None ( Hide the right side out )', 'tourmaster'),
 									),
-									'default' => 'enable'
+									'default' => 'booking'
+								),
+								'form-custom-title' => array(
+									'title' => esc_html__('Custom Code Title', 'tourmaster'),
+									'type' => 'text',
+									'condition' => array( 'form-settings' => 'custom' ),
+									'description' => esc_html__('Leave this field blank to display header price', 'tourmaster')
+								),
+								'form-custom-code' => array(
+									'title' => esc_html__('Custom Code', 'tourmaster'),
+									'type' => 'textarea',
+									'condition' => array( 'form-settings' => 'custom' )
 								),
 								'show-price' => array(
 									'title' =>  esc_html__('Show Header Price', 'tourmaster'),
@@ -332,15 +371,34 @@
 									'condition' => array('form-settings' => array('booking', 'both') ),
 									'description' =>  esc_html__('For example, If you fill the number "10" (for ten months) and today is in March 2019, customers will have an ability to book the tour from today until Jan 2020 (ten months from current month). Leave this field blank for unlimited booking in advanced.', 'tourmaster'),
 								),
+								'deposit-booking' => array(
+									'title' =>  esc_html__('Deposit Booking', 'tourmaster'),
+									'type' => 'combobox',
+									'options' => array(
+										'default' => esc_html__('Default', 'tourmaster'),
+										'enable' => esc_html__('Enable (Custom)', 'tourmaster'),
+										'disable' => esc_html__('Disable', 'tourmaster')
+									),
+									'description' => esc_html__('Default value can be set at the "Tourmaster" plugin option.', 'tourmaster'),
+									'condition' => array('form-settings' => array('booking', 'both') ),
+								),
+								'deposit-amount' => array(
+									'title' =>  esc_html__('Deposit Amount (%)', 'tourmaster'),
+									'type' => 'text',
+									'description' => esc_html__('Only fill number here.', 'tourmaster'),
+									'condition' => array('form-settings' => array('booking', 'both'), 'deposit-booking' => 'enable')
+								),
 								'tour-price-text' => array(
 									'title' =>  esc_html__('Tour Price Text', 'tourmaster'),
 									'type' => 'text',
 									'description' => esc_html__('Use for search function and displaying as tour information. Only fill number here.', 'tourmaster'),
+									'condition' => array( 'form-settings' => array('booking', 'enquiry', 'both', 'custom') )
 								),
 								'tour-price-discount-text' => array(
 									'title' =>  esc_html__('Tour Price Discount Text', 'tourmaster'),
 									'type' => 'text',
 									'description' => esc_html__('Use for search function and displaying as tour information. Only fill number here.', 'tourmaster'),
+									'condition' => array( 'form-settings' => array('booking', 'enquiry', 'both', 'custom') )
 								),
 								'duration-text' => array(
 									'title' =>  esc_html__('Duration Text', 'tourmaster'),
@@ -353,12 +411,6 @@
 									'condition' => array('tour-type' => 'multiple'),
 									'description' => esc_html__('Ex. Fill "3" for three days (Only Number is Allowed)', 'tourmaster'),
 								),
-								// 'single-duration' => array(
-								// 	'title' =>  esc_html__('Duration (Hour)', 'tourmaster'),
-								// 	'type' => 'time',
-								// 	'condition' => array('tour-type' => 'single'),
-								// 	'description' => esc_html__('Fill Only Number', 'tourmaster'),
-								// ),
 								'date-range' => array(
 									'title' =>  esc_html__('Date Range (Availability)', 'tourmaster'),
 									'type' => 'text',
@@ -378,21 +430,26 @@
 									'title' =>  esc_html__('Minimum Age', 'tourmaster'),
 									'type' => 'text',
 									'description' => esc_html__('Only for displaying as tour information.', 'tourmaster') . ' ' . 
-													 esc_html('Ex. "16+"', 'tourmaster')
+													 esc_html__('Ex. "16+"', 'tourmaster')
 								),
 								'minimum-people-per-booking' => array(
 									'title' =>  esc_html__('Minimum People Per Booking', 'tourmaster'),
 									'type' => 'text',
 									'single' => 'tourmaster-min-people-per-booking',
 									'condition' => array('form-settings' => array('booking', 'both') ),
-									'description' => esc_html('Minimum people per booking.', 'tourmaster')
+								),
+								'maximum-people-per-booking' => array(
+									'title' =>  esc_html__('Maximum People Per Booking', 'tourmaster'),
+									'type' => 'text',
+									'single' => 'tourmaster-max-people-per-booking',
+									'condition' => array('form-settings' => array('booking', 'both') ),
 								),
 								'maximum-people' => array(
 									'title' =>  esc_html__('Maximum People', 'tourmaster'),
 									'type' => 'text',
 									'single' => 'tourmaster-max-people',
 									'condition' => array( 'form-settings' => array('booking', 'both') ),
-									'description' => esc_html('Only for displaying as tour information.', 'tourmaster')
+									'description' => esc_html__('Only for displaying as tour information.', 'tourmaster')
 								),
 								'display-single-tour-info' => array(
 									'title' =>  esc_html__('Display Single Tour Info', 'tourmaster'),
@@ -404,7 +461,7 @@
 									'type' => 'checkbox',
 									'default' => 'enable',
 									'condition' => array( 'form-settings' => array('booking', 'both') ),
-									'description' => esc_html('This option requires customer to fill name and last name of each traveller.', 'tourmaster')
+									'description' => esc_html__('This option requires customer to fill name and last name of each traveller.', 'tourmaster')
 								),
 								'require-traveller-info-title' => array(
 									'title' =>  esc_html__('Require Traveller\'s Title (Mr/Mrs)', 'tourmaster'),
@@ -530,6 +587,9 @@
 												'2018' => '2018',
 												'2019' => '2019',
 												'2020' => '2020',
+												'2021' => '2021',
+												'2022' => '2022',
+												'2023' => '2023',
 											)
 										),
 
@@ -590,6 +650,12 @@
 												'tab-title' => esc_html__('Default Package', 'tourmaster')
 											),
 											'options' => array(
+												'default-package' => array(
+													'title' => esc_html__('Default Package', 'tourmaster'),
+													'type' => 'checkbox',
+													'default' => 'disable',
+													'description' => esc_html__('Enable to pre-selected this package on page load. Only the first package that enable this option is effected.')
+												),
 												'group-slug' => array(
 													'title' => esc_html__('Package Group Alias', 'tourmaster'),
 													'type' => 'text',
@@ -620,7 +686,17 @@
 												'adult-price' => array(
 													'title' => esc_html__('Adult', 'tourmaster'),
 													'type' => 'text',
-													'description' => esc_html__('Price per person (Fill only number).', 'tourmaster'),
+													'description' => esc_html__('Price per person (Fill only number). * Leave this field blank to not apply.', 'tourmaster'),
+												),
+												'male-price' => array(
+													'title' => esc_html__('Male', 'tourmaster'),
+													'type' => 'text',
+													'description' => esc_html__('Price per person (Fill only number). * Leave this field blank to not apply.', 'tourmaster'),
+												),
+												'female-price' => array(
+													'title' => esc_html__('Female', 'tourmaster'),
+													'type' => 'text',
+													'description' => esc_html__('Price per person (Fill only number). * Leave this field blank to not apply.', 'tourmaster'),
 												),
 												'children-price' => array(
 													'title' => esc_html__('Child', 'tourmaster'),
@@ -652,6 +728,12 @@
 													'type' => 'text',
 													'description' => esc_html__('People amount in each group (Fill only number).', 'tourmaster'),
 												),
+												'same-gender' => array(
+													'title' => esc_html__('Same Gender Required', 'tourmaster'),
+													'type' => 'checkbox',
+													'default' => 'disable',
+													'description' => esc_html__('This feature will allow only one gender in the this package. Ex. If female book first, the rest has to be female as well. However, mix gender will be allowed if women and men book at the same time by the same customer.', 'tourmaster')
+												),
 
 												'room-base-price-title' => array(
 													'title' => esc_html__('ROOM BASED PRICE', 'tourmaster'),
@@ -662,6 +744,11 @@
 													'type' => 'text',
 													'description' => esc_html__('This price based on 2 adults', 'tourmaster'),
 												),
+												'single-discount' => array(
+													'title' => esc_html__('Single Discount', 'tourmaster'),
+													'type' => 'text',
+													'description' => esc_html__('This discount will be used for deducting the price of Initial Price. Ex, If you set Initial Price as $100 and Single Discount as $30. If there’re two guests in this room, they will pay for $100. However, if there\'s only one guest in this room, he/she will pay for only $70 instead of $100. This option is an alternative for single supplement.', 'tourmaster'),
+												),
 												'additional-person' => array(
 													'title' => esc_html__('Additional Person', 'tourmaster'),
 													'type' => 'text',
@@ -669,6 +756,16 @@
 												),
 												'additional-adult' => array(
 													'title' => esc_html__('Additional Adult', 'tourmaster'),
+													'type' => 'text',
+													'description' => esc_html__('Price per person (Fill only number). * Leave this field blank to not apply.', 'tourmaster'),
+												),
+												'additional-male' => array(
+													'title' => esc_html__('Additional Male', 'tourmaster'),
+													'type' => 'text',
+													'description' => esc_html__('Price per person (Fill only number). * Leave this field blank to not apply.', 'tourmaster'),
+												),
+												'additional-female' => array(
+													'title' => esc_html__('Additional Female', 'tourmaster'),
 													'type' => 'text',
 													'description' => esc_html__('Price per person (Fill only number). * Leave this field blank to not apply.', 'tourmaster'),
 												),
@@ -686,6 +783,14 @@
 													'title' => esc_html__('Additional Infant', 'tourmaster'),
 													'type' => 'text',
 													'description' => esc_html__('Price per person (Fill only number). * Leave this field blank to not apply.', 'tourmaster'),
+												),
+												'minimum-people-per-booking' => array(
+													'title' => esc_html__('Minimum People Per Booking', 'tourmaster'),
+													'type' => 'text',
+												),
+												'max-room' => array(
+													'title' => esc_html__('Max Room', 'tourmaster'),
+													'type' => 'text',
 												),
 												'max-people-per-room' => array(
 													'title' => esc_html__('Max People Per Room', 'tourmaster'),
@@ -706,6 +811,7 @@
 									),
 									'settings' => array(
 										'tab-title' => esc_html__('Date', 'tourmaster') . '<i class="fa fa-edit" ></i>',
+										'allow-duplicate' => '<i class="fa fa-copy" ></i>' . esc_html__('Duplicate', 'tourmaster'),
 									),
 									'condition' => array( 'tour-type' => 'css-condition', 'tour-timing-method' => 'css-condition' ),
 									'wrapper-class' => 'tourmaster-with-bottom-divider'
@@ -771,8 +877,14 @@
 						), // urgency message
 
 						'group-message' => array(
-							'title' => esc_html__('Reminder & Group Message', 'tourmaster'),
+							'title' => esc_html__('Reminder & Message', 'tourmaster'),
 							'options' => array(
+								'carbon-copy-mail' => array(
+									'title' =>  esc_html__('Carbon Copy Email (CC)', 'tourmaster'),
+									'type' => 'text',
+									'single' => 'tourmaster-tour-cc-mail',
+									'description' => esc_html__('Fill the email here to send a copy of an Admin Email for transaction related to this tour.', 'tourmaster')
+								),
 								'reminder-message-title' => array(
 									'title' =>  esc_html__('Reminder Message', 'tourmaster'),
 									'type' => 'title',
@@ -1002,8 +1114,10 @@
 					update_post_meta($post_id, 'tourmaster-tour-discount', 'true');
 				}else if( !empty($tour_option['tour-price-text']) ){
 					update_post_meta($post_id, 'tourmaster-tour-price', $tour_option['tour-price-text']);
+					update_post_meta($post_id, 'tourmaster-tour-discount', 'false');
 				}else{
 					delete_post_meta($post_id, 'tourmaster-tour-price');
+					delete_post_meta($post_id, 'tourmaster-tour-discount');
 				}
 			}
 

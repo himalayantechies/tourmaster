@@ -51,6 +51,7 @@
 			'value' => 'cancel'
 		);
 	}
+	// $conditions['order_status'] = array( 'custom' => ' IN (\'approved\', \'online-paid\') ' );
 	$results = tourmaster_get_booking_data($conditions);
 
 	foreach( $results as $result ){

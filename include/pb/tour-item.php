@@ -69,10 +69,14 @@
 					}
 
 					$tour_style = new tourmaster_tour_style();
+
+					tourmaster_setup_admin_postdata();
 					while($query->have_posts()){ $query->the_post();
 						$slides[] = $tour_style->get_content( $this->settings );
 					} // while
-
+					wp_reset_postdata();
+					tourmaster_reset_admin_postdata();
+					
 					$ret .= tourmaster_get_flexslider($slides, $flex_atts);
 
 				// fitrows style
@@ -95,9 +99,12 @@
 					}
 
 					// tour item
+					tourmaster_setup_admin_postdata();
 					$ret .= '<div class="tourmaster-tour-item-holder gdlr-core-js-2 clearfix" data-layout="' . $this->settings['layout'] . '" >';
 					$ret .= $this->get_tour_grid_content($query);
 					$ret .= '</div>';
+					wp_reset_postdata();
+					tourmaster_reset_admin_postdata();
 
 					// pagination
 					if( $this->settings['pagination'] != 'none' ){
@@ -122,7 +129,6 @@
 						}
 					}
 				}
-				wp_reset_postdata();
 
 				if( function_exists('gdlr_core_set_container_multiplier') ){
 					gdlr_core_set_container_multiplier(1, false);
@@ -177,9 +183,28 @@
 				if( !empty($this->settings['s']) ){
 					$args['s'] = $this->settings['s'];
 				} 
+
 				if( !empty($this->settings['meta_query']) ){
 					$args['meta_query'] = $this->settings['meta_query'];
-				} 
+				}else{
+					$args['meta_query'] = array();
+
+					// discounted tour
+					if( !empty($this->settings['discount-status']) && $this->settings['discount-status'] == 'discount' ){
+						$args['meta_query'][] = array(
+							'key' => 'tourmaster-tour-discount',
+							'value' => 'true'
+						);
+					}
+
+					// hide unavailable tour
+					if( !empty($this->settings['hide-not-avail']) && $this->settings['hide-not-avail'] == 'enable' ){
+						$args['meta_query'][] = array(
+							'key' => 'tourmaster-tour-date-avail',
+							'compare' => 'EXISTS'
+						);
+					}
+				}
 				
 				// category - tag selection
 				if( !empty($this->settings['tax_query']) ){
@@ -232,32 +257,22 @@
 					$args['orderby'] = $this->settings['orderby'];
 				}else if( $this->settings['orderby'] == 'price' ){
 					$args['meta_key'] = 'tourmaster-tour-price';
-					$args['meta_type'] = 'NUMERIC';
-					$args['orderby'] = 'meta_value';
+					$args['meta_type'] = 'DECIMAL';
+					$args['orderby'] = 'meta_value_num';
 				}else if( $this->settings['orderby'] == 'duration' ){
 					$args['meta_key'] = 'tourmaster-tour-duration';
 					$args['meta_type'] = 'NUMERIC';
-					$args['orderby'] = 'meta_value';
+					$args['orderby'] = 'meta_value_num';
 				}else if( $this->settings['orderby'] == 'popularity' ){
 					$args['meta_key'] = 'tourmaster-view-count';
 					$args['meta_type'] = 'NUMERIC';
-					$args['orderby'] = 'meta_value';
+					$args['orderby'] = 'meta_value_num';
 				}else if( $this->settings['orderby'] == 'rating' ){
 					$args['meta_key'] = 'tourmaster-tour-rating-score';
 					$args['meta_type'] = 'NUMERIC';
-					$args['orderby'] = 'meta_value';
+					$args['orderby'] = 'meta_value_num';
 				}else{
 					$args['orderby'] = $this->settings['orderby'];
-				}
-
-				// discounted tour
-				if( !empty($this->settings['discount-status']) && $this->settings['discount-status'] == 'discount' ){
-					$args['meta_query'] = array(
-						array(
-							'key' => 'tourmaster-tour-discount',
-							'value' => 'true'
-						)
-					);
 				}
 
 				return new WP_Query( $args );
@@ -311,14 +326,14 @@
 				if( !empty($this->settings['order-filterer-list-style']) && $this->settings['order-filterer-list-style'] != 'none' ){
 					$temp = str_replace('-with-frame', '', $this->settings['order-filterer-list-style']);
 					$ret .= '<a href="#" data-ajax-name="item-style" ';
-					$ret .= ' class="' . ($temp == $this->settings['tour-style']? 'gdlr-core-active': '') . '" ';
+					$ret .= ' class="' . ($temp == $this->settings['tour-style']? 'tourmaster-active': '') . '" ';
 					$ret .= ' data-ajax-value="list-style" ';
 					$ret .= ' ><i class="fa fa-th-list" ></i></a>';
 				}
 				if( !empty($this->settings['order-filterer-grid-style']) && $this->settings['order-filterer-grid-style'] != 'none' ){
 					$temp = str_replace('-with-frame', '', $this->settings['order-filterer-grid-style']);
 					$ret .= '<a href="#" data-ajax-name="item-style" ';
-					$ret .= ' class="' . ($temp == $this->settings['tour-style']? 'gdlr-core-active': '') . '" ';
+					$ret .= ' class="' . ($temp == $this->settings['tour-style']? 'tourmaster-active': '') . '" ';
 					$ret .= ' data-ajax-value="grid-style" ';
 					$ret .= ' ><i class="fa fa-th" ></i></a>';
 				}
@@ -395,7 +410,7 @@
 					if( $settings['pagination'] == 'load-more' ){
 						$paged = empty($query->query['paged'])? 2: intval($query->query['paged']) + 1;
 						$ret['load_more'] = tourmaster_get_ajax_load_more('tour', $settings, $paged, $query->max_num_pages, 'tourmaster-tour-item-holder', $extra_class);
-						$ret['load_more'] = empty($ret['load_more'])? 'none': 2 . $ret['load_more'];
+						$ret['load_more'] = empty($ret['load_more'])? 'none': $ret['load_more'];
 					}else{
 						$ret['pagination'] = tourmaster_get_ajax_pagination('tour', $settings, $query->max_num_pages, 'tourmaster-tour-item-holder', $extra_class);
 						$ret['pagination'] = empty($ret['pagination'])? 'none': $ret['pagination'];
@@ -453,7 +468,7 @@
 					if( $settings['pagination'] == 'load-more' ){
 						$paged = empty($query->query['paged'])? 2: intval($query->query['paged']) + 1;
 						$ret['load_more'] = tourmaster_get_ajax_load_more('tour', $settings, $paged, $query->max_num_pages, 'tourmaster-tour-item-holder', $extra_class);
-						$ret['load_more'] = empty($ret['load_more'])? 'none': 2 . $ret['load_more'];
+						$ret['load_more'] = empty($ret['load_more'])? 'none': $ret['load_more'];
 
 					// change pagination on category filter
 					}else if( empty($_POST['option']['name']) || $_POST['option']['name'] == 'category' ){

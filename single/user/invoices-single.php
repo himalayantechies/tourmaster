@@ -18,7 +18,7 @@
 	echo '<div class="tourmaster-invoice-wrap clearfix" id="tourmaster-invoice-wrap" >';
 
 	$invoice_logo = tourmaster_get_option('general', 'invoice-logo');
-	$billing_info = empty($result->billing_info)? array(): json_decode($result->contact_info, true);
+	$billing_info = empty($result->billing_info)? array(): json_decode($result->billing_info, true);
 	
 	echo '<div class="tourmaster-invoice-head clearfix" >';
 	echo '<div class="tourmaster-invoice-head-left" >';
@@ -32,10 +32,15 @@
 	echo '<div class="tourmaster-invoice-id" >' . esc_html__('Invoice ID :', 'tourmaster') . ' #' . $result->id . '</div>';
 	echo '<div class="tourmaster-invoice-date" >' . esc_html__('Invoice date :', 'tourmaster') . ' ' . tourmaster_date_format($result->booking_date) . '</div>';
 	echo '<div class="tourmaster-invoice-receiver" >';
-	echo '<div class="tourmaster-invoice-receiver-head" >' . esc_html('Invoice To', 'tourmaster') . '</div>';
+	echo '<div class="tourmaster-invoice-receiver-head" >' . esc_html__('Invoice To', 'tourmaster') . '</div>';
 	echo '<div class="tourmaster-invoice-receiver-info" >';
-	echo '<span class="tourmaster-invoice-receiver-name" >' . $billing_info['first_name'] . ' ' . $billing_info['last_name'] . '</span>';
-	echo '<span class="tourmaster-invoice-receiver-address" >' . (empty($billing_info['contact_address'])? '': $billing_info['contact_address']) . '</span>';
+	$customer_address = tourmaster_get_option('general', 'invoice-customer-address');
+	if( empty($customer_address) ){
+		echo '<span class="tourmaster-invoice-receiver-name" >' . $billing_info['first_name'] . ' ' . $billing_info['last_name'] . '</span>';
+		echo '<span class="tourmaster-invoice-receiver-address" >' . (empty($billing_info['contact_address'])? '': $billing_info['contact_address']) . '</span>';
+	}else{
+		echo tourmaster_content_filter(tourmaster_set_contact_form_data($customer_address, $billing_info));
+	}
 	echo '</div>';
 	echo '</div>';
 	echo '</div>'; // tourmaster-invoice-head-left
@@ -68,13 +73,13 @@
 		echo '</div>'; // tourmaster-invoice-price-breakdown
 	}
 
-	if( !empty($result->order_status) && in_array($result->order_status, array('approve', 'online-paid', 'departed')) ){
+	if( !empty($result->order_status) && in_array($result->order_status, array('approve', 'online-paid', 'departed', 'deposit-paid')) ){
 		$payment_date = tourmaster_date_format($result->payment_date);
 		$payment_info = json_decode($result->payment_info, true);
 
 		echo '<div class="tourmaster-invoice-payment-info clearfix" >';
 		echo '<div class="tourmaster-invoice-payment-info-item" >';
-		echo '<div class="tourmaster-head" >' . esc_html__('Payment Method') . '</div>';
+		echo '<div class="tourmaster-head" >' . esc_html__('Payment Method', 'tourmaster') . '</div>';
 		echo '<div class="tourmaster-tail" >';
 		if( !empty($payment_info['payment_method']) && $payment_info['payment_method'] == 'receipt' ){
 			echo esc_html__('Bank Transfer', 'tourmaster');
@@ -84,8 +89,19 @@
 		echo '</div>';
 		echo '</div>'; // tourmaster-invoice-payment-info-item
 
+		if( !empty($payment_info['amount']) ){
+			echo '<div class="tourmaster-invoice-payment-info-item" >';
+			echo '<div class="tourmaster-head" >' . esc_html__('Paid Amount', 'tourmaster') . '</div>';
+			if( !empty($payment_info['deposit_amount']) ){
+				echo '<div class="tourmaster-tail" >' . tourmaster_money_format($payment_info['deposit_amount']) . '</div>';
+			}else{
+				echo '<div class="tourmaster-tail" >' . tourmaster_money_format($payment_info['amount']) . '</div>';	
+			}
+			echo '</div>'; // tourmaster-invoice-payment-info-item
+		}
+
 		echo '<div class="tourmaster-invoice-payment-info-item" >';
-		echo '<div class="tourmaster-head" >' . esc_html__('Date') . '</div>';
+		echo '<div class="tourmaster-head" >' . esc_html__('Date', 'tourmaster') . '</div>';
 		echo '<div class="tourmaster-tail" >' . $payment_date . '</div>';
 		echo '</div>'; // tourmaster-invoice-payment-info-item
 		
@@ -97,7 +113,7 @@
 		}
 		if( !empty($transaction_id) ){
 			echo '<div class="tourmaster-invoice-payment-info-item" >';
-			echo '<div class="tourmaster-head" >' . esc_html__('Transaction ID') . '</div>';
+			echo '<div class="tourmaster-head" >' . esc_html__('Transaction ID', 'tourmaster') . '</div>';
 			echo '<div class="tourmaster-tail" >' . $transaction_id . '</div>';
 			echo '</div>'; // tourmaster-invoice-payment-info-item
 		}

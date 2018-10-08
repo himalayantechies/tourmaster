@@ -77,6 +77,22 @@
 	if( !function_exists('goodlayers_paymill_payment_form') ){
 		function goodlayers_paymill_payment_form( $ret = '', $tid = '' ){
 			$public_key = apply_filters('goodlayers_payment_get_option', '', 'paymill-public-key');
+			$currency = apply_filters('goodlayers_payment_get_option', 'usd', 'paymill-currency-code');
+
+			// get the price
+			$t_data = apply_filters('goodlayers_payment_get_transaction_data', array(), $tid, array('price'));
+			$price = '';
+			if( $t_data['price']['deposit-price'] ){
+				$price = $t_data['price']['deposit-price'];
+				if( !empty($t_data['price']['deposit-price-raw']) ){
+					$deposit_amount = $t_data['price']['deposit-price-raw'];
+				}
+			}else if( !empty($t_data['price']['total-price']) ){
+				$price = $t_data['price']['total-price'];
+			}else{
+				$price = $t_data['price'];
+			}
+			$price = round(floatval($price) * 100);
 
 			ob_start();
 ?>
@@ -178,8 +194,8 @@
 					exp_month: form.find('[data-paymill="exp_month"]').val(),   
 					exp_year: form.find('[data-paymill="exp_year"]').val(),     
 					cvc: form.find('[data-paymill="cvc"]').val(),
-					amount_int: '100', // sample amount for creating the token
-					currency: 'USD', // sample currency for creating the token
+					amount_int: '<?php echo esc_js(trim($price)); ?>',
+					currency: '<?php echo esc_js(trim($currency)); ?>',
 				}, paymillResponseHandler); 
 			}
 
@@ -205,11 +221,23 @@
 				$currency = trim(apply_filters('goodlayers_payment_get_option', 'usd', 'paymill-currency-code'));
 
 				$t_data = apply_filters('goodlayers_payment_get_transaction_data', array(), $_POST['tid'], array('price', 'email'));
-				if( empty($t_data['price']) ){
+				$price = '';
+				if( $t_data['price']['deposit-price'] ){
+					$price = $t_data['price']['deposit-price'];
+					if( !empty($t_data['price']['deposit-price-raw']) ){
+						$deposit_amount = $t_data['price']['deposit-price-raw'];
+					}
+				}else if( !empty($t_data['price']['total-price']) ){
+					$price = $t_data['price']['total-price'];
+				}else{
+					$price = $t_data['price'];
+				}
+
+				if( empty($price) ){
 					$ret['status'] = 'failed';
 					$ret['message'] = esc_html__('Cannot retrieve pricing data, please try again.', 'tourmaster');
 				}else{
-					$price = intval(floatval($t_data['price']) * 100);
+					$price = round(floatval($price) * 100);
 
 					try{
 						$request = new Paymill\Request($api_key);
@@ -232,6 +260,9 @@
 							'amount' => intval($response['body']['data']['amount']) / 100,
 							'transaction_id' => $response['body']['data']['id']
 						);
+						if( !empty($deposit_amount) ){
+							$payment_info['deposit_amount'] = $deposit_amount;
+						}
 						do_action('goodlayers_set_payment_complete', $_POST['tid'], $payment_info);
 
 						$ret['status'] = 'success';

@@ -50,6 +50,14 @@
 									'full' => esc_html__('Full', 'tourmaster'),
 								)
 							),
+							'input-box-style' => array(
+								'title' => esc_html__('Input Box Style', 'tourmaster'),
+								'type' => 'combobox',
+								'options' => array(
+									'default' => esc_html__('Default', 'tourmaster'),
+									'no-border' => esc_html__('No Border', 'tourmaster')
+								)
+							),
 							'enable-rating-field' => array(
 								'title' => esc_html__('Enable Rating', 'tourmaster'),
 								'type' => 'checkbox',
@@ -167,16 +175,31 @@
 					$ret .= '<h3 class="tourmaster-tour-search-title" >' . tourmaster_text_filter($settings['title']) . '</h3>';
 				} 
 
+				$settings['input-box-style'] = empty($settings['input-box-style'])? 'default': $settings['input-box-style'];
+				$input_label = true;
+				$placeholder = false;
+
 				$form_tag = is_admin()? 'div': 'form';
 				$action_url = tourmaster_get_template_url('search');
-				$ret .= '<' . $form_tag . ' class="tourmaster-form-field tourmaster-with-border" action="' . esc_url($action_url) . '" method="GET" >';
+				
+				$form_class  = 'tourmaster-form-field ';
+				if( $settings['input-box-style'] == 'default' ){
+					$form_class .= 'tourmaster-with-border';
+				}else{
+					$form_class .= 'tourmaster-large';
+					$input_label = false;
+					$placeholder = true;
+				}
+				$ret .= '<' . $form_tag . ' class="' . esc_attr($form_class) . '" action="' . esc_url($action_url) . '" method="GET" >';
 				
 				// keywords
 				if( empty($fields) || in_array('keywords', $fields) ){
 					$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-keywords" >';
-					$ret .= '<label>' . esc_html__('Keywords', 'tourmaster') . '</label>';
+					$ret .= ($input_label)? '<label>' . esc_html__('Keywords', 'tourmaster') . '</label>': '';
 					$ret .= '<div class="tourmaster-tour-search-field-inner" >';
-					$ret .= '<input name="tour-search" type="text" value="' . (empty($_GET['tour-search'])? '': esc_attr($_GET['tour-search'])) . '" />';
+					$ret .= '<input name="tour-search" type="text" ';
+					$ret .= ($placeholder)? 'placeholder="' . esc_html__('Keywords', 'tourmaster') . '" ': '';
+					$ret .= 'value="' . (empty($_GET['tour-search'])? '': esc_attr($_GET['tour-search'])) . '" />';
 					$ret .= '</div>';
 					$ret .= '</div>';
 				}else{
@@ -185,12 +208,12 @@
 				
 				// tour_category
 				if( empty($fields) || in_array('tour_category', $fields) ){
-					$tour_category = array_merge(
-						array('' => esc_html__('Any', 'tourmaster')),
-						tourmaster_get_term_list('tour_category')
-					);
+					$tour_category = array(
+						'' => ($placeholder)? esc_html__('Category', 'tourmaster'): esc_html__('Any', 'tourmaster')
+					) + tourmaster_get_term_list('tour_category');
+					
 					$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-tour-category" >';
-					$ret .= '<label>' . esc_html__('Category', 'tourmaster') . '</label>';
+					$ret .= ($input_label)? '<label>' . esc_html__('Category', 'tourmaster') . '</label>': '';
 					$ret .= self::get_combobox('tour_category', $tour_category);
 					$ret .= '</div>';				
 				}
@@ -200,12 +223,11 @@
 				$tax_fields = $tax_fields + tourmaster_get_custom_tax_list();
 				foreach( $tax_fields as $tax_field => $tax_title ){
 					if( empty($fields) || in_array($tax_field, $fields) ){
-						$location = array_merge(
-							array('' => esc_html__('Any', 'tourmaster')),
-							tourmaster_get_term_list($tax_field)
-						);
+						$location = array(
+							'' => ($placeholder)? $tax_title: esc_html__('Any', 'tourmaster')
+						) + tourmaster_get_term_list($tax_field);
 						$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-tax" >';
-						$ret .= '<label>' . $tax_title . '</label>';
+						$ret .= ($input_label)? '<label>' . $tax_title . '</label>': '';
 						$ret .= self::get_combobox($tax_field, $location);
 						$ret .= '</div>';				
 					}
@@ -214,14 +236,14 @@
 				// tour duration
 				if( empty($fields) || in_array('duration', $fields) ){
 					$duration = array(
-						'' => esc_html__('Any', 'tourmaster'), 
+						'' => ($placeholder)? esc_html__('Duration', 'tourmaster'): esc_html__('Any', 'tourmaster'), 
 						'1' => esc_html__('1 Day Tour', 'tourmaster'), 
 						'2' => esc_html__('2-4 Days Tour', 'tourmaster'), 
 						'5' => esc_html__('5-7 Days Tour', 'tourmaster'), 
 						'7' => esc_html__('7+ Days Tour', 'tourmaster'), 
 					);
 					$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-duration" >';
-					$ret .= '<label>' . esc_html__('Duration', 'tourmaster') . '</label>';
+					$ret .= ($input_label)? '<label>' . esc_html__('Duration', 'tourmaster') . '</label>': '';
 					$ret .= self::get_combobox('duration', $duration);
 					$ret .= '</div>';
 				}
@@ -229,29 +251,59 @@
 				// date
 				if( empty($fields) || in_array('date', $fields) ){
 					$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-date" >';
-					$ret .= '<label>' . esc_html__('Date', 'tourmaster') . '</label>';
+					$ret .= ($input_label)? '<label>' . esc_html__('Date', 'tourmaster') . '</label>': '';
 					$ret .= '<div class="tourmaster-datepicker-wrap" >';
 					$ret .= '<input class="tourmaster-datepicker" type="text"  ';
-					$ret .= 'placeholder="' . esc_html__('Any', 'tourmaster') . '" ';
+					$ret .= 'value="' . (empty($_GET['date'])? '': esc_attr(tourmaster_date_format($_GET['date']))) . '" ';
+					$ret .= ($placeholder)? 'placeholder="' . esc_html__('Date', 'tourmaster') . '" ': '';
 					$ret .= 'data-date-format="' . esc_attr(tourmaster_get_option('general', 'datepicker-date-format', 'd M yy')) . '" />';
-					$ret .= '<input class="tourmaster-datepicker-alt" name="date" type="hidden" />';
+					$ret .= '<input class="tourmaster-datepicker-alt" name="date" type="hidden" ';
+					$ret .= 'value="' . (empty($_GET['date'])? '': esc_attr($_GET['date'])) . '" ';
+					$ret .= ' />';
 					$ret .= '</div>';
+					$ret .= '</div>';
+				}
+
+				// month
+				if( empty($fields) || in_array('month', $fields) ){
+
+					$month_number = intval(tourmaster_get_option('general', 'search-month-amount', '12'));
+					$months = array(
+						'' => ($placeholder)? esc_html__('Month', 'tourmaster'): esc_html__('Any', 'tourmaster'),
+					);
+
+					for( $i = 0; $i < $month_number; $i++ ){
+						$temp_time = strtotime("+{$i} months");
+						$month_slug = date('Y-m', $temp_time);
+						$month_name = date_i18n('F Y', $temp_time);
+						$months[$month_slug] = $month_name;
+					}
+
+					$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-month" >';
+					$ret .= ($input_label)? '<label>' . esc_html__('Month', 'tourmaster') . '</label>': '';
+					$ret .= self::get_combobox('month', $months);
 					$ret .= '</div>';
 				}
 
 				// min-price
 				if( empty($fields) || in_array('min-price', $fields) ){
 					$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-min-price" >';
-					$ret .= '<label>' . esc_html__('Min Price', 'tourmaster') . '</label>';
-					$ret .= '<input name="min-price" type="text" />';
+					$ret .= ($input_label)? '<label>' . esc_html__('Min Price', 'tourmaster') . '</label>': '';
+					$ret .= '<input name="min-price" type="text" ';
+					$ret .= 'value="' . (empty($_GET['min-price'])? '': esc_attr($_GET['min-price'])) . '" ';
+					$ret .= ($placeholder)? 'placeholder="' . esc_html__('Min Price', 'tourmaster') . '" ': '';
+					$ret .= ' />';
 					$ret .= '</div>';
 				}
 
 				// max-price
 				if( empty($fields) || in_array('max-price', $fields) ){
 					$ret .= '<div class="tourmaster-tour-search-field tourmaster-tour-search-field-max-price" >';
-					$ret .= '<label>' . esc_html__('Max Price', 'tourmaster') . '</label>';
-					$ret .= '<input name="max-price" type="text" />';
+					$ret .= ($input_label)? '<label>' . esc_html__('Max Price', 'tourmaster') . '</label>': '';
+					$ret .= '<input name="max-price" type="text" ';
+					$ret .= 'value="' . (empty($_GET['max-price'])? '': esc_attr($_GET['max-price'])) . '" ';
+					$ret .= ($placeholder)? 'placeholder="' . esc_html__('Max Price', 'tourmaster') . '" ': '';
+					$ret .= ' />';
 					$ret .= '</div>';
 				}
 
@@ -308,7 +360,13 @@
 						foreach( $settings['filters'] as $filter ){
 							$taxonomy = get_taxonomy($filter);
 							$term_list = tourmaster_get_term_list($filter);
-							$filter_val = empty($_GET[$filter])? array(): $_GET[$filter]; 
+							if( empty($_GET[$filter]) ){
+								$filter_val = array();
+							}else if( is_array($_GET[$filter]) ){
+								$filter_val = $_GET[$filter];
+							}else{
+								$filter_val = array_map('trim', explode(',', $_GET[$filter]));
+							}
 
 							$ret .= '<div class="tourmaster-type-filter-item" >';
 							$ret .= '<h5 class="tourmaster-type-filter-item-title" >' . $taxonomy->label . '</h5>';

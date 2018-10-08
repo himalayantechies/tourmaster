@@ -99,6 +99,11 @@
 									'discount'=> esc_html__('Discounted Tour ( tour with discount text filled )', 'tourmaster'), 
 								)
 							),
+							'hide-not-avail' => array(
+								'title' => esc_html__('Hide Not Available Tour', 'tourmaster'),
+								'type' => 'checkbox',
+								'default' => 'disable'
+							),
 							'enable-order-filterer' => array(
 								'title' => esc_html__('Order Filterer', 'tourmaster'),
 								'type' => 'checkbox',
@@ -269,10 +274,17 @@
 								'options' => array(
 									'right-title' => esc_html__('Right Side Of The Title', 'tourmaster'),
 									'bottom-title' => esc_html__('Bottom Of The Title', 'tourmaster'),
+									'bottom-title-center' => esc_html__('Bottom Of The Title Center', 'tourmaster'),
 									'bottom-bar' => esc_html__('As Bottom Bar', 'tourmaster'),
 								),
 								'condition' => array( 'tour-style' => array('grid', 'grid-with-frame', 'grid-no-space') ),
 								'default' => 'right-title'
+							),
+							'price-prefix-text' => array(
+								'title' => esc_html__('Price Prefix Text', 'tourmaster'),
+								'type' => 'text', 
+								'condition' => array( 'tour-style' => array('grid', 'grid-with-frame', 'grid-no-space'), 'price-position' => array('bottom-title', 'bottom-title-center', 'bottom-bar') ),
+								'description' => esc_html__('Leave Blank For Default', 'tourmaster')
 							),
 							'tour-info' => array(
 								'title' => esc_html__('Tour Info', 'tourmaster'),
@@ -409,6 +421,7 @@ jQuery(document).ready(function(){
 				$settings['layout'] = empty($settings['layout'])? 'fitrows': $settings['layout'];
 				if( in_array($settings['tour-style'], array('modern', 'modern-no-space', 'grid', 'grid-no-space')) ){
 					$settings['has-column'] = 'yes';
+					$settings['column-size-temp'] = empty($settings['column-size'])? 60: $settings['column-size'];
 				}else{
 					$settings['has-column'] = 'no';
 					$settings['column-size-temp'] = empty($settings['column-size'])? 60: $settings['column-size'];

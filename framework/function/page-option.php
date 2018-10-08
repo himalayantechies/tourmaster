@@ -148,7 +148,7 @@
 					
 					foreach( $this->settings['options'] as $tab ){
 						foreach( $tab['options'] as $option_slug => $option ){
-							if( !empty($option['single']) && !empty($value[$option_slug]) ){
+							if( !empty($option['single']) && isset($value[$option_slug]) ){
 								update_post_meta($post_id, $option['single'], $value[$option_slug]);
 								unset($value[$option_slug]);
 							}

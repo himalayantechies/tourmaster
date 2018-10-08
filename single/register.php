@@ -55,9 +55,10 @@ if( isset($_POST['security']) ){
 				
 				// successfully insert the user
 				}else{
-					tourmaster_mail_notification('registration-complete-mail', null, $user_id);
-
 					tourmaster_update_profile_field($default_profile_fields, $user_id);
+
+					tourmaster_mail_notification('admin-registration-complete-mail', null, $user_id);
+					tourmaster_mail_notification('registration-complete-mail', null, $user_id);
 ?>
 <html>
 	<body>

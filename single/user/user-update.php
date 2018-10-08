@@ -46,14 +46,16 @@
 		global $current_user;
 
 		if( is_numeric($_GET['id']) ){
-			tourmaster_mail_notification('booking-cancelled-mail', $_GET['id']);
-
-			tourmaster_update_booking_data(
+			$updated = tourmaster_update_booking_data(
 				array('order_status' => 'cancel'),
 				array('id' => $_GET['id'], 'user_id' => $current_user->data->ID),
 				array('%s'),
 				array('%d', '%d')
 			);
+
+			if( $updated ){
+				tourmaster_mail_notification('booking-cancelled-mail', $_GET['id']);
+			}
 		}
 
 		wp_redirect(remove_query_arg(array('action', 'id')));
@@ -82,7 +84,9 @@
 				if ( !function_exists('wp_handle_upload') ) {
 				    require_once(ABSPATH . 'wp-admin/includes/file.php');
 				}
+				add_filter('upload_dir', 'tourmaster_set_receipt_upload_folder');
 				$uploaded_file = wp_handle_upload($_FILES['receipt'],  array('test_form' => false));
+				remove_filter('upload_dir', 'tourmaster_set_receipt_upload_folder');
 			}
 
 			// upload error

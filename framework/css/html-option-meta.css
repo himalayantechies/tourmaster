@@ -131,6 +131,10 @@
 .tourmaster-html-option-item .tourmaster-html-option-tabs-input{ float: left; }
 .tourmaster-html-option-item .tourmaster-html-option-tabs-input-description{ overflow: hidden; font-size: 12px; color: #828282; padding-left: 29px; }
 .tourmaster-html-option-item .tourmaster-html-option-tabs-input-title.tourmaster-html-option-title-item{ float: none; display: block; color: #485da1; padding-bottom: 5px; padding-top: 30px; margin-top: 0px; width: auto; }
+.tourmaster-html-option-item .tourmaster-html-option-tabs-field .tourmaster-checkbox{ float: left; }
+
+.tourmaster-html-option-item .tourmaster-html-option-tabs-duplicate{ color: #898989; text-transform: none; font-weight: normal; position: absolute; left: 10px; }
+.tourmaster-html-option-item .tourmaster-html-option-tabs-duplicate i{ margin-right: 10px; color: #898989; }
 
 .tourmaster-html-option-tabs-field.tourmaster-middle-with-divider .tourmaster-html-option-tabs-input-title.tourmaster-html-option-title-item{ text-align: center; border-bottom: 2px solid #ebebeb; padding-bottom: 15px; margin-bottom: 35px; }
 .tourmaster-html-option-tabs-field.tourmaster-full-size .tourmaster-html-option-tabs-input-title{ display: block; float: none; margin-bottom: 15px; width: auto; }
@@ -304,22 +308,33 @@
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="pricing-room-base"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="base-price-description"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="initial-price"],
+.tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="single-discount"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-person"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-adult"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-children"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-student"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-infant"],
+.tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-male"],
+.tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-female"],
+.tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="max-room"],
 .tourmaster-html-option-custom-tabs-item[data-tour-type="single"] .tourmaster-html-option-tabs-field[data-wrapper-slug="max-people-per-room"]{ display: none !important; }
 
 /* multiple - no room base */
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="room-base-price-title"],
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="initial-price"],
+.tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="single-discount"],
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-person"],
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-adult"],
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-children"],
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-student"],
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-infant"],
+.tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-male"],
+.tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-female"],
+.tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="max-room"],
 .tourmaster-html-option-tabs-field[data-pricing-room-base="disable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="max-people-per-room"]{ display: none !important; }
+
+/* multiple - room base */
+.tourmaster-html-option-tabs-field[data-pricing-room-base="enable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="same-gender"]{ display: none !important; }
 
 /* fixed price */
 .tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="group-price"],
@@ -329,10 +344,15 @@
 .tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="children-price"],
 .tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="student-price"],
 .tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="infant-price"],
+.tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="male-price"],
+.tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="female-price"],
+.tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="same-gender"],
 .tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-adult"],
 .tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-children"],
 .tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-student"],
-.tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-infant"]{ display: none !important; }
+.tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-infant"],
+.tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-male"],
+.tourmaster-html-option-tabs-field[data-pricing-method="fixed"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-female"]{ display: none !important; }
 
 /* variable price */
 .tourmaster-html-option-tabs-field[data-pricing-method="variable"] .tourmaster-html-option-tabs-field[data-wrapper-slug="group-price"],
@@ -347,13 +367,21 @@
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="children-price"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="student-price"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="infant-price"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="male-price"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="female-price"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="same-gender"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="room-base-price-title"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="initial-price"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="single-discount"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-person"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-adult"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-children"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-student"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-infant"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-male"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="additional-female"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="minimum-people-per-booking"],
+.tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="max-room"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="max-people-per-room"],
 .tourmaster-html-option-tabs-field[data-pricing-method="group"] .tourmaster-html-option-tabs-field[data-wrapper-slug="max-people"]{ display: none !important; }
 

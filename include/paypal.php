@@ -54,9 +54,13 @@
 			$service_fee = tourmaster_get_option('payment', 'paypal-service-fee', '');
 
 			$t_data = apply_filters('goodlayers_payment_get_transaction_data', array(), $tid, array('price', 'tour_id'));
-			$price = floatval($t_data['price']);
-			$price = $price * ((100 + floatval($service_fee)) / 100);
-			$price = intval($price * 100) / 100;
+			
+			$price = '';
+			if( $t_data['price']['deposit-price'] ){
+				$price = $t_data['price']['deposit-price'];
+			}else{
+				$price = $t_data['price']['total-price'];
+			}
 
 			ob_start();
 ?>
@@ -108,9 +112,9 @@
 
 				$live_mode = tourmaster_get_option('payment', 'paypal-live-mode', '');
 				if( empty($live_mode) || $live_mode == 'disable' ){
-					$paypal_action_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+					$paypal_action_url = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr';
 				}else{
-					$paypal_action_url = 'https://www.paypal.com/cgi-bin/webscr';
+					$paypal_action_url = 'https://ipnpb.paypal.com/cgi-bin/webscr';
 				}
 				// read the post data
 				$raw_post_data = file_get_contents('php://input');
@@ -181,66 +185,34 @@
 		        	$payment_info['transaction_id'] = $_POST['txn_id'];
 		        	$payment_info['amount'] = $_POST['mc_gross'];
 
-		        	// with service fee
-		        	$service_fee = tourmaster_get_option('payment', 'paypal-service-fee', '');
-		        	if( !empty($service_fee) ){
-						$tdata = tourmaster_get_booking_data(array('id'=>$tid), array('single'=>true));
+		        	$tdata = tourmaster_get_booking_data(array('id'=>$tid), array('single'=>true));
+		        	$pricing_info = json_decode($tdata->pricing_info, true);
 
-						$pricing_info = json_decode($tdata->pricing_info, true);
-						if( !empty($pricing_info['deposit-price']) ){
-							$pricing_info['deposit-paypal-service-rate'] = $service_fee;
-							$pricing_info['deposit-paypal-service-fee'] = $pricing_info['deposit-price'] * (floatval($service_fee) / 100);
-							$pricing_info['deposit-paypal-amount'] = $pricing_info['deposit-price'] + $pricing_info['deposit-paypal-service-fee'];
-						}else{
-							$pricing_info['price-breakdown']['paypal-service-rate'] = $service_fee;
-							$pricing_info['price-breakdown']['paypal-service-fee'] = $pricing_info['total-price'] * (floatval($service_fee) / 100);
-							$pricing_info['total-price'] = floatval($pricing_info['total-price']) + $pricing_info['price-breakdown']['paypal-service-fee'];
+		        	if( !empty($pricing_info['deposit-price']) && tourmaster_compare_price($pricing_info['deposit-price'], $payment_info['amount']) ){
+		        		$order_status = 'deposit-paid';
+		        		if( !empty($pricing_info['deposit-price-raw']) ){
+		        			$payment_info['deposit_amount'] = $pricing_info['deposit-price-raw'];
 						}
+		        	}else if( tourmaster_compare_price($pricing_info['total-price'], $payment_info['amount']) ){
+		        		$order_status = 'online-paid';
+		        	}else{
+		        		$order_status = 'deposit-paid';
+		        	}
 
-						if( empty($payment_info['amount']) || tourmaster_compare_price($pricing_info['total-price'], $payment_info['amount']) ){
-							$order_status = 'online-paid';
-						}else{
-							$order_status = 'deposit-paid';
-						}
-
-						tourmaster_update_booking_data( 
-							array(
-								'total_price' => $pricing_info['total-price'],
-								'pricing_info' => json_encode($pricing_info),
-								'payment_info' => json_encode($payment_info),
-								'payment_date' => current_time('mysql'),
-								'order_status' => $order_status,
-							),
-							array('id' => $tid),
-							array('%s', '%s', '%s', '%s', '%s'),
-							array('%d')
-						);
-
-					// without service fee
-					}else{
-			        	$tdata = tourmaster_get_booking_data(array('id'=>$tid), array('single'=>true));
-						
-						if( empty($payment_info['amount']) || tourmaster_compare_price($tdata->total_price, $payment_info['amount']) ){
-							$order_status = 'online-paid';
-						}else{
-							$order_status = 'deposit-paid';
-						}
-
-			        	tourmaster_update_booking_data( 
-							array(
-								'payment_info' => json_encode($payment_info),
-								'payment_date' => current_time('mysql'),
-								'order_status' => $order_status,
-							),
-							array('id' => $tid),
-							array('%s', '%s', '%s'),
-							array('%d')
-						);
-
-					}
+					tourmaster_update_booking_data( 
+						array(
+							'payment_info' => json_encode($payment_info),
+							'payment_date' => current_time('mysql'),
+							'order_status' => $order_status,
+						),
+						array('id' => $tid),
+						array('%s', '%s', '%s', '%s', '%s'),
+						array('%d')
+					);
 
 					tourmaster_mail_notification('payment-made-mail', $tid);
 					tourmaster_mail_notification('admin-online-payment-made-mail', $tid);
+					tourmaster_send_email_invoice($tid);
 				}
 				curl_close($ch);
 

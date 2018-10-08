@@ -61,6 +61,29 @@
 							
 						),
 					),
+					'style' => array(
+						'title' => esc_html('Style', 'tourmaster'),
+						'options' => array(
+							'background-color' => array(
+								'title' => esc_html__('Background Color', 'tourmaster'),
+								'type' => 'colorpicker'
+							),
+							'enable-bottom-border' => array(
+								'title' => esc_html__('Enable Bottom Border', 'tourmaster'),
+								'type' => 'checkbox',
+								'default' => 'disable'
+							),
+							'border-color' => array(
+								'title' => esc_html__('Border Color', 'tourmaster'),
+								'type' => 'colorpicker',
+								'condition' => array( 'enable-bottom-border' => 'enable' )
+							),
+							'slide-bar-color' => array(
+								'title' => esc_html__('Slide Bar Color', 'tourmaster'),
+								'type' => 'colorpicker'
+							),
+						)
+					),
 					'spacing' => array(
 						'title' => esc_html('Spacing', 'tourmaster'),
 						'options' => array(
@@ -100,6 +123,15 @@
 						)
 					);
 				}
+
+				$css_atts = array(
+					'background-color' => empty($settings['background-color'])? '': $settings['background-color'],
+					'border-color' => empty($settings['border-color'])? '': $settings['border-color'],
+				);
+				if( !empty($settings['enable-bottom-border']) && $settings['enable-bottom-border'] == 'enable' ){
+					$css_atts['border-bottom-width'] = '1px';
+					$css_atts['border-bottom-style'] = 'solid';
+				}
 				
 				$ret  = '<div class="tourmaster-content-navigation-item-wrap clearfix" ';
 				if( !empty($settings['padding-bottom']) && $settings['padding-bottom'] != '30px' ){
@@ -109,7 +141,7 @@
 					$ret .= ' id="' . esc_attr($settings['id']) . '" ';
 				}
 				$ret .= ' >';
-				$ret .= '<div class="tourmaster-content-navigation-item-outer" id="tourmaster-content-navigation-item-outer" >';
+				$ret .= '<div class="tourmaster-content-navigation-item-outer" id="tourmaster-content-navigation-item-outer" ' . tourmaster_esc_style($css_atts) . ' >';
 				$ret .= '<div class="tourmaster-content-navigation-item-container tourmaster-container" >';
 				$ret .= '<div class="tourmaster-content-navigation-item tourmaster-item-pdlr" >';
 				if( !empty($settings['tabs']) ){
@@ -126,7 +158,9 @@
 						$active = false;
 					}
 				}
-				$ret .= '<div class="tourmaster-content-navigation-slider" ></div>';
+				$ret .= '<div class="tourmaster-content-navigation-slider" ' . gdlr_core_esc_style(array(
+					'background-color' => empty($settings['slide-bar-color'])? '': $settings['slide-bar-color']
+				)) . '></div>';
 				$ret .= '</div>'; // tourmaster-content-navigation-item
 				$ret .= '</div>'; // tourmaster-content-navigation-item-container
 				$ret .= '</div>'; // tourmaster-content-navigation-item-outer

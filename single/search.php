@@ -93,6 +93,15 @@ get_header();
 		);
 	}	
 
+	// date
+	if( !empty($_GET['month']) ){
+		$meta_query[] = array(
+			'key'     => 'tourmaster-tour-date',
+			'value'   => $_GET['month'],
+			'compare' => 'LIKE',
+		);
+	}	
+
 	// min price 
 	if( !empty($_GET['min-price']) ){
 		$meta_query[] = array(

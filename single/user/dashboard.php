@@ -22,7 +22,12 @@
 	);
 	echo '<div class="tourmaster-my-profile-wrapper" >';
 	echo '<div class="tourmaster-my-profile-avatar" >';
-	echo get_avatar($current_user->data->ID, 85);
+	$avatar = get_the_author_meta('tourmaster-user-avatar', $current_user->data->ID);
+	if( !empty($avatar['file_url']) ){
+		echo '<img src="' . esc_url($avatar['file_url']) . '" alt="profile-image" />';
+	}else{
+		echo get_avatar($current_user->data->ID, 85);
+	}
 	echo '</div>';
 
 	$even_column = true;
@@ -37,7 +42,11 @@
 		echo '<span class="tourmaster-tail" >';
 		if( $meta_field == 'birth_date' ){
 			$user_meta = tourmaster_get_user_meta($current_user->data->ID, $meta_field, '-');
-			echo tourmaster_date_format($user_meta);
+			if( $user_meta == '-' ){
+				echo $user_meta;
+			}else{
+				echo tourmaster_date_format($user_meta);
+			}
 		}else if( $meta_field == 'gender' ){
 			$user_meta = tourmaster_get_user_meta($current_user->data->ID, $meta_field, '-');
 			if( $user_meta == 'male' ){

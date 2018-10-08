@@ -66,9 +66,10 @@
 .tourmaster-html-option-upload-appearance.tourmaster-active:hover .tourmaster-upload-image-button{ opacity: 0.9; filter: alpha(opacity=90); }
 
 /* colorpicker */
-.tourmaster-html-option-item .wp-color-result{ height: 34px; padding-left: 40px; margin-bottom: 0px; border: 2px solid #e5e5e5;
+.tourmaster-html-option-item .wp-color-result.button{ height: 34px; padding-left: 40px; margin-bottom: 0px; border: 2px solid #e5e5e5;
 	border-radius: 0px; -moz-border-radius: 0px; -webkit-border-radius: 0px;
 	box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }
+.tourmaster-html-option-item .wp-color-result.button span{ padding-top: 4px; padding-bottom: 4px; }
 .tourmaster-html-option-item .wp-color-result:focus,  
 .tourmaster-html-option-item .wp-color-result:hover { box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }
 .tourmaster-html-option-item .wp-color-result:after,
@@ -92,6 +93,7 @@
 .tourmaster-html-option-item .wp-picker-container{ position: relative; }
 .tourmaster-html-option-item .wp-picker-container:before{ content: " "; width: 40px; height: 32px; position: absolute; left: 2px; top: 2px;
     background: url('../images/transparent.png'); }
+.tourmaster-html-option-item .wp-color-result{ position: relative; }
 .tourmaster-html-option-item .wp-color-result, 
 .tourmaster-html-option-item .wp-color-result:hover, 
 .tourmaster-html-option-item .wp-color-result:focus{ background: transparent; }	

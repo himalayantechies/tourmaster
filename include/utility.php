@@ -55,11 +55,12 @@
 			}
 
 			// round every number down
-			$amount = intval($amount * pow(10, 2)) / pow(10, 2);
+			// $amount = intval($amount * pow(10, 2)) / pow(10, 2);
+			$amount = round($amount, $digit);
 
 			// format number
 			$format = tourmaster_get_option('general', 'money-format', '$NUMBER');
-			$amount = number_format(floatval($amount), $digit, '.', ',');
+			$amount = number_format($amount, $digit, '.', ',');
 			return str_replace('NUMBER', $amount, $format);
 		}
 	}
@@ -114,6 +115,54 @@
 		} // tourmaster_lightbox_content
 	}
 
+	if( !function_exists('tourmaster_read_custom_fields') ){
+		function tourmaster_read_custom_fields( $string ){
+
+			$custom_fields = array();
+
+			// match every { }
+			preg_match_all('#{.*}#', $string, $matches);
+			if( !empty($matches[0]) ){
+				foreach( $matches[0] as $match ){
+
+					$field = array();
+
+					// remove unnecessary string out and separate each attribute
+					$match = str_replace(array("{", "}", "\r\n", "\n"), "", $match);
+					$match = explode(',', $match);
+					if( !empty($match) ){
+						foreach( $match as $att ){
+							$att = explode('=', $att);
+							if( !empty($att) && sizeof($att) == 2 ){
+								if( $att[0] == 'options' ){
+									$field[$att[0]] = array();
+									$options = explode('/', $att[1]);
+									if( !empty($field['title']) ){
+										$options = array('' => $field['title']) + $options;
+									}
+
+									foreach($options as $option){
+										$field[$att[0]][$option] = $option;
+									}
+								}else if( $att[0] == 'type' && $att[1] == 'country' ){
+									$field['type'] = 'combobox';
+									$field['options'] = tourmaster_get_country_list();
+									$field['default'] = tourmaster_get_option('general', 'user-default-country', '');
+								}else{
+									$field[$att[0]] = $att[1];
+								}
+								
+							}  
+						}
+					}
+
+					$custom_fields[$field['slug']] = $field;	
+				}
+			}
+
+			return $custom_fields;
+		}
+	}
 	if( !function_exists('tourmaster_get_form_field') ){
 		function tourmaster_get_form_field( $settings, $slug, $value = '' ){
 
@@ -130,7 +179,9 @@
 				$field_value = $_POST[$settings['slug']];
 			}else if( !empty($user_id) ){
 				$field_value = tourmaster_get_user_meta($user_id, $settings['slug']);
-			}else if( !empty($settings['default']) ){
+			}
+
+			if( empty($field_value) && !empty($settings['default']) ){
 				$field_value = $settings['default'];
 			}
 
@@ -138,13 +189,16 @@
 			if( !empty($settings['data']) && !empty($settings['data']['slug']) && !empty($settings['data']['value']) ){
 				$data = ' data-' . esc_attr($settings['data']['slug']) . '="' . esc_attr($settings['data']['value']) . '" ';
 			}
+			if( !empty($settings['type']) ){
+				$extra_class .= ' tourmaster-type-' . $settings['type'];
+			}
 
 			echo '<div class="tourmaster-' . esc_attr($slug) . '-field ' . esc_attr($extra_class) . ' clearfix" >';
 			echo '<div class="tourmaster-head" >';
 			if( !empty($settings['title']) ){
 				echo $settings['title'];
 			}
-			if( !empty($settings['required']) ){
+			if( !empty($settings['required']) && ($settings['required'] === true || $settings['required'] == "true") ){
 				echo '<span class="tourmaster-req" >*</span>';
 				$data .= ' data-required ';
 			}
@@ -160,6 +214,14 @@
 					break;
 				case 'text':
 					echo '<input type="text" name="' . esc_attr($settings['slug']) . '" value="' . esc_attr($field_value) . '" ' . $data . ' />';
+					break;
+				case 'price-edit':
+					echo '<div class="tourmaster-price-edit-head" >';
+					echo '<input type="text" name="' . esc_attr($settings['slug']) . ((!empty($settings['data-type']) && $settings['data-type'] == 'array')? '[]': '') . '" value="' . esc_attr($field_value) . '" ' . $data . ' />';
+					echo '</div>';
+					if( !empty($settings['description']) ){
+						echo '<div class="tourmaster-price-edit-tail">' . $settings['description'] . '</div>';
+					}
 					break;
 				case 'file':
 					echo '<label class="tourmaster-file-label" >';
@@ -178,6 +240,11 @@
 					}
 					echo '</select>';
 					echo '</div>';
+					break;
+
+				case 'datepicker':
+						echo '<input type="text" class="tourmaster-datepicker" name="' . esc_attr($settings['slug']) . '" value="' . esc_attr($field_value) . '" />';
+						echo '<i class="fa fa-calendar" ></i>';
 					break;
 
 				case 'date':

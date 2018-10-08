@@ -233,6 +233,33 @@
 		} // tourmaster_user_content_block_start
 	}
 
+	if( !function_exists('tourmaster_update_profile_avatar') ){
+		function tourmaster_update_profile_avatar(){
+			
+			// upload the file
+			if( !empty($_FILES['profile-image']['size']) ){
+				if ( !function_exists('wp_handle_upload') ) {
+				    require_once(ABSPATH . 'wp-admin/includes/file.php');
+				}
+				add_filter('upload_dir', 'tourmaster_set_avatar_upload_folder');
+				$uploaded_file = wp_handle_upload($_FILES['profile-image'], array('test_form' => false));
+				remove_filter('upload_dir', 'tourmaster_set_avatar_upload_folder');
+			}
+
+			// upload error
+			if( !empty($uploaded_file) && empty($uploaded_file['error']) ){
+				$avatar = array();
+				$avatar['local_url'] = $uploaded_file['file'];
+				$avatar['file_url'] = $uploaded_file['url'];
+
+				global $current_user;
+				$user_id = $current_user->ID;
+				update_user_meta($user_id, 'tourmaster-user-avatar', $avatar);
+			}
+
+		} // tourmaster_update_profile_avatar
+	}
+
 	if( !function_exists('tourmaster_user_update_notification') ){
 		function tourmaster_user_update_notification( $content, $success = true ){
 
@@ -501,9 +528,14 @@
 
 			if( is_user_logged_in() ){
 				global $current_user;
+				$avatar = get_the_author_meta('tourmaster-user-avatar', $current_user->data->ID);
 
 				$ret  = '<div class="tourmaster-user-top-bar tourmaster-user" >';
-				$ret .= get_avatar($current_user->data->ID, 30);
+				if( !empty($avatar['file_url']) ){
+					$ret .= '<img src="' . esc_url($avatar['file_url']) . '" alt="profile-image" />';
+				}else{
+					$ret .= get_avatar($current_user->data->ID, 30);
+				}	
 				$ret .= '<span class="tourmaster-user-top-bar-name" >' . tourmaster_get_user_meta($current_user->data->ID, 'full_name') . '</span>';
 				$ret .= '<i class="fa fa-sort-down" ></i>';
 
@@ -524,8 +556,14 @@
 				$ret .= '</div>'; // tourmaster-user-top-bar-nav
 				$ret .= '</div>'; // tourmaster-user-top-bar
 			}else{
+
+				$mobile_login_link = tourmaster_get_option('general', 'mobile-login-link', 'disable');
+				$mobile_login_link = ($mobile_login_link == 'enable')? true: false;
+
 				$ret  = '<div class="tourmaster-user-top-bar tourmaster-guest" >';
-				$ret .= '<span class="tourmaster-user-top-bar-login" data-tmlb="login" >';
+				$ret .= '<span class="tourmaster-user-top-bar-login ';
+				$ret .= ($mobile_login_link)? 'tourmaster-hide-on-mobile': '';
+				$ret .= '" data-tmlb="login" >';
 				$ret .= '<i class="icon_lock_alt" ></i>';
 				$ret .= '<span class="tourmaster-text" >' . esc_html__('Login', 'tourmaster') . '</span>';
 				$ret .= '</span>';
@@ -534,7 +572,9 @@
 					'title' => esc_html__('Login', 'tourmaster'),
 					'content' => tourmaster_get_login_form(false)
 				));
-				$ret .= '<span class="tourmaster-user-top-bar-signup" data-tmlb="signup" >';
+				$ret .= '<span class="tourmaster-user-top-bar-signup ';
+				$ret .= ($mobile_login_link)? 'tourmaster-hide-on-mobile': '';
+				$ret .= '" data-tmlb="signup" >';
 				$ret .= '<i class="fa fa-user" ></i>';
 				$ret .= '<span class="tourmaster-text" >' . esc_html__('Sign Up', 'tourmaster') . '</span>';
 				$ret .= '</span>';
@@ -543,6 +583,20 @@
 					'title' => esc_html__('Sign Up', 'tourmaster'),
 					'content' => tourmaster_get_registration_form(false)
 				));
+
+				if( $mobile_login_link ){
+					$login_url = tourmaster_get_template_url('login');
+					$ret .= '<a class="tourmaster-user-top-bar-login tourmaster-show-on-mobile" href="' . esc_url($login_url) . '" >';
+					$ret .= '<i class="icon_lock_alt" ></i>';
+					$ret .= '<span class="tourmaster-text" >' . esc_html__('Login', 'tourmaster') . '</span>';
+					$ret .= '</a>';
+
+					$register_url = tourmaster_get_template_url('register');
+					$ret .= '<a class="tourmaster-user-top-bar-signup tourmaster-show-on-mobile" href="' . esc_url($register_url) . '" >';
+					$ret .= '<i class="fa fa-user" ></i>';
+					$ret .= '<span class="tourmaster-text" >' . esc_html__('Sign Up', 'tourmaster') . '</span>';
+					$ret .= '</a>';
+				}
 				$ret .= '</div>';
 			}
 			
@@ -735,7 +789,7 @@
 			}
 			echo '" >';
 			echo '<input type="submit" class="tourmaster-register-submit tourmaster-button" value="' . esc_html__('Sign Up', 'tourmaster') . '" />';
-			
+
 			$our_term = tourmaster_get_option('general', 'register-term-of-service-page', '#');
 			$our_term = is_numeric($our_term)? get_permalink($our_term): $our_term; 
 			$privacy = tourmaster_get_option('general', 'register-privacy-statement-page', '#');
@@ -747,6 +801,9 @@
 			), $our_term, $privacy);
 			echo '</div>';
 
+			if( class_exists('NextendSocialLogin') ){
+				echo do_shortcode('[nextend_social_login]');
+			}
 			echo '<input type="hidden" name="security" value="' . esc_attr(wp_create_nonce('tourmaster-registration')) . '" />';
 			echo '</form>';
 
@@ -784,4 +841,34 @@
 
 			die(json_encode($_POST));
 		} // tourmaster_ajax_add_wish_list
+	}
+
+	// set upload directory to tourmaster_receipt
+	if( !function_exists('tourmaster_set_receipt_upload_folder') ){
+		function tourmaster_set_receipt_upload_folder( $uploads ){
+			$keys = array( 'path', 'url', 'basedir', 'baseurl' );
+
+			foreach( $keys as $key ){
+				if( !empty($uploads[$key]) ){
+					$uploads[$key] = str_replace('/wp-content/uploads', '/wp-content/uploads/tourmaster-receipt', $uploads[$key]);
+				}
+			}
+			
+			return $uploads;
+		}
+	}
+
+	// set upload directory to tourmaster_avatar
+	if( !function_exists('tourmaster_set_avatar_upload_folder') ){
+		function tourmaster_set_avatar_upload_folder( $uploads ){
+			$keys = array( 'path', 'url', 'basedir', 'baseurl' );
+
+			foreach( $keys as $key ){
+				if( !empty($uploads[$key]) ){
+					$uploads[$key] = str_replace('/wp-content/uploads', '/wp-content/uploads/tourmaster-avatar', $uploads[$key]);
+				}
+			}
+			
+			return $uploads;
+		}
 	}

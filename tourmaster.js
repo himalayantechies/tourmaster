@@ -636,6 +636,37 @@
 		});
 		// $(this).find('select[name="tour-room"]').trigger('change');
 
+		// for updating the head price
+		if( $(this).hasClass('tourmaster-update-header-price') ){
+			$(this).on('change', 'input, select', function(){
+				var booking_data = tourmaster_get_booking_detail(form);
+
+				if( $(this).is('[name="package"]') ){
+					booking_data['tour-people'] = 0;
+					booking_data['tour-adult'] = 0;
+					booking_data['tour-male'] = 0;
+					booking_data['tour-female'] = 0;
+					booking_data['tour-children'] = 0;
+					booking_data['tour-student'] = 0;
+					booking_data['tour-infant'] = 0;
+				}
+				
+				tourmaster_tour_booking_ajax(ajax_url, {
+					success: function( data ){
+						if( typeof(data.price) != 'undefined' ){
+							var header_price = $('.tourmaster-header-price');
+							header_price.find('.tourmaster-tour-discount-price').remove();
+							header_price.find('.tourmaster-tour-price-wrap').removeClass('tourmaster-discount');
+							header_price.addClass('tourmaster-price-updated').find('.tourmaster-tour-price .tourmaster-tail').html(data.price);
+						}
+					}
+				}, {
+					action: 'tourmaster_update_head_price',
+					data: booking_data
+				});
+			});		
+		}
+
 		// validate input before submitting
 		$(this).on('click', 'input[type="submit"]', function(){
 			var submit = true;
@@ -643,6 +674,9 @@
 			var error_message = $(this).siblings('.tourmaster-tour-booking-submit-error');
 			var tour_package = '';
 			var traveller_amount = 0;
+			var adult_amount = 0;
+			var male_amount = 0;
+			var female_amount = 0;
 			var max_traveller_per_room = 0;
 			error_message.filter('.tourmaster-temp').slideUp(200, function(){ $(this).remove() });
 
@@ -662,8 +696,19 @@
 					$(this).find('select[name], input[name]').each(function(){
 						if( $(this).attr('name') == 'group' ){
 							traveller_amount = 'group';
+							adult_amount = 'group';
 						}else if( $(this).val() != "" ){
-							room_people += parseInt($(this).val())
+							room_people += parseInt($(this).val());
+
+							if( $(this).is('[name^="tour-adult"], [name^="tour-people"]') ){
+								adult_amount += room_people;
+							}else if( $(this).is('[name^="tour-male"]') ){
+								male_amount += room_people;
+								adult_amount += room_people;
+							}else if( $(this).is('[name^="tour-female"]') ){
+								female_amount += room_people;
+								adult_amount += room_people;
+							}
 						}
 					});
 
@@ -690,13 +735,22 @@
 				submit_button.animate({ opacity: 0.5 });
 				tourmaster_tour_booking_ajax(ajax_url, {
 					success: function( data ){
-
+						
 						if( data.status == 'success' ){
 							if( submit && submit_button.attr('data-ask-login') ){;
-								var lb_content = submit_button.siblings('[data-tmlb-id="' + submit_button.attr('data-ask-login') + '"]').clone();
-								if( lb_content.length == 0 ){
-									lb_content = form.closest('form').siblings('[data-tmlb-id="' + submit_button.attr('data-ask-login') + '"]').clone();
+								
+								// get lightbox content
+								var content = submit_button.siblings('[data-tmlb-id="' + submit_button.attr('data-ask-login') + '"]');
+								if( content.length == 0 ){
+									content = form.closest('form').siblings('[data-tmlb-id="' + submit_button.attr('data-ask-login') + '"]');
 								}
+								var lb_content = content.clone();
+								
+								// check for social login plugin
+								if( lb_content.find('.nsl-container-block').length > 0 ){
+									lb_content.find('.nsl-container-block').replaceWith(content.find('.nsl-container-block').clone(true));
+								}
+								
 								tourmaster_lightbox(lb_content);
 
 								var booking_detail = tourmaster_get_booking_detail(form);
@@ -719,6 +773,9 @@
 					tour_id: form.find('[name="tour-id"]').val(),
 					tour_date: form.find('[name="tour-date"]').val(),
 					traveller: traveller_amount,
+					'adult_amount': adult_amount,
+					'male_amount': male_amount,
+					'female_amount': female_amount,
 					'package': tour_package,
 					'max_traveller_per_room': max_traveller_per_room
 				});
@@ -741,35 +798,37 @@
 			var right_offset = parseInt(booking_bar_anchor.css('margin-right'));
 
 			// hide header price and replace with header price in the booking bar
-			$(this).addClass('tourmaster-start-script');
-			page_wrap.siblings('.tourmaster-single-header').addClass('tourmaster-start-script');
-			
-			var header_price = $(this).children('.tourmaster-tour-booking-bar-outer').children('.tourmaster-header-price');
-			booking_bar_wrap.css('margin-top', -header_price.outerHeight());
-			booking_bar_anchor.css('margin-top', -header_price.outerHeight());
-			page_wrap.css('min-height', booking_bar_wrap.height() - header_price.outerHeight());
-			$(window).resize(function(){
+			if( page_wrap.hasClass('tourmaster-tour-style-1') ){ 
+				$(this).addClass('tourmaster-start-script');
+				page_wrap.siblings('.tourmaster-single-header').addClass('tourmaster-start-script');
+				
+				var header_price = $(this).children('.tourmaster-tour-booking-bar-outer').children('.tourmaster-header-price');
 				booking_bar_wrap.css('margin-top', -header_price.outerHeight());
 				booking_bar_anchor.css('margin-top', -header_price.outerHeight());
-				page_wrap.css('min-height', booking_bar_wrap.height() - header_price.outerHeight())
+				page_wrap.css('min-height', booking_bar_wrap.height() - header_price.outerHeight());
+				$(window).resize(function(){
+					booking_bar_wrap.css('margin-top', -header_price.outerHeight());
+					booking_bar_anchor.css('margin-top', -header_price.outerHeight());
+					page_wrap.css('min-height', booking_bar_wrap.height() - header_price.outerHeight())
 
-				if( $("body").hasClass("rtl") ){
-					booking_bar_wrap.css({ 
-						'position': '', 
-						'top': '', 
-						'right': '',
-						'margin-top': booking_bar_anchor.css('margin-top')
-					});
-				}else {
-					booking_bar_wrap.css({ 
-						'position': '', 
-						'top': '', 
-						'left': '',
-						'margin-top': booking_bar_anchor.css('margin-top')
-					});
-				}
-				booking_bar_wrap.removeClass('tourmaster-fixed tourmaster-top tourmaster-bottom tourmaster-lock');
-			}); 
+					if( $("body").hasClass("rtl") ){
+						booking_bar_wrap.css({ 
+							'position': '', 
+							'top': '', 
+							'right': '',
+							'margin-top': booking_bar_anchor.css('margin-top')
+						});
+					}else {
+						booking_bar_wrap.css({ 
+							'position': '', 
+							'top': '', 
+							'left': '',
+							'margin-top': booking_bar_anchor.css('margin-top')
+						});
+					}
+					booking_bar_wrap.removeClass('tourmaster-fixed tourmaster-top tourmaster-bottom tourmaster-lock');
+				}); 
+			}
 
 			// scroll action
 			var top_padding = 0;
@@ -985,7 +1044,7 @@
 		var t = this;
 		t.form = $('#tourmaster-payment-template-wrapper');
 		t.sidebar = t.form.find('#tourmaster-tour-booking-bar-inner');
-		t.sidebar_wrap = t.form.find('#tourmaster-tour-booking-bar-wrap');
+		// t.sidebar_wrap = t.form.find('#tourmaster-tour-booking-bar-wrap');
 		t.content = t.form.find('#tourmaster-tour-payment-content');
 
 		t.payment_step = $('#tourmaster-payment-step-wrap');
@@ -1012,7 +1071,7 @@
 					booking_detail_data['step'] = $(this).attr('data-step');
 				}
 
-				if( t.check_required_field() ){
+				if( t.check_required_field(booking_detail_data['step']) ){
 					t.change_step({
 						booking_detail: booking_detail_data
 					});
@@ -1028,7 +1087,7 @@
 						booking_detail_data['step'] = $(this).attr('data-step');
 					}
 
-					if( t.check_required_field() ){
+					if( t.check_required_field(booking_detail_data['step']) ){
 						t.change_step({
 							booking_detail: booking_detail_data
 						});
@@ -1178,16 +1237,18 @@
 
 			// payment button
 			t.content.on('click', '[data-method]', function(){
-				var action = $(this).attr('data-action');
-				var type = $(this).attr('data-action-type');
+				if( t.check_required_field(4) ){
+					var action = $(this).attr('data-action');
+					var type = $(this).attr('data-action-type');
 
-				if( $(this).attr('data-method') == 'ajax' ){
-					var booking_detail_data = t.get_booking_detail();
-					t.change_step({
-						'action': action, 
-						'type': type, 
-						'booking_detail': booking_detail_data
-					});
+					if( $(this).attr('data-method') == 'ajax' ){
+						var booking_detail_data = t.get_booking_detail();
+						t.change_step({
+							'action': action, 
+							'type': type, 
+							'booking_detail': booking_detail_data
+						});
+					}
 				}
 			});
 			t.content.on('click', '.goodlayers-payment-plugin-complete', function(){
@@ -1199,32 +1260,61 @@
 		},
 
 		// check required input field
-		check_required_field: function(){
+		check_required_field: function(step){
 
 			var t = this;
-			var validate = true;
+			var error = false;
 
 			var error_box = t.form.find('.tourmaster-tour-booking-required-error');
 			if( error_box.length ){
 				error_box.slideUp(200);
 
-				t.form.find('input[data-required], select[data-required], textarea[data-required]').each(function(){
-					if( !$(this).val() ){ 	
-						$(this).addClass('tourmaster-validate-error');
-						validate = false; 
-					}
-				});
+				if( step == 3 ){
+					t.form.find('input[data-required], select[data-required], textarea[data-required]').each(function(){
+						if( !$(this).val() ){ 	
+							$(this).addClass('tourmaster-validate-error');
+							error = 'default';
+						}else if( $(this).is('[type="email"]') ){
+							var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    						if( !re.test($(this).val().toLowerCase()) ){
+    							$(this).addClass('tourmaster-validate-error');
+    							error = 'email';
+    						}
+						}else if( $(this).is('[name="phone"], [name="billing_phone"]') ){
+							var re = /^[\d\+\-\s\(\)\.]*$/;
+    						if( !re.test($(this).val().toLowerCase()) ){
+    							$(this).addClass('tourmaster-validate-error');
+    							error = 'phone';
+    						}
+						}
 
-				if( !validate ){
-					error_box.slideDown(200);
-					var scrollPos = error_box.offset().top - $(window).height() + 200;
-					if( scrollPos > 0 ){
-						$('body').animate({scrollTop: scrollPos}, 600, 'easeOutQuad');
+						if( !error ){
+							$(this).removeClass('tourmaster-validate-error');
+						}
+					});
+					if( error ){
+						error_box.html(error_box.data(error));
+						error_box.slideDown(200);
+
+						var scrollPos = error_box.offset().top - $(window).height() + 200;
+						if( scrollPos > 0 ){
+							$('html, body').animate({scrollTop: scrollPos}, 600, 'easeOutQuad');
+						}
 					}
+				}
+
+				if( step == 4 ){
+					t.form.find('[name="term-and-service"]').each(function(){
+						if( !$(this).prop('checked') ){
+							error = 'default'; 
+							error_box.html(error_box.data(error));
+							error_box.slideDown(200);
+						}
+					});
 				}
 			}
 			
-			return validate;
+			return (error === false);
 		},
 
 		// get the input field
@@ -1260,7 +1350,7 @@
 						t.content.animate({opacity: 0.1});
 
 						// animate to the top
-						$('body').animate({scrollTop: t.payment_template.offset().top}, 600, 'easeOutQuad');
+						$('html, body').animate({scrollTop: t.payment_template.offset().top}, 600, 'easeOutQuad');
 					}
 
 					t.sidebar.animate({opacity: 0.1});
@@ -1629,8 +1719,18 @@
 							var content = $(data.content);
 							ajax_section.siblings('.' + ajax_section.attr('data-target')).each(function(){
 
+								if( typeof($.fn.gdlr_core_animate_list_item) == 'function' ){
+									if( $(this).attr('data-layout') != 'masonry' || typeof($.fn.isotope) != 'function' ){
+										content.addClass('gdlr-core-animate-init');
+									}
+								}
+
 								$(this).append(content);
 								content.tourmaster_flexslider().tourmaster_set_image_height();
+
+								if( typeof($.fn.gdlr_core_animate_list_item) == 'function' ){
+									content.gdlr_core_animate_list_item();
+								}
 							});
 
 							if( data.load_more ){
@@ -1648,6 +1748,7 @@
 							
 						}else if( ajax_section.attr('data-target-action') == 'replace' ){
 							var content = $(data.content);
+							
 							ajax_section.siblings('.' + ajax_section.attr('data-target')).each(function(){
 								var fix_height = false;
 								var current_height = $(this).height();
@@ -1662,7 +1763,7 @@
 
 							// pagination
 							if( data.pagination ){
-								ajax_section.siblings('.tourmaster-pagination').slideUp(100, function(){ $(this).remove(); });
+								ajax_section.siblings('.tourmaster-pagination, .gdlr-core-pagination').slideUp(100, function(){ $(this).remove(); });
 
 								if( data.pagination != 'none' ){
 									var pagination = $(data.pagination);
@@ -1674,7 +1775,7 @@
 
 							// load more button
 							if( data.load_more ){
-								ajax_section.siblings('.tourmaster-load-more-wrap').slideUp(100, function(){ $(this).remove(); });
+								ajax_section.siblings('.tourmaster-load-more-wrap, .gdlr-core-load-more-wrap').slideUp(100, function(){ $(this).remove(); });
 								
 								if( data.load_more != 'none' ){
 									var load_more = $(data.load_more);
@@ -1825,7 +1926,14 @@
 
 		// lightbox popup
 		$('[data-tmlb]').on('click', function(){
-			var lb_content = $(this).siblings('[data-tmlb-id="' + $(this).attr('data-tmlb') + '"]').clone();
+			var content = $(this).siblings('[data-tmlb-id="' + $(this).attr('data-tmlb') + '"]');
+			var lb_content = content.clone();
+
+			// check for social login plugin
+			if( lb_content.find('.nsl-container-block').length > 0 ){
+				lb_content.find('.nsl-container-block').replaceWith(content.find('.nsl-container-block').clone(true));
+			}
+			
 			tourmaster_lightbox(lb_content);
 		});
 
@@ -2009,6 +2117,19 @@
 					$('body').children().css('display', '');	
 				}
 			});
+
+			// upload preview
+			$('input[name="profile-image"]').on('change', function(e){
+				var temp_image = $(this).closest('label').siblings('img');
+
+				if( e.target.files && e.target.files[0] ){
+					var reader = new FileReader();
+					reader.onload = function(e_reader){
+						temp_image.attr('src', e_reader.target.result);
+					}
+					reader.readAsDataURL(e.target.files[0]);
+				}
+			});
 		
 		// on payment template
 		}else if( body.hasClass('tourmaster-template-payment') ){
@@ -2047,7 +2168,6 @@
 
 		return $(this);
 	}
-
 	$(document).ready(function(){
 		$('body').gdlr_core_fluid_video();
 	});

@@ -104,7 +104,7 @@
 					}else{
 						$max_people = empty($date_price['max-people'])? '': $date_price['max-people'];
 					}
-					$current_amount = tourmaster_get_booking_data(array(
+					$query = tourmaster_get_booking_data(array(
 						'tour_id' => $_POST['tour_id'], 
 						'travel_date' => $_POST['tour_date'],
 						'package_group_slug' => empty($date_price['group-slug'])? '': $date_price['group-slug'],
@@ -112,25 +112,67 @@
 							'condition' => '!=',
 							'value' => 'cancel'
 						)
-					), array(), 'SUM(traveller_amount)');
+					), array('single' => true), 'SUM(traveller_amount) AS traveller_amount, SUM(male_amount) AS male_amount, SUM(female_amount) AS female_amount');
 
-					if( !empty($max_people) && $current_amount + $_POST['traveller'] > $max_people ){
+					if( !empty($max_people) && $query->traveller_amount + $_POST['traveller'] > $max_people ){
 						die(json_encode(array(
 							'status' => 'failed',
 							'message' => esc_html__('Sorry, this tour is now full. Please try to select another date', 'tourmaster')
 						)));
 					}else{
-						$min_people = get_post_meta($_POST['tour_id'], 'tourmaster-min-people-per-booking', true);
-						if( empty($min_people) || $min_people <= $_POST['traveller'] ){
-							die(json_encode(array(
-								'status' => 'success'
-							)));
+						if( !empty($date_price['minimum-people-per-booking']) ){
+							$min_people = $date_price['minimum-people-per-booking'];
 						}else{
+							$min_people = get_post_meta($_POST['tour_id'], 'tourmaster-min-people-per-booking', true);
+						}
+						$max_people = get_post_meta($_POST['tour_id'], 'tourmaster-max-people-per-booking', true);
+						$require_adult = tourmaster_get_option('general', 'require-adult-to-book-tour', 'disable');
+
+						if( !empty($min_people) && $min_people > $_POST['traveller'] ){
 							die(json_encode(array(
 								'status' => 'failed',
+								'date' => $date_price,
 								'message' => sprintf(esc_html__('At least %d people is required to book this tour', 'tourmaster'), $min_people)
 							)));
-						}					
+						}else if( !empty($max_people) && $max_people < $_POST['traveller'] ){
+							die(json_encode(array(
+								'status' => 'failed',
+								'message' => sprintf(esc_html__('You can book at most %d people per booking', 'tourmaster'), $max_people)
+							)));
+						}else if( $require_adult == 'enable' && empty($_POST['adult_amount']) ){
+							die(json_encode(array(
+								'status' => 'failed',
+								'message' => esc_html__('At least 1 adult is required to book the tour', 'tourmaster')
+							)));
+						}
+
+
+						// check for same gender package
+						if( !empty($date_price['same-gender']) && $date_price['same-gender'] == 'enable' ){
+							$male_amount = $query->male_amount;
+							$female_amount = $query->female_amount;
+							
+							if( !empty($male_amount) && empty($female_amount) ){
+								if( !empty($_POST['female_amount']) ){
+									die(json_encode(array(
+										'status' => 'failed',
+										'message' => esc_html__('This package is only available for male', 'tourmaster')
+									)));
+								}
+							}else if( empty($male_amount) && !empty($female_amount) ){
+								if( !empty($_POST['male_amount']) ){
+									die(json_encode(array(
+										'status' => 'failed',
+										'message' => esc_html__('This package is only available for female', 'tourmaster')
+									)));
+								}
+							}
+						}
+
+						die(json_encode(array(
+							'status' => 'success'
+						)));
+	
 					}
 				}
 			}else{
@@ -322,6 +364,8 @@
 			// no room based			
 			}else if( $tour_option['tour-type'] == 'single' || $date_price['pricing-room-base'] == 'disable' ){
 				
+				$max_people_per_booking = get_post_meta($settings['tour-id'], 'tourmaster-max-people-per-booking', true);
+
 				// fixed price
 				if( $date_price['pricing-method'] == 'fixed' ){
 					$ret .= '<div class="tourmaster-tour-booking-people clearfix" data-step="4" >';
@@ -331,7 +375,8 @@
 					$ret .= tourmaster_get_tour_booking_combobox(array(
 						'name' => 'tour-people',
 						'default' => empty($value['tour-people'])? '': $value['tour-people'],
-						'placeholder' => esc_html__('Number Of People', 'tourmaster')
+						'placeholder' => esc_html__('Number Of People', 'tourmaster'),
+						'max-num' => $max_people_per_booking
 					));
 					$ret .= '</div>';
 					$ret .= '</div>';
@@ -342,32 +387,52 @@
 					$ret .= '<div class="tourmaster-tour-booking-next-sign" ><span></span></div>';
 					$ret .= '<i class="fa fa-users" ></i>';
 					$ret .= '<div class="tourmaster-tour-booking-people-input tourmaster-variable clearfix" >';
-					if( !empty($date_price['adult-price']) ){
+					if( !empty($date_price['adult-price']) || (isset($date_price['adult-price']) && $date_price['adult-price'] === '0') ){
 						$ret .= tourmaster_get_tour_booking_combobox(array(
 							'name' => 'tour-adult',
 							'default' => empty($value['tour-adult'])? '': $value['tour-adult'],
-							'placeholder' => esc_html__('Adult', 'tourmaster')
+							'placeholder' => esc_html__('Adult', 'tourmaster'),
+							'max-num' => $max_people_per_booking
 						));
 					}
-					if( !empty($date_price['children-price']) ){
+					if( !empty($date_price['male-price']) || (isset($date_price['male-price']) && $date_price['male-price'] === '0') ){
+						$ret .= tourmaster_get_tour_booking_combobox(array(
+							'name' => 'tour-male',
+							'default' => empty($value['tour-male'])? '': $value['tour-male'],
+							'placeholder' => esc_html__('Male', 'tourmaster'),
+							'max-num' => $max_people_per_booking
+						));
+					}
+					if( !empty($date_price['female-price']) || (isset($date_price['female-price']) && $date_price['female-price'] === '0') ){
+						$ret .= tourmaster_get_tour_booking_combobox(array(
+							'name' => 'tour-female',
+							'default' => empty($value['tour-female'])? '': $value['tour-female'],
+							'placeholder' => esc_html__('Female', 'tourmaster'),
+							'max-num' => $max_people_per_booking
+						));
+					}
+					if( !empty($date_price['children-price']) || (isset($date_price['children-price']) && $date_price['children-price'] === '0') ){
 						$ret .= tourmaster_get_tour_booking_combobox(array(
 							'name' => 'tour-children',
 							'default' => empty($value['tour-children'])? '': $value['tour-children'],
-							'placeholder' => esc_html__('Child', 'tourmaster')
+							'placeholder' => esc_html__('Child', 'tourmaster'),
+							'max-num' => $max_people_per_booking
 						));
 					}
-					if( !empty($date_price['student-price']) ){	
+					if( !empty($date_price['student-price']) || (isset($date_price['student-price']) && $date_price['student-price'] === '0') ){	
 						$ret .= tourmaster_get_tour_booking_combobox(array(
 							'name' => 'tour-student',
 							'default' => empty($value['tour-student'])? '': $value['tour-student'],
-							'placeholder' => esc_html__('Student', 'tourmaster')
+							'placeholder' => esc_html__('Student', 'tourmaster'),
+							'max-num' => $max_people_per_booking
 						));
 					}
-					if( !empty($date_price['infant-price']) ){
+					if( !empty($date_price['infant-price']) || (isset($date_price['infant-price']) && $date_price['infant-price'] === '0') ){
 						$ret .= tourmaster_get_tour_booking_combobox(array(
 							'name' => 'tour-infant',
 							'default' => empty($value['tour-infant'])? '': $value['tour-infant'],
-							'placeholder' => esc_html__('Infant', 'tourmaster')
+							'placeholder' => esc_html__('Infant', 'tourmaster'),
+							'max-num' => $max_people_per_booking
 						));
 					}
 					$ret .= '</div>';
@@ -378,6 +443,8 @@
 			}else{
 
 				$tour_room = empty($value['tour-room'])? 1: $value['tour-room'];
+				$max_room = empty($date_price['max-room'])? tourmaster_get_option('general', 'max-dropdown-room-amount', 10): $date_price['max-room'];
+				$max_people_per_booking = get_post_meta($settings['tour-id'], 'tourmaster-max-people-per-booking', true);
 
 				$ret .= '<div class="tourmaster-tour-booking-room clearfix" data-step="3" >';
 				$ret .= '<div class="tourmaster-tour-booking-next-sign" ><span></span></div>';
@@ -387,7 +454,7 @@
 					'name' => 'tour-room',
 					'placeholder' => esc_html__('Number Of Rooms', 'tourmaster'),
 					'default' => $tour_room,
-					'max-num' => tourmaster_get_option('general', 'max-dropdown-room-amount', 10)
+					'max-num' => $max_room
 				));
 				$ret .= '</div>'; // tourmaster-tour-booking-room-input
 				$ret .= '</div>'; // tourmaster-tour-booking-room
@@ -399,12 +466,12 @@
 					for( $i = 0; $i < $tour_room; $i++ ){
 						$ret .= tourmaster_get_tour_booking_room_amount_template('fixed', $date_price, array(
 							'tour-people' => empty($value['tour-people'][$i])? '': $value['tour-people'][$i]
-						));
+						), $max_people_per_booking);
 					}
 					$ret .= '</div>';
 
 					$ret .= '<div class="tourmaster-tour-booking-room-template" data-step="999" >';
-					$ret .= tourmaster_get_tour_booking_room_amount_template('fixed', $date_price);
+					$ret .= tourmaster_get_tour_booking_room_amount_template('fixed', $date_price, array(), $max_people_per_booking);
 					$ret .= '</div>';  // tourmaster-tour-room-template
 
 				// variable price	
@@ -413,21 +480,35 @@
 					for( $i = 0; $i < $tour_room; $i++ ){
 						$ret .= tourmaster_get_tour_booking_room_amount_template('variable', $date_price, array(
 							'tour-adult' => empty($value['tour-adult'][$i])? '': $value['tour-adult'][$i],
+							'tour-male' => empty($value['tour-male'][$i])? '': $value['tour-male'][$i],
+							'tour-female' => empty($value['tour-male'][$i])? '': $value['tour-female'][$i],
 							'tour-children' => empty($value['tour-children'][$i])? '': $value['tour-children'][$i],
 							'tour-student' => empty($value['tour-student'][$i])? '': $value['tour-student'][$i],
-							'tour-infant' => empty($value['tour-infant'][$i])? '': $value['tour-infant'][$i]
-						));
+							'tour-infant' => empty($value['tour-infant'][$i])? '': $value['tour-infant'][$i],
+						), $max_people_per_booking);
 					}
 					$ret .= '</div>';
 
 					$ret .= '<div class="tourmaster-tour-booking-room-template" data-step="999" >';
-					$ret .= tourmaster_get_tour_booking_room_amount_template('variable', $date_price);
+					$ret .= tourmaster_get_tour_booking_room_amount_template('variable', $date_price, array(), $max_people_per_booking);
 					$ret .= '</div>'; // tourmaster-tour-room-template
 				}
 			}
 
 			$ret .= '<div class="tourmaster-tour-booking-submit" data-step="5" >';
 			$ret .= '<div class="tourmaster-tour-booking-next-sign" ><span></span></div>';
+			ob_start();
+?>
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 512.007 512.007" style="enable-background:new 0 0 512.007 512.007;" xml:space="preserve">
+		<path d="M397.413,199.303c-2.944-4.576-8-7.296-13.408-7.296h-112v-176c0-7.552-5.28-14.08-12.672-15.648
+			c-7.52-1.6-14.88,2.272-17.952,9.152l-128,288c-2.208,4.928-1.728,10.688,1.216,15.2c2.944,4.544,8,7.296,13.408,7.296h112v176
+			c0,7.552,5.28,14.08,12.672,15.648c1.12,0.224,2.24,0.352,3.328,0.352c6.208,0,12-3.616,14.624-9.504l128-288
+			C400.805,209.543,400.389,203.847,397.413,199.303z" fill="<?php echo tourmaster_get_option('color', 'tourmaster-theme-color-light', '#4692e7'); ?>" />
+</svg>
+<?php
+			$ret .= ob_get_contents();
+			ob_end_clean();
 			$ret .= '<i class="fa fa-check-circle" ></i>';
 			$ret .= '<div class="tourmaster-tour-booking-submit-input" >';
 			$ret .= '<input class="tourmaster-button" type="submit" value="' . esc_html__('Proceed Booking', 'tourmaster') . '" ';
@@ -440,7 +521,7 @@
 		} // tourmaster_get_tour_booking_fields
 	}
 	if( !function_exists('tourmaster_get_tour_booking_room_amount_template') ){
-		function tourmaster_get_tour_booking_room_amount_template( $type, $date_price, $value = array() ){
+		function tourmaster_get_tour_booking_room_amount_template( $type, $date_price, $value = array(), $max_num = 0 ){
 
 			$ret  = '<div class="tourmaster-tour-booking-people tourmaster-variable clearfix" ';
 			if( !empty($value) ){
@@ -456,39 +537,60 @@
 				$ret .= tourmaster_get_tour_booking_combobox(array(
 					'name' => 'tour-people[]',
 					'placeholder' => esc_html__('Number Of People', 'tourmaster'),
-					'default' => empty($value['tour-people'])? '': $value['tour-people']
+					'default' => empty($value['tour-people'])? '': $value['tour-people'],
+					'max-num' => $max_num
 				));
 				$ret .= '</div>';
 
 			}else if( $type == 'variable' ){
 
 				$ret .= '<div class="tourmaster-tour-booking-people-input tourmaster-variable clearfix" >';
-				if( !empty($date_price['adult-price']) ){
+				if( !empty($date_price['adult-price']) || (isset($date_price['adult-price']) && $date_price['adult-price'] === '0') ){
 					$ret .= tourmaster_get_tour_booking_combobox(array(
 						'name' => 'tour-adult[]',
 						'placeholder' => esc_html__('Adult', 'tourmaster'),
-						'default' => empty($value['tour-adult'])? '': $value['tour-adult']
+						'default' => empty($value['tour-adult'])? '': $value['tour-adult'],
+						'max-num' => $max_num
 					));
 				}
-				if( !empty($date_price['children-price']) ){
+				if( !empty($date_price['male-price']) || (isset($date_price['male-price']) && $date_price['male-price'] === '0') ){
+					$ret .= tourmaster_get_tour_booking_combobox(array(
+						'name' => 'tour-male[]',
+						'placeholder' => esc_html__('Male', 'tourmaster'),
+						'default' => empty($value['tour-male'])? '': $value['tour-male'],
+						'max-num' => $max_num
+					));
+				}
+				if( !empty($date_price['female-price']) || (isset($date_price['female-price']) && $date_price['female-price'] === '0') ){
+					$ret .= tourmaster_get_tour_booking_combobox(array(
+						'name' => 'tour-female[]',
+						'placeholder' => esc_html__('Female', 'tourmaster'),
+						'default' => empty($value['tour-female'])? '': $value['tour-female'],
+						'max-num' => $max_num
+					));
+				}
+				if( !empty($date_price['children-price']) || (isset($date_price['children-price']) && $date_price['children-price'] === '0') ){
 					$ret .= tourmaster_get_tour_booking_combobox(array(
 						'name' => 'tour-children[]',
 						'placeholder' => esc_html__('Child', 'tourmaster'),
-						'default' => empty($value['tour-children'])? '': $value['tour-children']
+						'default' => empty($value['tour-children'])? '': $value['tour-children'],
+						'max-num' => $max_num
 					));
 				}
-				if( !empty($date_price['student-price']) ){
+				if( !empty($date_price['student-price']) || (isset($date_price['student-price']) && $date_price['student-price'] === '0') ){
 					$ret .= tourmaster_get_tour_booking_combobox(array(
 						'name' => 'tour-student[]',
 						'placeholder' => esc_html__('Student', 'tourmaster'),
-						'default' => empty($value['tour-student'])? '': $value['tour-student']
+						'default' => empty($value['tour-student'])? '': $value['tour-student'],
+						'max-num' => $max_num
 					));
 				}
-				if( !empty($date_price['infant-price']) ){
+				if( !empty($date_price['infant-price']) || (isset($date_price['infant-price']) && $date_price['infant-price'] === '0') ){
 					$ret .= tourmaster_get_tour_booking_combobox(array(
 						'name' => 'tour-infant[]',
 						'placeholder' => esc_html__('Infant', 'tourmaster'),
-						'default' => empty($value['tour-infant'])? '': $value['tour-infant']
+						'default' => empty($value['tour-infant'])? '': $value['tour-infant'],
+						'max-num' => $max_num
 					));
 				}
 				$ret .= '</div>';
@@ -546,8 +648,8 @@
 				foreach( $date_price['package'] as $slug => $package ){
 					if( sizeof($date_price['package']) == 1 || empty($booking_detail['package']) || $booking_detail['package'] == $package['title'] ){
 
-						$package_settings = array( 'start-time', 'group-slug', 'person-price', 'adult-price', 'children-price', 'student-price', 'infant-price', 'max-people',
-							'initial-price', 'additional-person', 'additional-adult', 'additional-children', 'additional-student', 'additional-infant', 'max-people-per-room',
+						$package_settings = array( 'start-time', 'group-slug', 'person-price', 'adult-price', 'children-price', 'student-price', 'infant-price', 'male-price', 'female-price', 'same-gender', 'max-people',
+							'initial-price', 'single-discount', 'additional-person', 'additional-adult', 'additional-children', 'additional-student', 'additional-infant', 'additional-male', 'additional-female', 'minimum-people-per-booking', 'max-room', 'max-people-per-room',
 							'group-price', 'max-group', 'max-group-people'
 						);
 						foreach( $package_settings as $package_slug ){
@@ -670,9 +772,11 @@
 	}	
 
 	if( !function_exists('tourmaster_get_tour_people_amount') ){
-		function tourmaster_get_tour_people_amount( $tour_option, $date_price, $booking_detail ){
+		function tourmaster_get_tour_people_amount( $tour_option, $date_price, $booking_detail, $type = 'sum' ){
 			
 			$amount = 0;
+			$male_amount = 0;
+			$female_amount = 0;
 
 			if( empty($date_price) ){
 				$date_price = tourmaster_get_tour_date_price($tour_option, $booking_detail['tour-id'], $booking_detail['tour-date']);
@@ -685,12 +789,18 @@
 				// fixed price
 				if( $date_price['pricing-method'] == 'fixed' ){
 					$amount += empty($booking_detail['tour-people'])? 0: intval($booking_detail['tour-people']);
+				
 				// variable price
 				}else{
 					$amount += empty($booking_detail['tour-adult'])? 0: intval($booking_detail['tour-adult']);
+					$amount += empty($booking_detail['tour-male'])? 0: intval($booking_detail['tour-male']);
+					$amount += empty($booking_detail['tour-female'])? 0: intval($booking_detail['tour-female']);
 					$amount += empty($booking_detail['tour-children'])? 0: intval($booking_detail['tour-children']);
 					$amount += empty($booking_detail['tour-student'])? 0: intval($booking_detail['tour-student']);
 					$amount += empty($booking_detail['tour-infant'])? 0: intval($booking_detail['tour-infant']);
+					
+					$male_amount += empty($booking_detail['tour-male'])? 0: intval($booking_detail['tour-male']);
+					$female_amount += empty($booking_detail['tour-female'])? 0: intval($booking_detail['tour-female']);
 				}
 
 			// room based	
@@ -700,16 +810,31 @@
 				for( $i = 0; $i < $booking_detail['tour-room']; $i++ ){
 					if( $date_price['pricing-method'] == 'fixed' ){
 						$amount += empty($booking_detail['tour-people'][$i])? 0: intval($booking_detail['tour-people'][$i]);
+					
 					// variable price
 					}else{
 						$amount += empty($booking_detail['tour-adult'][$i])? 0: intval($booking_detail['tour-adult'][$i]);
+						$amount += empty($booking_detail['tour-male'][$i])? 0: intval($booking_detail['tour-male'][$i]);
+						$amount += empty($booking_detail['tour-female'][$i])? 0: intval($booking_detail['tour-female'][$i]);
 						$amount += empty($booking_detail['tour-children'][$i])? 0: intval($booking_detail['tour-children'][$i]);
 						$amount += empty($booking_detail['tour-student'][$i])? 0: intval($booking_detail['tour-student'][$i]);
 						$amount += empty($booking_detail['tour-infant'][$i])? 0: intval($booking_detail['tour-infant'][$i]);
+						
+						$male_amount += empty($booking_detail['tour-male'][$i])? 0: intval($booking_detail['tour-male'][$i]);
+						$female_amount += empty($booking_detail['tour-female'][$i])? 0: intval($booking_detail['tour-female'][$i]);
 					}
 				}
 			}
 
+			if( $type == 'sum' ){
+				return $amount;
+			}else if( $type == 'all' ){
+				return array(
+					'male' => $male_amount,
+					'female' => $female_amount,
+					'sum' => $amount
+				);
+			}
 			return $amount;
 
 		}
@@ -756,7 +881,7 @@
 
 				// variable price
 				}else{
-					$types = array('adult', 'children', 'student', 'infant');
+					$types = array('adult', 'male', 'female', 'children', 'student', 'infant');
 					foreach( $types as $type ){
 						if( !empty($booking_detail['tour-' . $type]) ){
 							$price_breakdown[$type . '-base-price'] = $date_price[$type . '-price'];
@@ -781,14 +906,19 @@
 						$room = array();
 						$room['base-price'] = $date_price['initial-price'];
 						$room['traveller-amount'] = $booking_detail['tour-people'][$i];
-						$total_price += $room['base-price'];
-						if( $booking_detail['tour-people'][$i] > 2 ){
+						if( $room['traveller-amount'] == 1 && !empty($date_price['single-discount']) ){
+							$room['base-price'] = $room['base-price'] - $date_price['single-discount'];
+						}else if( $room['traveller-amount'] > 2 ){
 							$room['additional-traveller-price'] = $date_price['additional-person'];
-							$room['additional-traveller-amount'] = $booking_detail['tour-people'][$i] - 2;
+							$room['additional-traveller-amount'] = $room['traveller-amount'] - 2;
 							$total_price += $room['additional-traveller-price'] * $room['additional-traveller-amount'];
 						}
+						$total_price += $room['base-price'];
+
 						$price_breakdown['room'][] = $room;
-						$price_breakdown['traveller-amount'] += $booking_detail['tour-people'][$i];
+						$price_breakdown['traveller-amount'] += $room['traveller-amount'];
+
+						
 
 						$room_amount ++;
 					}
@@ -800,12 +930,11 @@
 				// variable price
 				}else{
 
-					$types = array('adult', 'children', 'student', 'infant');
+					$types = array('adult', 'male', 'female', 'children', 'student', 'infant');
 
 					for( $i = 0; $i < $booking_detail['tour-room']; $i++ ){
 						$room = array();
 						$room['base-price'] = $date_price['initial-price'];
-						$total_price += $room['base-price'];
 
 						$room_base_count = 2;
 						foreach( $types as $type ){
@@ -828,6 +957,11 @@
 								$price_breakdown[$type . '-amount'] = (empty($price_breakdown[$type . '-amount'])? 0: $price_breakdown[$type . '-amount']) + $booking_detail['tour-' . $type][$i];
 							}
 						}
+
+						if( $room_base_count == 1 && !empty($date_price['single-discount']) ){
+							$room['base-price'] = $room['base-price'] - $date_price['single-discount'];
+						}
+						$total_price += $room['base-price'];
 						$price_breakdown['room'][] = $room;
 
 						$room_amount ++;
@@ -886,7 +1020,7 @@
 			if( !empty($tour_option['group-discount']) ){
 				$gd_traveller = 0;
 				$gd_rate = '';
-				$gd_amount = '';
+				$gd_amount = 0;
 
 				foreach( $tour_option['group-discount'] as $gd ){
 					if( $traveller_amount >= $gd['traveller-number'] && $gd['traveller-number'] >= $gd_traveller ){
@@ -902,11 +1036,13 @@
 					}
 				}
 
-				$total_price -= $gd_amount;
+				if( $gd_amount > 0 ){
+					$total_price -= $gd_amount;
 
-				$price_breakdown['group-discount-traveller'] = $traveller_amount; // $gd_traveller;
-				$price_breakdown['group-discount-rate'] = $gd_rate;
-				$price_breakdown['group-discounted-price'] = $total_price;
+					$price_breakdown['group-discount-traveller'] = $traveller_amount; // $gd_traveller;
+					$price_breakdown['group-discount-rate'] = $gd_rate;
+					$price_breakdown['group-discounted-price'] = $total_price;
+				}
 			}
 
 
@@ -944,7 +1080,11 @@
 
 			// deposit price
 			if( !empty($booking_detail['payment-type']) && $booking_detail['payment-type'] == 'partial' ){
-				$deposit_rate = tourmaster_get_option('payment', 'deposit-payment-amount', '0');
+				if( empty($tour_option['deposit-booking']) || $tour_option['deposit-booking'] == 'default' ){
+					$deposit_rate = tourmaster_get_option('payment', 'deposit-payment-amount', '0');
+				}else{
+					$deposit_rate = empty($tour_option['deposit-amount'])? 0: $tour_option['deposit-amount'];
+				}
 				$deposit_price = ($total_price * intval($deposit_rate)) / 100;
 
 				$ret['deposit-rate'] = $deposit_rate;
@@ -953,19 +1093,34 @@
 
 			// check service rate
 			// only for displaying, will not be stored until paypal payment is made 
-			if( !empty($booking_detail['payment_method']) && $booking_detail['payment_method'] == 'paypal' ){
-				$service_fee = tourmaster_get_option('payment', 'paypal-service-fee', '');
-				if( !empty($service_fee) ){
-					if( !empty($ret['deposit-price']) ){
-						$ret['deposit-price-raw'] = $ret['deposit-price'];
-						$ret['deposit-paypal-service-rate'] = $service_fee;
-						$ret['deposit-paypal-service-fee'] = $ret['deposit-price'] * (floatval($service_fee) / 100);	
-						$ret['deposit-price'] += $ret['deposit-paypal-service-fee'];
-
-					}else{
-						$price_breakdown['paypal-service-rate'] = $service_fee;
-						$price_breakdown['paypal-service-fee'] = $total_price * (floatval($service_fee) / 100);	
-						$total_price += $price_breakdown['paypal-service-fee'];
+			if( !empty($booking_detail['payment_method']) ){
+				if( $booking_detail['payment_method'] == 'paypal' ){
+					$service_fee = tourmaster_get_option('payment', 'paypal-service-fee', '');
+					if( !empty($service_fee) ){
+						if( !empty($ret['deposit-price']) ){
+							$ret['deposit-price-raw'] = $ret['deposit-price'];
+							$ret['deposit-paypal-service-rate'] = $service_fee;
+							$ret['deposit-paypal-service-fee'] = $ret['deposit-price'] * (floatval($service_fee) / 100);	
+							$ret['deposit-price'] += $ret['deposit-paypal-service-fee'];
+						}else{
+							$price_breakdown['paypal-service-rate'] = $service_fee;
+							$price_breakdown['paypal-service-fee'] = $total_price * (floatval($service_fee) / 100);	
+							$total_price += $price_breakdown['paypal-service-fee'];
+						}
+					}
+				}else if( in_array($booking_detail['payment_method'], array('stripe', 'authorize', 'paymill')) ){
+					$service_fee = tourmaster_get_option('payment', 'credit-card-service-fee', '');
+					if( !empty($service_fee) ){
+						if( !empty($ret['deposit-price']) ){
+							$ret['deposit-price-raw'] = $ret['deposit-price'];
+							$ret['deposit-credit-card-service-rate'] = $service_fee;
+							$ret['deposit-credit-card-service-fee'] = $ret['deposit-price'] * (floatval($service_fee) / 100);	
+							$ret['deposit-price'] += $ret['deposit-credit-card-service-fee'];
+						}else{
+							$price_breakdown['credit-card-service-rate'] = $service_fee;
+							$price_breakdown['credit-card-service-fee'] = $total_price * (floatval($service_fee) / 100);	
+							$total_price += $price_breakdown['credit-card-service-fee'];
+						}
 					}
 				}
 			}
@@ -976,13 +1131,38 @@
 			return $ret;
 
 		} // tourmaster_get_tour_price
-	} 
+	}
+	add_action('wp_ajax_tourmaster_update_head_price', 'tourmaster_update_head_price');
+	add_action('wp_ajax_nopriv_tourmaster_update_head_price', 'tourmaster_update_head_price');
+	if( !function_exists('tourmaster_update_head_price') ){
+		function tourmaster_update_head_price(){
+
+			$data = empty($_POST['data'])? array(): tourmaster_process_post_data($_POST['data']);
+			$data['package'] = empty($data['package'])? '': $data['package'];
+
+			$tour_option = tourmaster_get_post_meta($data['tour-id'], 'tourmaster-tour-option');
+			$date_price = tourmaster_get_tour_date_price($tour_option, $data['tour-id'], $data['tour-date']);
+			$date_price = tourmaster_get_tour_date_price_package($date_price, $data);
+				
+			$tour_price = tourmaster_get_tour_price($tour_option, $date_price, $data);
+
+
+			$ret = array();
+			if( !empty($tour_price['total-price']) ){
+				$ret['price'] = tourmaster_money_format($tour_price['total-price']);
+			}
+
+			die(json_encode($ret));
+		}
+	}
 
 	if( !function_exists('tourmaster_get_tour_price_breakdown') ){
 		function tourmaster_get_tour_price_breakdown( $price_breakdown ){
 			$types = array(
 				'traveller' => esc_html__('Traveller', 'tourmaster'),
 				'adult' => esc_html__('Adult', 'tourmaster'),
+				'male' => esc_html__('Male', 'tourmaster'),
+				'female' => esc_html__('Female', 'tourmaster'),
 				'children' => esc_html__('Child', 'tourmaster'),
 				'student' => esc_html__('Student', 'tourmaster'),
 				'infant' => esc_html__('Infant', 'tourmaster'),
@@ -994,7 +1174,7 @@
 			// group price
 			if( !empty($price_breakdown['group-price']) ){
 				$ret .= '<div class="tourmaster-price-breakdown-group-price" >';
-				$ret .= '<span class="tourmaster-head" >' . esc_html__('Group Price :') . '</span>';
+				$ret .= '<span class="tourmaster-head" >' . esc_html__('Group Price :', 'tourmaster') . '</span>';
 				$ret .= '<span class="tourmaster-tail tourmaster-right" >' . tourmaster_money_format($price_breakdown['group-price']) . '</span>';
 				$ret .= '</div>';
 			}
@@ -1096,11 +1276,11 @@
 				$ret .= '</div>';
 			}
 
-			if( !empty($price_breakdown['coupon-code']) && !empty($price_breakdown['coupon-amount']) ){
+			if( !empty($price_breakdown['coupon-amount']) ){
 				$ret .= '<div class="tourmaster-price-breakdown-coupon-code" >';
 				$ret .= '<span class="tourmaster-head" >' . esc_html__('Coupon Code :', 'tourmaster') . '</span>';
 				$ret .= '<span class="tourmaster-tail" > ';
-				$ret .= '<span class="tourmaster-coupon-code" >' . $price_breakdown['coupon-code'] . '</span>';
+				$ret .= '<span class="tourmaster-coupon-code" >' . (empty($price_breakdown['coupon-code'])? '-': $price_breakdown['coupon-code']) . '</span>';
 				if( !empty($price_breakdown['coupon-text'])){
 					$ret .= '<span class="tourmaster-coupon-text" >' . $price_breakdown['coupon-text'] . '</span>';
 				}
@@ -1108,8 +1288,8 @@
 				$ret .= '</div>';
 
 				$ret .= '<div class="tourmaster-price-breakdown-coupon-amount" >';
-				$ret .= '<span class="tourmaster-head" >' . esc_html__('Discounted Price', 'tourmaster') . '</span>';
-				$ret .= '<span class="tourmaster-tail tourmaster-right" >';
+				$ret .= '<span class="tourmaster-head" >' . esc_html__('Discount Price', 'tourmaster') . '</span>';
+				$ret .= '<span class="tourmaster-tail tourmaster-right" >- ';
 				$ret .= tourmaster_money_format($price_breakdown['coupon-amount']);
 				$ret .= '</span>';
 				$ret .= '</div>';
@@ -1143,6 +1323,15 @@
 				$ret .= tourmaster_money_format($price_breakdown['paypal-service-fee']);
 				$ret .= '</span>';
 				$ret .= '</div>';
+
+			// credit card service fee
+			}else if( !empty($price_breakdown['credit-card-service-rate']) && !empty($price_breakdown['credit-card-service-fee']) ){
+				$ret .= '<div class="tourmaster-price-breakdown-service-fee" >';
+				$ret .= '<span class="tourmaster-head" >' . sprintf(esc_html__('Credit Card Service Fee (%s%%)', 'tourmaster'), $price_breakdown['credit-card-service-rate']) . '</span>';
+				$ret .= '<span class="tourmaster-tail tourmaster-right" >';
+				$ret .= tourmaster_money_format($price_breakdown['credit-card-service-fee']);
+				$ret .= '</span>';
+				$ret .= '</div>';
 			}
 
 			$ret .= '</div>'; // tourmaster-price-breakdown-summary
@@ -1157,6 +1346,8 @@
 			$types = array(
 				'traveller' => esc_html__('Traveller', 'tourmaster'),
 				'adult' => esc_html__('Adult', 'tourmaster'),
+				'male' => esc_html__('Male', 'tourmaster'),
+				'female' => esc_html__('Female', 'tourmaster'),
 				'children' => esc_html__('Child', 'tourmaster'),
 				'student' => esc_html__('Student', 'tourmaster'),
 				'infant' => esc_html__('Infant', 'tourmaster'),
@@ -1184,9 +1375,34 @@
 			}
 			$ret .= '</span>';
 			$ret .= '<span class="tourmaster-tail tourmaster-right" >';
-			$ret .= tourmaster_money_format($price_breakdown['sub-total-price']);
+			// subtract service out
+			$sub_total_price = $price_breakdown['sub-total-price'];
+			if( !empty($price_breakdown['additional-service']) ){
+				foreach( $price_breakdown['additional-service'] as $service_id => $service_option ){
+					if( !empty($service_option['price']) ){
+						$sub_total_price -= $service_option['price'];
+					}
+				}
+			}
+			$ret .= tourmaster_money_format($sub_total_price);
 			$ret .= '</span>';
-			$ret .= '</div>';			
+			$ret .= '</div>';	
+
+			// additional service
+			if( !empty($price_breakdown['additional-service']) ){
+				$ret .= '<div class="tourmaster-invoice-price-item tourmaster-large clearfix" >';
+				$ret .= '<h3 class="tourmaster-invoice-price-additional-service-title" >' . esc_html__('Additional Services', 'tourmaster') . '</h3>';
+				foreach( $price_breakdown['additional-service'] as $service_id => $service_option ){
+					$ret .= '<span class="tourmaster-head" >';
+					$ret .= get_the_title($service_id);
+					$ret .= ' (' . $service_option['amount'] . ' x ' . tourmaster_money_format($service_option['price-one'], -2) . ') ';
+					$ret .= '</span>';
+					$ret .= '<span class="tourmaster-tail tourmaster-right" >';
+					$ret .= tourmaster_money_format($service_option['price']);
+					$ret .= '</span>';
+				}
+				$ret .= '</div>';
+			}		
 
 			// sub total
 			$ret .= '<div class="tourmaster-invoice-price-sub-total clearfix" >';
@@ -1202,7 +1418,6 @@
 				$ret .= '<span class="tourmaster-head" >' . esc_html__('Group Discounted Price', 'tourmaster') . '</span>';
 				$ret .= '<span class="tourmaster-tail tourmaster-right" >' . tourmaster_money_format($price_breakdown['group-discounted-price']) . '</span>';
 				$ret .= '</div>';
-				$ret .= '</div>';
 			}
 
 			// tax due
@@ -1215,12 +1430,21 @@
 				$ret .= '</div>';
 			}
 
-			// service fee
+			// paypal service fee
 			if( !empty($price_breakdown['paypal-service-rate']) && !empty($price_breakdown['paypal-service-fee']) ){
 				$ret .= '<div class="tourmaster-invoice-price-last" >';
 				$ret .= '<span class="tourmaster-head" >' . esc_html__('Paypal Service Fee', 'tourmaster') . '</span>';
 				$ret .= '<span class="tourmaster-tail tourmaster-right" >';
 				$ret .= tourmaster_money_format($price_breakdown['paypal-service-fee']);
+				$ret .= '</span>';
+				$ret .= '</div>';
+
+			// credit card service fee
+			}else if( !empty($price_breakdown['credit-card-service-rate']) && !empty($price_breakdown['credit-card-service-fee']) ){
+				$ret .= '<div class="tourmaster-invoice-price-last" >';
+				$ret .= '<span class="tourmaster-head" >' . esc_html__('Credit Card Service Fee', 'tourmaster') . '</span>';
+				$ret .= '<span class="tourmaster-tail tourmaster-right" >';
+				$ret .= tourmaster_money_format($price_breakdown['credit-card-service-fee']);
 				$ret .= '</span>';
 				$ret .= '</div>';
 			}
@@ -1230,28 +1454,154 @@
 			return $ret;
 		} // tourmaster_get_tour_invoice_price
 	}
+	if( !function_exists('tourmaster_get_tour_invoice_price_email') ){
+		function tourmaster_get_tour_invoice_price_email( $tour_id, $price_breakdown ){
+			$types = array(
+				'traveller' => esc_html__('Traveller', 'tourmaster'),
+				'adult' => esc_html__('Adult', 'tourmaster'),
+				'male' => esc_html__('Male', 'tourmaster'),
+				'female' => esc_html__('Female', 'tourmaster'),
+				'children' => esc_html__('Child', 'tourmaster'),
+				'student' => esc_html__('Student', 'tourmaster'),
+				'infant' => esc_html__('Infant', 'tourmaster'),
+			);
+
+			$ret  = '<div>'; // tourmaster-invoice-price clearfix
+
+			// item name
+			$ret .= '<div style="padding: 18px 25px; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e1e1e1;" >'; // tourmaster-invoice-price-item
+			$ret .= '<span style="width: 80%; float: left; color: #7b7b7b;" >'; // tourmaster-head
+			$ret .= '<span style="display: block; font-size: 15px; margin-bottom: 2px;" >' . get_the_title($tour_id) . '</span>'; // tourmaster-head-title
+			if( !empty($price_breakdown['group-price']) ){
+
+			}else{
+				$ret .= '<span class="display: block; font-size: 13px;" >- '; // tourmaster-head-caption
+				$comma = false;
+				foreach( $types as $type_slug => $type ){
+					if( !empty($price_breakdown[$type_slug . '-amount']) ){
+						$ret .= empty($comma)? '': ', ';
+						$ret .= $price_breakdown[$type_slug . '-amount'] . ' ' . $type;
+						$comma = true;
+					}
+				}
+				$ret .= '</span>';
+			}
+			$ret .= '</span>';
+			$ret .= '<span style="color: #1e1e1e; font-size: 16px;" >'; // tourmaster-tail
+			// subtract service out
+			$sub_total_price = $price_breakdown['sub-total-price'];
+			if( !empty($price_breakdown['additional-service']) ){
+				foreach( $price_breakdown['additional-service'] as $service_id => $service_option ){
+					if( !empty($service_option['price']) ){
+						$sub_total_price -= $service_option['price'];
+					}
+				}
+			}
+			$ret .= tourmaster_money_format($sub_total_price);
+			$ret .= '</span>';
+			$ret .= '<div style="clear: both;" ></div>';
+			$ret .= '</div>';	
+
+			// additional service
+			if( !empty($price_breakdown['additional-service']) ){
+				$ret .= '<div style="padding: 30px 25px 25px; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e1e1e1;" >'; // tourmaster-invoice-price-item tourmaster-large clearfix
+				$ret .= '<h3 style="font-size: 15px; margin-bottom: 12px; font-weight: bold;" >' . esc_html__('Additional Services', 'tourmaster') . '</h3>'; // tourmaster-invoice-price-additional-service-title
+				foreach( $price_breakdown['additional-service'] as $service_id => $service_option ){
+					$ret .= '<span style="width: 80%; float: left; color: #7b7b7b;" >'; // tourmaster-head
+					$ret .= get_the_title($service_id);
+					$ret .= ' (' . $service_option['amount'] . ' x ' . tourmaster_money_format($service_option['price-one'], -2) . ') ';
+					$ret .= '</span>';
+					$ret .= '<span style="color: #1e1e1e; font-size: 16px;" >'; // tourmaster-tail
+					$ret .= tourmaster_money_format($service_option['price']);
+					$ret .= '</span>';
+				}
+				$ret .= '<div style="clear: both;" ></div>';
+				$ret .= '</div>';
+			}			
+
+			// sub total
+			$ret .= '<div style="padding: 18px 25px; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e1e1e1;" >'; // tourmaster-invoice-price-sub-total
+			$ret .= '<span style="color: #7b7b7b; float: left; margin-left: 55%; width: 25%; font-size: 15px;" >' . esc_html__('Sub Total', 'tourmaster') . '</span>'; // tourmaster-head
+			$ret .= '<span style="color: #1e1e1e; display: block; overflow: hidden; font-size: 16px;" >'; // tourmaster-tail
+			$ret .= tourmaster_money_format($price_breakdown['sub-total-price']);
+			$ret .= '</span>';
+			$ret .= '<div style="clear: both;" ></div>';
+			$ret .= '</div>';
+
+			// discounted price
+			if( !empty($price_breakdown['group-discounted-price']) ){
+				$ret .= '<div style="padding: 18px 25px; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e1e1e1" >'; // tourmaster-invoice-price-last
+				$ret .= '<span style="color: #7b7b7b; float: left; margin-left: 55%; width: 25%; font-size: 15px;" >' . esc_html__('Group Discounted Price', 'tourmaster') . '</span>'; // tourmaster-head
+				$ret .= '<span style="color: #1e1e1e; display: block; overflow: hidden; font-size: 16px;" >' . tourmaster_money_format($price_breakdown['group-discounted-price']) . '</span>'; // tourmaster-tail
+				$ret .= '<div style="clear: both;" ></div>';
+				$ret .= '</div>';
+			}
+
+			// tax due
+			if( !empty($price_breakdown['tax-due']) ){
+				$ret .= '<div style="padding: 18px 25px; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e1e1e1;" >'; // tourmaster-invoice-price-tax
+				$ret .= '<span style="color: #7b7b7b; float: left; margin-left: 55%; width: 25%; font-size: 15px;" >' . esc_html__('Tax', 'tourmaster') . '</span>'; // tourmaster-head
+				$ret .= '<span style="color: #1e1e1e; display: block; overflow: hidden; font-size: 16px;" >'; // tourmaster-tail
+				$ret .= tourmaster_money_format($price_breakdown['tax-due']);
+				$ret .= '</span>';
+				$ret .= '<div style="clear: both;" ></div>';
+				$ret .= '</div>';
+			}
+
+			// paypal service fee
+			if( !empty($price_breakdown['paypal-service-rate']) && !empty($price_breakdown['paypal-service-fee']) ){
+				$ret .= '<div style="padding: 18px 25px; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e1e1e1;" >'; // tourmaster-invoice-price-last
+				$ret .= '<span style="color: #7b7b7b; float: left; margin-left: 55%; width: 25%; font-size: 15px;" >' . esc_html__('Paypal Service Fee', 'tourmaster') . '</span>'; // tourmaster-head
+				$ret .= '<span style="color: #1e1e1e; display: block; overflow: hidden; font-size: 16px;" >'; // tourmaster-tail
+				$ret .= tourmaster_money_format($price_breakdown['paypal-service-fee']);
+				$ret .= '</span>';
+				$ret .= '<div style="clear: both;" ></div>';
+				$ret .= '</div>';
+
+			// credit card service fee
+			}else if( !empty($price_breakdown['credit-card-service-rate']) && !empty($price_breakdown['credit-card-service-fee']) ){
+				$ret .= '<div style="padding: 18px 25px; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e1e1e1;" >'; // tourmaster-invoice-price-last
+				$ret .= '<span style="color: #7b7b7b; float: left; margin-left: 55%; width: 25%; font-size: 15px;" >' . esc_html__('Credit Card Service Fee', 'tourmaster') . '</span>'; // tourmaster-head
+				$ret .= '<span style="color: #1e1e1e; display: block; overflow: hidden; font-size: 16px;" >'; // tourmaster-tail
+				$ret .= tourmaster_money_format($price_breakdown['credit-card-service-fee']);
+				$ret .= '</span>';
+				$ret .= '<div style="clear: both;" ></div>';
+				$ret .= '</div>';
+			}
+
+			$ret .= '<div style="clear: both;" ></div>';
+			$ret .= '</div>'; // tourmaster-invoice-price
+
+			return $ret;
+		} // tourmaster_get_tour_invoice_price
+	}
 
 	// enquiry form
 	if( !function_exists('tourmaster_get_enquiry_form') ){
 		function tourmaster_get_enquiry_form(){
-			
-			$enquiry_fields = array(
-				'full-name' => array(
-					'title' => esc_html__('Full Name', 'tourmaster'),
-					'type' => 'text',
-					'required' => true
-				),
-				'email-address' => array(
-					'title' => esc_html__('Email Address', 'tourmaster'),
-					'type' => 'text',
-					'required' => true
-				),
-				'your-enquiry' => array(
-					'title' => esc_html__('Your Enquiry', 'tourmaster'),
-					'type' => 'textarea',
-					'required' => true
-				),
-			);
+
+			$custom_fields = tourmaster_get_option('general', 'enquiry-form-fields', '');
+			if( empty($custom_fields) ){
+				$enquiry_fields = array(
+					'full-name' => array(
+						'title' => esc_html__('Full Name', 'tourmaster'),
+						'type' => 'text',
+						'required' => true
+					),
+					'email-address' => array(
+						'title' => esc_html__('Email Address', 'tourmaster'),
+						'type' => 'text',
+						'required' => true
+					),
+					'your-enquiry' => array(
+						'title' => esc_html__('Your Enquiry', 'tourmaster'),
+						'type' => 'textarea',
+						'required' => true
+					),
+				);
+			}else{
+				$enquiry_fields = tourmaster_read_custom_fields($custom_fields);
+			}
 
 			$ret  = '<form class="tourmaster-enquiry-form tourmaster-form-field tourmaster-with-border clearfix" ';
 			$ret .= ' id="tourmaster-enquiry-form" ';
@@ -1330,7 +1680,7 @@
 			}
 
 			if( !empty($data['tour-id']) ){
-				$tour_title = get_the_title($data['tour-id']);
+				$tour_title = '<a href="' . esc_url(get_permalink($data['tour-id'])) . '" >' . get_the_title($data['tour-id']) . '</a>';
 				$content = str_replace('{tour-name}', $tour_title, $content);
 			}
 			return $content;

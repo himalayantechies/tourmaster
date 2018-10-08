@@ -80,7 +80,7 @@
 					'font-size' => empty($args['tour-title-font-size'])? '': $args['tour-title-font-size'],
 					'font-weight' => empty($args['tour-title-font-weight'])? '': $args['tour-title-font-weight'],
 					'letter-spacing' => empty($args['tour-title-letter-spacing'])? '': $args['tour-title-letter-spacing'],
-					'text-transform' => (empty($args['tour-title-text-transform']) || $args['tour-title-text-transform'] == 'uppercase')? '': $args['portfolio-title-text-transform'],
+					'text-transform' => (empty($args['tour-title-text-transform']) || $args['tour-title-text-transform'] == 'uppercase')? '': $args['tour-title-text-transform'],
 					'margin-bottom' => empty($args['tour-title-bottom-margin'])? '': $args['tour-title-bottom-margin']
 				)) . ' >';
 				$ret .= '<a href="' . get_permalink() . '" >' . get_the_title() . '</a>';
@@ -175,7 +175,9 @@
 					$ret  .= '<div class="tourmaster-tour-price-wrap ' . esc_attr($extra_class) . '" >';
 					if( !empty($post_meta['tour-price-text']) ){
 						$ret .= '<span class="tourmaster-tour-price" >';
-						$ret .= '<span class="tourmaster-head">' . esc_html__('From', 'tourmaster') . '</span>';
+						$ret .= '<span class="tourmaster-head">';
+						$ret .= empty($settings['price-prefix-text'])? esc_html__('From', 'tourmaster'): $settings['price-prefix-text'];
+						$ret .= '</span>';
 						$ret .= '<span class="tourmaster-tail">' . tourmaster_money_format($post_meta['tour-price-text'], 0) . '</span>';
 						$ret .= '</span>';
 					}
@@ -436,6 +438,10 @@
 				$extra_class  = ( !empty($args['with-frame']) && $args['with-frame'] == 'enable' )? 'tourmaster-tour-frame': '';
 
 				$args['price-position'] = empty($args['price-position'])? 'right-title': $args['price-position'];
+				if( $args['price-position'] == 'bottom-title-center' ){
+					$extra_class .= ' tourmaster-center-align';
+					$args['price-position'] = 'bottom-title';
+				}
 				$extra_class .= ' tourmaster-price-' . $args['price-position'];
 
 				$ret  = '<div class="tourmaster-tour-grid ' . esc_attr($extra_class) . '" >';
@@ -446,7 +452,9 @@
 
 				// price
 				if( $args['price-position'] != 'bottom-bar' ){
-					$ret .= $this->get_price();
+					$ret .= $this->get_price(array(
+						'price-prefix-text' => empty($args['price-prefix-text'])? '': $args['price-prefix-text']
+					));
 				}
 
 				// info
@@ -469,7 +477,9 @@
 
 					if( !empty($post_meta['tour-price-text']) ){
 						$ret .= '<div class="tourmaster-tour-price-bottom-wrap clearfix ' . (empty($post_meta['tour-price-discount-text'])? '': 'tourmaster-with-discount') . '" >';
-						$ret .= '<span class="tourmaster-tour-price-head" >' . esc_html__('From', 'tourmaster') . '</span>';
+						$ret .= '<span class="tourmaster-tour-price-head" >';
+						$ret .= empty($args['price-prefix-text'])? esc_html__('From', 'tourmaster'): $args['price-prefix-text'];
+						$ret .= '</span>';
 						$ret .= '<span class="tourmaster-tour-price-content" >';
 						$ret .= '<span class="tourmaster-tour-price">' . tourmaster_money_format($post_meta['tour-price-text'], 0) . '</span>';
 						if( !empty($post_meta['tour-price-discount-text']) ){

@@ -6,13 +6,22 @@
 	add_action('admin_menu', 'tourmaster_init_order_page', 99);
 	if( !function_exists('tourmaster_init_order_page') ){
 		function tourmaster_init_order_page(){
-			add_submenu_page(
-				'tourmaster_admin_option', 
+			// add_submenu_page(
+			// 	'tourmaster_admin_option', 
+			// 	esc_html__('Transaction Order', 'tourmaster'), 
+			// 	esc_html__('Transaction Order', 'tourmaster'),
+			// 	'manage_tour_order', 
+			// 	'tourmaster_order', 
+			// 	'tourmaster_create_order_page'
+			// );
+			add_menu_page(
 				esc_html__('Transaction Order', 'tourmaster'), 
 				esc_html__('Transaction Order', 'tourmaster'),
 				'manage_tour_order', 
 				'tourmaster_order', 
-				'tourmaster_create_order_page'
+				'tourmaster_create_order_page',
+				TOURMASTER_URL . '/framework/images/admin-option-icon.png',
+				120
 			);
 		}
 	}
@@ -32,10 +41,81 @@
 		}
 	}
 
+	if( !function_exists('tourmaster_order_csv_export') ){
+		function tourmaster_order_csv_export( $results ){
+
+			// define constant
+			$current_url = (is_ssl()? "https": "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$statuses = array(
+				'all' => __('All', 'tourmaster'),
+				'pending' => __('Pending', 'tourmaster'),
+				'approved' => __('Approved', 'tourmaster'),
+				'receipt-submitted' => __('Receipt Submitted', 'tourmaster'),
+				'online-paid' => __('Online Paid', 'tourmaster'),
+				'deposit-paid' => __('Deposit Paid', 'tourmaster'),
+				'departed' => __('Departed', 'tourmaster'),
+				'rejected' => __('Rejected', 'tourmaster'),
+				'cancel' => __('Cancel', 'tourmaster'),
+			);
+
+			// print it as file
+			$fp = fopen(TOURMASTER_LOCAL . '/include/js/order.csv', 'w');
+			fputcsv($fp, array(
+				__('Order ID', 'tourmaster'),
+				__('Tour Name', 'tourmaster'),
+				__('Contact Name', 'tourmaster'),
+				__('Contact Email', 'tourmaster'),
+				__('Contact Number', 'tourmaster'),
+				__('Customer\'s Note', 'tourmaster'),
+				__('Booking Date', 'tourmaster'),
+				__('Travel Date', 'tourmaster'),
+				__('Total Price', 'tourmaster'),
+				__('Payment Status', 'tourmaster'),
+				__('Link To Transaction', 'tourmaster'),
+			));
+			foreach( $results as $result ){
+				$contact_info = json_decode($result->contact_info, true);
+
+				fputcsv($fp, array(
+					'#' . $result->id,
+					html_entity_decode(get_the_title($result->tour_id)),
+					$contact_info['first_name'] . ' ' . $contact_info['last_name'],
+					$contact_info['email'],
+					empty($contact_info['additional_notes'])? '': $contact_info['additional_notes'],
+					tourmaster_date_format($result->booking_date),
+					tourmaster_date_format($result->travel_date),
+					tourmaster_money_format($result->total_price),
+					$statuses[$result->order_status],
+					add_query_arg(
+						array('single'=>$result->id), 
+						remove_query_arg(array('order_id', 'from_date', 'to_date', 'action', 'id', 'export'), $current_url)
+					)
+				));
+			}
+			fclose($fp);
+
+// script for user to download
+?><script>
+	jQuery(document).ready(function(){
+		var element = document.createElement('a');
+		element.setAttribute('href', '<?php echo esc_js(TOURMASTER_URL . '/include/js/order.csv'); ?>');
+		element.setAttribute('download', 'transaction.csv');
+		
+		element.style.display = 'none';
+		document.body.appendChild(element);
+
+		element.click();
+		document.body.removeChild(element);
+	});
+</script><?php
+
+		} // tourmaster_order_csv_export
+	}
+
 	if( !function_exists('tourmaster_create_order_page') ){
 		function tourmaster_create_order_page(){
 			if( !isset($_GET['single']) ){
-				$action_url = remove_query_arg(array('order_id', 'from_date', 'to_date', 'action', 'id'));
+				$action_url = remove_query_arg(array('order_id', 'from_date', 'to_date', 'action', 'id', 'export'));
 
 				$statuses = array(
 					'all' => esc_html__('All', 'tourmaster'),
@@ -57,13 +137,26 @@
 		<input type="submit" value="<?php esc_html_e('Search', 'tourmaster'); ?>" />
 	</form>
 	<form class="tourmaster-order-search-form" method="get" action="<?php echo esc_url($action_url); ?>" >
+		<div style="margin-bottom: 10px;" >
+			<label><?php esc_html_e('Select Tour :', 'tourmaster'); ?></label>
+			<select name="tour_id" ><?php
+				$tour_list = tourmaster_get_post_list('tour');
+				echo '<option value="" >' . esc_html__('All', 'tourmaster') . '</option>';
+				foreach( $tour_list as $tour_id => $tour_name ){
+					echo '<option value="' . esc_attr($tour_id) . '" ' . ((!empty($_GET['tour_id']) && $_GET['tour_id'] == $tour_id)? 'selected': '') . ' >' . esc_html($tour_name) . '</option>';
+				}	
+			?></select>
+			<br>
+		</div>
 		<label><?php esc_html_e('Date Filter :', 'tourmaster'); ?></label>
 		<span class="tourmaster-separater" ><?php esc_html_e('From', 'tourmaster') ?></span>
 		<input class="tourmaster-datepicker" type="text" name="from_date" value="<?php echo empty($_GET['from_date'])? '': esc_attr($_GET['from_date']); ?>" />
 		<span class="tourmaster-separater" ><?php esc_html_e('To', 'tourmaster') ?></span>
 		<input class="tourmaster-datepicker" type="text" name="to_date" value="<?php echo empty($_GET['to_date'])? '': esc_attr($_GET['to_date']); ?>" />
 		<input type="hidden" name="page" value="tourmaster_order" />
+		<input type="hidden" name="export" value="0" />
 		<input type="submit" value="<?php esc_html_e('Filter', 'tourmaster'); ?>" />
+		<input id="tourmaster-csv-export" type="button" value="<?php esc_html_e('Export To CSV', 'tourmaster'); ?>" />
 	</form>
 	<div class="tourmaster-order-filter" >
 	<?php
@@ -110,23 +203,18 @@
 
  				}else if( in_array($_GET['action'], array('approved', 'rejected')) ){
 
- 					$old_result = tourmaster_get_booking_data(array(
- 						'id' => $_GET['id']
- 					), array( 'single' => true ), 'order_status');
-
  					$updated = tourmaster_update_booking_data(
  						array('order_status' => $_GET['action']),
  						array('id' => $_GET['id']),
  						array('%s'),
  						array('%d')
  					);
-
+ 					
  					// send the mail
  					if( !empty($updated) ){
- 						if( $_GET['action'] == 'approved' ){
- 							if( $old_result->order_status != 'online-paid' ){
- 								tourmaster_mail_notification('payment-made-mail', $_GET['id']);
- 							}
+ 						if( in_array($_GET['action'], array('approved', 'online-paid', 'deposit-paid')) ){
+ 							tourmaster_mail_notification('payment-made-mail', $_GET['id']);
+ 							tourmaster_send_email_invoice($_GET['id']);
  						}else if( $_GET['action'] == 'rejected' ){
  							tourmaster_mail_notification('booking-reject-mail', $_GET['id']);
  						} 
@@ -145,6 +233,9 @@
 			if( !empty($_GET['order_id']) ){
 				$query_args['id'] = $_GET['order_id'];
 			}
+			if( !empty($_GET['tour_id']) ){
+				$query_args['tour_id'] = $_GET['tour_id'];
+			}
 			if( !empty($_GET['from_date']) ){
 				$custom_condition = ' >= \'' . esc_sql($_GET['from_date']) . '\''; 
 				if( !empty($_GET['to_date']) ){
@@ -159,6 +250,9 @@
 				'paged' => $paged,
 				'num-fetch' => $num_fetch
 			));
+			if( !empty($_GET['export']) ){
+				tourmaster_order_csv_export($results);
+			}
 
 
 			echo '<table>';
@@ -186,7 +280,7 @@
 			foreach( $results as $result ){
 
 				$order_title  = '<div class="tourmaster-head" >#' . $result->id . '</div>';
-				$order_title .= '<div class="tourmaster-content" ><a href="' . add_query_arg(array('single'=>$result->id), remove_query_arg(array('id','action'))) . '" >';
+				$order_title .= '<div class="tourmaster-content" ><a href="' . add_query_arg(array('single'=>$result->id), remove_query_arg(array('order_id', 'from_date', 'to_date', 'action', 'id', 'export'))) . '" >';
 				$order_title .= get_the_title($result->tour_id);
 				$order_title .= '</a></div>';
 
@@ -253,7 +347,7 @@
 					if( $i == $paged ){
 						echo '<span class="tourmaster-transaction-pagination-item tourmaster-active" >' . $i . '</span>';
 					}else{
-						echo '<a href="' . add_query_arg(array('paged'=>$i), remove_query_arg(array('id','action'))) . '" class="tourmaster-transaction-pagination-item" >' . $i . '</a>';
+						echo '<a href="' . add_query_arg(array('paged'=>$i), remove_query_arg(array('action'))) . '" class="tourmaster-transaction-pagination-item" >' . $i . '</a>';
 					}
 				}
 				echo '</div>';
@@ -275,8 +369,9 @@
 
 				// send the mail
 				if( !empty($updated) ){
-					if( !empty($_GET['action']) && in_array($_GET['action'], array('approved', 'online-paid', 'deposit-paid')) ){
+					if( in_array($_GET['status'], array('approved', 'online-paid', 'deposit-paid')) ){
 						tourmaster_mail_notification('payment-made-mail', $_GET['single']);
+						tourmaster_send_email_invoice($_GET['single']);
 					}else if( $_GET['status'] == 'rejected' ){
 						tourmaster_mail_notification('booking-reject-mail', $_GET['single']);
 					} 
@@ -340,9 +435,15 @@
 				
 				if( !empty($payment_info['file_url']) ){
 					echo '<div class="tourmaster-my-booking-single-payment-receipt" >';
-					echo '<a href="' . esc_url($payment_info['file_url']) . '" >';
-					echo '<img src="' . esc_url($payment_info['file_url']) . '" alt="receipt" />';
-					echo '</a>';
+					if( strpos($payment_info['file_url'], '.pdf') ){
+						echo '<a href="' . esc_url($payment_info['file_url']) . '" target="_blank" >';
+						echo '<i class="fa fa-file" style="margin-right: 10px;" ></i>' . esc_html__('Download', 'tourmaster');
+						echo '</a>';
+					}else{
+						echo '<a href="' . esc_url($payment_info['file_url']) . '" >';
+						echo '<img src="' . esc_url($payment_info['file_url']) . '" alt="receipt" />';
+						echo '</a>';
+					}
 					echo '</div>';			
 				}
 
@@ -412,6 +513,12 @@
 					echo '<span class="tourmaster-tail">' . tourmaster_money_format($payment_info['amount']) . '</span>';
 					echo '</div>';
 				}
+				if( !empty($payment_info['deposit_amount']) ){
+					echo '<div class="tourmaster-my-booking-single-field clearfix" >';
+					echo '<span class="tourmaster-head">' . esc_html__('Deposit Amount', 'tourmaster') . ' :</span> ';
+					echo '<span class="tourmaster-tail">' . tourmaster_money_format($payment_info['deposit_amount']) . '</span>';
+					echo '</div>';
+				}
 
 				if( !empty($payment_info['error']) ){
 					echo '<div class="tourmaster-my-booking-single-field clearfix" >';
@@ -426,7 +533,15 @@
 			echo '<div class="tourmaster-my-booking-single-content" >';
 			echo '<div class="tourmaster-item-rvpdlr clearfix" >';
 			echo '<div class="tourmaster-my-booking-single-order-summary-column tourmaster-column-20 tourmaster-item-pdlr" >';
-			echo '<h3 class="tourmaster-my-booking-single-title">' . esc_html__('Order Summary', 'tourmaster') . '</h3>';
+			echo '<h3 class="tourmaster-my-booking-single-title">';
+			echo esc_html__('Order Summary', 'tourmaster');
+			// echo tourmaster_order_edit_text('new-order');
+			// echo tourmaster_lightbox_content(array(
+			// 	'id' => 'new-order',
+			// 	'title' => esc_html__('Edit Order', 'tourmaster'),
+			// 	'content' => tourmaster_order_edit_form($_GET['single'], 'new_order', $result)
+			// ));	
+			echo '</h3>';
 
 			if( $result->order_status == 'pending' && empty($result->user_id) ){
 				echo '<div class="tourmaster-my-booking-pending-via-email" >';
@@ -473,16 +588,34 @@
 				echo '</div>';
 			}
 
-			if( !empty($contact_detail['additional_notes']) ){
-				echo '<div class="tourmaster-my-booking-single-field tourmaster-additional-note clearfix" >';
-				echo '<span class="tourmaster-head">' . esc_html__('Customer\'s Note', 'tourmaster') . ' :</span> ';
-				echo '<span class="tourmaster-tail">' . $contact_detail['additional_notes'] . '</span>';
-				echo '</div>';
-			}
+			//if( !empty($contact_detail['additional_notes']) ){
+			echo '<div class="tourmaster-my-booking-single-field tourmaster-additional-note clearfix" >';
+			echo '<span class="tourmaster-head">';
+			echo esc_html__('Customer\'s Note', 'tourmaster') . ' : ';
+			echo tourmaster_order_edit_text('edit-additional-notes');
+			echo tourmaster_lightbox_content(array(
+				'id' => 'edit-additional-notes',
+				'title' => esc_html__('Customer\'s Note', 'tourmaster'),
+				'content' => tourmaster_order_edit_form($_GET['single'], 'additional_notes', $result)
+			));	
+			echo '</span> ';
+			echo '<span class="tourmaster-tail">';
+			echo empty($contact_detail['additional_notes'])? '': $contact_detail['additional_notes'];
+			echo '</span>';
+			echo '</div>';
+			//}
 			echo '</div>'; // tourmaster-my-booking-single-order-summary-column
 
 			echo '<div class="tourmaster-my-booking-single-contact-detail-column tourmaster-column-20 tourmaster-item-pdlr" >';
-			echo '<h3 class="tourmaster-my-booking-single-title">' . esc_html__('Contact Detail', 'tourmaster') . '</h3>';
+			echo '<h3 class="tourmaster-my-booking-single-title">';
+			echo esc_html__('Contact Detail', 'tourmaster');
+			echo tourmaster_order_edit_text('edit-contact-details');
+			echo tourmaster_lightbox_content(array(
+				'id' => 'edit-contact-details',
+				'title' => esc_html__('Contact Details', 'tourmaster'),
+				'content' => tourmaster_order_edit_form($_GET['single'], 'contact_details', $result)
+			));	
+			echo '</h3>';
 			foreach( $contact_fields as $field_slug => $contact_field ){
 				if( !empty($contact_detail[$field_slug]) ){
 					echo '<div class="tourmaster-my-booking-single-field clearfix" >';
@@ -494,7 +627,15 @@
 			echo '</div>'; // tourmaster-my-booking-single-contact-detail-column
 
 			echo '<div class="tourmaster-my-booking-single-billing-detail-column tourmaster-column-20 tourmaster-item-pdlr" >';
-			echo '<h3 class="tourmaster-my-booking-single-title">' . esc_html__('Billing Detail', 'tourmaster') . '</h3>';
+			echo '<h3 class="tourmaster-my-booking-single-title">';
+			echo esc_html__('Billing Detail', 'tourmaster');
+			echo tourmaster_order_edit_text('edit-billing-details');
+			echo tourmaster_lightbox_content(array(
+				'id' => 'edit-billing-details',
+				'title' => esc_html__('Billing Details', 'tourmaster'),
+				'content' => tourmaster_order_edit_form($_GET['single'], 'billing_details', $result)
+			));	
+			echo '</h3>';
 			foreach( $contact_fields as $field_slug => $contact_field ){
 				if( !empty($billing_detail[$field_slug]) ){
 					echo '<div class="tourmaster-my-booking-single-field clearfix" >';
@@ -510,6 +651,10 @@
 			if( !empty($result->traveller_info) ){
 				$title_types = tourmaster_payment_traveller_title();
 				$traveller_info = json_decode($result->traveller_info, true);
+				$additional_traveller_fields = tourmaster_get_option('general', 'additional-traveller-fields', '');
+				if( !empty($additional_traveller_fields) ){
+					$additional_traveller_fields = tourmaster_read_custom_fields($additional_traveller_fields);
+				}
 
 				if( !empty($traveller_info) ){
 					echo '<div class="tourmaster-my-booking-single-traveller-info" >';
@@ -528,6 +673,13 @@
 							if( !empty($traveller_info['passport'][$i]) ){
 								echo '<br>' . esc_html__('Passport ID :', 'tourmaster') . ' ' . $traveller_info['passport'][$i];
 							}
+							if( !empty($additional_traveller_fields) ){
+								foreach( $additional_traveller_fields as $field ){
+									if( !empty($booking_detail['traveller_' . $field['slug']][$i]) ){
+										echo '<br>' . $field['title'] . ' ' . $booking_detail['traveller_' . $field['slug']][$i];
+									}
+								}
+							}
 							echo '</span>';
 							echo '</div>';
 						}
@@ -540,7 +692,15 @@
 			if( !empty($result->pricing_info) ){
 				$pricing_info = json_decode($result->pricing_info, true);
 				echo '<div class="tourmaster-my-booking-single-price-breakdown" >';
-				echo '<h3 class="tourmaster-my-booking-single-title">' . esc_html__('Price Breakdown', 'tourmaster') . '</h3>';
+				echo '<h3 class="tourmaster-my-booking-single-title">';
+				echo esc_html__('Price Breakdown', 'tourmaster');
+				echo tourmaster_order_edit_text('edit-price');
+				echo tourmaster_lightbox_content(array(
+					'id' => 'edit-price',
+					'title' => esc_html__('Price', 'tourmaster'),
+					'content' => tourmaster_order_edit_form($_GET['single'], 'price', $result)
+				));	
+				echo '</h3>';
 				echo tourmaster_get_tour_price_breakdown($pricing_info['price-breakdown']);
 
 				echo '<div class="tourmaster-my-booking-single-total-price clearfix" >';

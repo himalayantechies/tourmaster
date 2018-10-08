@@ -52,10 +52,12 @@
 					'post__not_in' => array(get_the_ID())
 				);
 				$query = new WP_Query( $query_args );
-	
+				
+				
 				if($query->have_posts()){
 					$tour_style = new tourmaster_tour_style();
 
+					tourmaster_setup_admin_postdata();
 					echo '<div class="tourmaster-recent-tour-widget tourmaster-tour-item">';
 					while($query->have_posts()){ $query->the_post();
 						echo $tour_style->tour_widget(array(
@@ -63,8 +65,9 @@
 						));
 					}
 					echo '</div>'; // tourmaster-recent-tour-widget
+					wp_reset_postdata();
+					tourmaster_reset_admin_postdata();
 				}
-				wp_reset_postdata();
 						
 				// Closing of widget
 				echo $args['after_widget'];

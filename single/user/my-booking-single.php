@@ -43,28 +43,22 @@
 	echo '<div class="tourmaster-booking-status tourmaster-status-' . esc_attr($result->order_status) . '" >' . $statuses[$result->order_status] . '</div>';
 	
 	echo '<h3 class="tourmaster-my-booking-single-sub-title">' . esc_html__('Bank Payment Receipt', 'tourmaster') . '</h3>';
-	if( in_array($result->order_status, array('pending', 'rejected')) ){
-		
-		echo '<a data-tmlb="payment-receipt" class="tourmaster-my-booking-single-receipt-button tourmaster-button" >' . esc_html__('Submit Payment Receipt', 'tourmaster') . '</a>';
-		echo tourmaster_lightbox_content(array(
-			'id' => 'payment-receipt',
-			'title' => esc_html__('Submit Bank Payment Receipt', 'tourmaster'),
-			'content' => tourmaster_lb_payment_receipt($result->id)
-		));
-		echo '<a href="';
-		echo esc_url(add_query_arg(array('tid'=>$result->id, 'step'=>3), tourmaster_get_template_url('payment')));
-		echo '" class="tourmaster-my-booking-single-payment-button tourmaster-button" >' . esc_html__('Make an Online Payment', 'tourmaster') . '</a>';
-	
-	}else if( !empty($result->payment_info) ){
+	if( !empty($result->payment_info) ){
 
 		// print payment info
 		$payment_info = json_decode($result->payment_info, true);
 
 		if( !empty($payment_info['file_url']) ){
 			echo '<div class="tourmaster-my-booking-single-payment-receipt" >';
-			echo '<a href="' . esc_url($payment_info['file_url']) . '" target="_blank" >';
-			echo '<img src="' . esc_url($payment_info['file_url']) . '" alt="receipt" />';
-			echo '</a>';
+			if( strpos($payment_info['file_url'], '.pdf') ){
+				echo '<a href="' . esc_url($payment_info['file_url']) . '" target="_blank" >';
+				echo '<i class="fa fa-file" style="margin-right: 10px;" ></i>' . esc_html__('Download', 'tourmaster');
+				echo '</a>';
+			}else{
+				echo '<a href="' . esc_url($payment_info['file_url']) . '" >';
+				echo '<img src="' . esc_url($payment_info['file_url']) . '" alt="receipt" />';
+				echo '</a>';
+			}
 			echo '</div>';			
 		}
 
@@ -129,9 +123,28 @@
 			echo '<div class="tourmaster-my-booking-single-field clearfix" >';
 			echo '<span class="tourmaster-head">' . esc_html__('Paid Amount', 'tourmaster') . ' :</span> ';
 			echo '<span class="tourmaster-tail">' . tourmaster_money_format($payment_info['amount']) . '</span>';
-			echo '</div>';			
+			echo '</div>';
+		}
+		if( !empty($payment_info['deposit_amount']) ){
+			echo '<div class="tourmaster-my-booking-single-field clearfix" >';
+			echo '<span class="tourmaster-head">' . esc_html__('Deposit Amount', 'tourmaster') . ' :</span> ';
+			echo '<span class="tourmaster-tail">' . tourmaster_money_format($payment_info['deposit_amount']) . '</span>';
+			echo '</div>';
 		}
 
+	}
+	if( in_array($result->order_status, array('pending', 'rejected', 'receipt-submitted')) ){
+		
+		echo '<a data-tmlb="payment-receipt" class="tourmaster-my-booking-single-receipt-button tourmaster-button" >' . esc_html__('Submit Payment Receipt', 'tourmaster') . '</a>';
+		echo tourmaster_lightbox_content(array(
+			'id' => 'payment-receipt',
+			'title' => esc_html__('Submit Bank Payment Receipt', 'tourmaster'),
+			'content' => tourmaster_lb_payment_receipt($result->id)
+		));
+		echo '<a href="';
+		echo esc_url(add_query_arg(array('tid'=>$result->id, 'step'=>3), tourmaster_get_template_url('payment')));
+		echo '" class="tourmaster-my-booking-single-payment-button tourmaster-button" >' . esc_html__('Make an Online Payment', 'tourmaster') . '</a>';
+	
 	}
 	echo '</div>'; // tourmaster-my-booking-single-sidebar
 
@@ -217,6 +230,10 @@
 	if( !empty($result->traveller_info) ){
 		$title_types = tourmaster_payment_traveller_title();
 		$traveller_info = json_decode($result->traveller_info, true);
+		$additional_traveller_fields = tourmaster_get_option('general', 'additional-traveller-fields', '');
+		if( !empty($additional_traveller_fields) ){
+			$additional_traveller_fields = tourmaster_read_custom_fields($additional_traveller_fields);
+		}
 
 		if( !empty($traveller_info) ){
 			echo '<div class="tourmaster-my-booking-single-traveller-info" >';
@@ -234,6 +251,13 @@
 					echo $traveller_info['first_name'][$i] . ' ' . $traveller_info['last_name'][$i];
 					if( !empty($traveller_info['passport'][$i]) ){
 						echo '<br>' . esc_html__('Passport ID :', 'tourmaster') . ' ' . $traveller_info['passport'][$i];
+					}
+					if( !empty($additional_traveller_fields) ){
+						foreach( $additional_traveller_fields as $field ){
+							if( !empty($booking_detail['traveller_' . $field['slug']][$i]) ){
+								echo '<br>' . $field['title'] . ' ' . $booking_detail['traveller_' . $field['slug']][$i];
+							}
+						}
 					}
 					echo '</span>';
 					echo '</div>';				
