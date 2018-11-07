@@ -51,7 +51,7 @@
 			$currency_code = tourmaster_get_option('payment', 'hblpay-currency-code', '');
 
 			$t_data = apply_filters('goodlayers_payment_get_transaction_data', array(), $tid, array('price', 'tour_id'));
-			$price = floatval($t_data['price']);
+			$price = floatval($t_data['price']['total-price']);
 			$amount = get_formated_amount( $price );
             $invoiceNo = get_formated_invoiceNo( $tid );
 
@@ -234,6 +234,5 @@
 			}
 		}
 	}
-	 // tourmaster_hblpay_process_ipn
-
+	// tourmaster_hblpay_process_ipn
 ?>
